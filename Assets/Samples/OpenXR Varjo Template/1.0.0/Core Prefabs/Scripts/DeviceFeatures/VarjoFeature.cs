@@ -259,6 +259,7 @@ namespace DeviceFeatures
                     _metadataFrame = _cameraSubsystem.MetadataStream.GetFrame();
                     float exposureValue = (float)_metadataFrame.metadata.ev +
                                           Mathf.Log((float)_metadataFrame.metadata.cameraCalibrationConstant, 2f);
+                    Debug.Log((float)_metadataFrame.metadata.ev + " " + (float)_metadataFrame.metadata.cameraCalibrationConstant);
                     _volumeExposure.fixedExposure.Override(exposureValue);
 
                     _volumeSky.hdriSky.Override(_cubemapFrame.cubemap);
