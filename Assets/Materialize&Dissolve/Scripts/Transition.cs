@@ -1,6 +1,8 @@
+using Leap.Unity.Infix;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Burst.CompilerServices;
 using UnityEngine;
 using static UHI.Tracking.InteractionEngine.Examples.SimpleInteractionGlow;
 
@@ -21,6 +23,9 @@ public class Transition : MonoBehaviour
 
     float durationPerObject = 2.7f;
     float durationStateChange = 4f;
+
+    public GameObject targetBottom;
+    public GameObject targetTop;
     TransitionSelector currentTransition = TransitionSelector.Fade;
     // Start is called before the first frame update
     void Start()
@@ -46,15 +51,15 @@ public class Transition : MonoBehaviour
                     StartCoroutine(RealToReplica_Fade(3));
                     break;
 
-                    case TransitionSelector.Dissolve:
+                case TransitionSelector.Dissolve:
                     StartCoroutine(RealToReplica_I());
-                    break; 
+                    break;
 
-                    case TransitionSelector.Translate:
+                case TransitionSelector.Translate:
                     StartCoroutine(RealToReplica_Translate());
                     break;
 
-                    default:
+                default:
                     break;
             }
         }
@@ -100,7 +105,7 @@ public class Transition : MonoBehaviour
             foreach (GameObject replicaObject in replica.replicaObjects)
             {
                 Dissolver dissolver = replicaObject.GetComponent<Dissolver>();
-                if(transitionTyp == TransitionSelector.Fade)
+                if (transitionTyp == TransitionSelector.Fade)
                 {
                     dissolver.ReplaceMaterials();
                 }
@@ -114,83 +119,53 @@ public class Transition : MonoBehaviour
                 }
             }
         }
-        Debug.Log("Transition "+transitionTyp.ToString()+" active");
+        Debug.Log("Transition " + transitionTyp.ToString() + " active");
 
     }
 
     IEnumerator ReplicaToReal_Fade(float duration)
     {
-        for (float t = 0f; t < duration; t += Time.deltaTime)
+        WaitForSeconds wfs = new WaitForSeconds(0.6f);
+
+        for (int i = replicaList.Count - 1; i >= 0; i--)
         {
-            foreach (serializableClass replica in replicaList)
+            foreach (GameObject replicaObject in replicaList[i].replicaObjects)
             {
-                foreach (GameObject replicaObject in replica.replicaObjects)
+                Dissolver dissolver = replicaObject.GetComponent<Dissolver>();
+                if (dissolver != null && dissolver.name != "Window1")
                 {
-                    Renderer dissolver = replicaObject.GetComponent<Renderer>();
-                    Material[] mats = dissolver.materials;
-                    foreach (Material mat in mats)
-                    {
-                        if (mat.name != "GlassMat")
-                        {
-                            Color cs = mat.color;
-                            cs.a = cs.a - 0.001f;
-                            if (cs.a < 0f)
-                            {
-                                cs.a = 0f;
-                            }
-                            mat.color = cs;
-                        }
-                    }
-                    dissolver.materials = mats;
+                    dissolver.FadeOut();
                 }
+
             }
-            yield return null;
+            yield return wfs;
         }
     }
     IEnumerator RealToReplica_Fade(float duration)
     {
-        for (float t = 0f; t < duration; t += Time.deltaTime)
+        WaitForSeconds wfs = new WaitForSeconds(0.6f);
+
+
+        for (int i = 0; i <= replicaList.Count; i++)
         {
-            for (int i = replicaList.Count - 1; i >= 0; i--)
+            foreach (GameObject replicaObject in replicaList[i].replicaObjects)
             {
-                foreach (GameObject replicaObject in replicaList[i].replicaObjects)
+                Dissolver dissolver = replicaObject.GetComponent<Dissolver>();
+                if (dissolver != null && dissolver.name != "Window1")
                 {
-                    if(replicaObject.name == "Window1")
-                    {
-                        Debug.Log("");
-
-                    }
-                    Renderer dissolver = replicaObject.GetComponent<Renderer>();
-                    Material[] mats = dissolver.materials;
-                    foreach(Material mat in mats)
-                    {
-                        if(mat.name == "GlassMat (Instance)")
-                        {
-
-                            Debug.Log(mat.name.ToString());
-                        }
-                        else
-                        {
-                            Color cs = mat.color;
-                            cs.a = cs.a + 0.001f;
-                            if (cs.a > 1f)
-                            {
-                                cs.a = 1f;
-                            }
-                            mat.color = cs;
-                        }
-
-                    }
-
-                    dissolver.materials = mats;
-
+                    dissolver.FadeIn();
                 }
+
             }
-            yield return null;
+            yield return wfs;
         }
     }
 
+    IEnumerator Fade_I()
+    {
 
+        yield return null;
+    }
     void ReplicaToTarget1()
     {
 
@@ -215,7 +190,7 @@ public class Transition : MonoBehaviour
             }
             yield return wfs;
         }
-        
+
         Debug.Log("End");
         StopCoroutine(ReplicaToReal_I());
         coroutineIsRunning = false;
@@ -245,37 +220,46 @@ public class Transition : MonoBehaviour
     {
 
 
-        for (float t = 0f; t < duration; t += Time.deltaTime)
-        {
-            foreach (serializableClass replica in replicaList)
-            {
-                foreach (GameObject replicaObject in replica.replicaObjects)
-                {
-                    Vector3.MoveTowards(replicaObject.transform.position, new Vector3(replicaObject.transform.position.x + 1f, replicaObject.transform.position.y, replicaObject.transform.position.z), 0.9f);
-                }
-            }
-            yield return null;
-        }
-    }
-
-    IEnumerator RealToReplica_Translate()
-    {
-        coroutineIsRunning = true;
         WaitForSeconds wfs = new WaitForSeconds(0.6f);
-        foreach (serializableClass replica in replicaList)
+
+
+        for (int i = replicaList.Count - 1; i >= 0; i--)
         {
-            foreach (GameObject replicaObject in replica.replicaObjects)
+            foreach (GameObject replicaObject in replicaList[i].replicaObjects)
             {
                 Dissolver dissolver = replicaObject.GetComponent<Dissolver>();
-                dissolver.Duration = durationPerObject;
-                dissolver.Materialize();
+                if (dissolver != null  && (dissolver.transform.parent.name == "RoomOutline" || dissolver.transform.parent.name == "display_1"))
+                {
+                    //dissolver.startPosition = replicaObject.transform.position;
+                    //dissolver.targetPosition = new Vector3(replicaObject.transform.position.x, replicaObject.transform.position.y+6f, replicaObject.transform.position.z);
+
+                    dissolver.TranslateOut();
+                }
+
             }
             yield return wfs;
         }
 
-        Debug.Log("End");
-        StopCoroutine(RealToReplica_I());
-        coroutineIsRunning = false;
+    }
+
+    IEnumerator RealToReplica_Translate()
+    {
+        WaitForSeconds wfs = new WaitForSeconds(0.6f);
+
+
+        for (int i = 0; i < replicaList.Count; i++)
+        {
+            foreach (GameObject replicaObject in replicaList[i].replicaObjects)
+            {
+                Dissolver dissolver = replicaObject.GetComponent<Dissolver>();
+                if (dissolver != null && (dissolver.transform.parent.name == "RoomOutline" || dissolver.transform.parent.name == "display_1"))
+                {
+                    dissolver.TranslateIn();
+                }
+
+            }
+            yield return wfs;
+        }
     }
 }
 

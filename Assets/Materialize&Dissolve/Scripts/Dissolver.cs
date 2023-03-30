@@ -2,7 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using Leap.Unity.Infix;
+using static UnityEngine.GraphicsBuffer;
 
+[System.Serializable]
 public class Dissolver : MonoBehaviour
 {
     [System.Serializable]
@@ -69,6 +72,8 @@ public class Dissolver : MonoBehaviour
     /// Initial state of the dissolver class.
     /// </summary>
     public DissolverState InitialState = DissolverState.Materialized;
+    
+    private bool fadeNow = false;
 
     private bool m_Materialized = true;
     private bool m_Dissolved = false;
@@ -76,14 +81,54 @@ public class Dissolver : MonoBehaviour
     private float m_DissolveAmount;
     private bool m_Finished = true;
 
+    private Vector3 startPosition;
+    private Vector3 targetPosition;
+
     //Queue Coroutines
 
     public Queue<IEnumerator> coroutineQueue = new Queue<IEnumerator>();
-
+    float speed = 0.5f;
+    float time = 2.7f;
+    float controllTime = 0f;
+    float a;
+    bool isStart = false;
+    bool isStop = false;
+    bool moveBottom = false;
+    private float startTime;
 
     void Start()
     {
+        startPosition = transform.position;
+        if (this.tag == "targetBottom")
+        {
+            targetPosition = new Vector3(transform.position.x, transform.position.y - 40f, transform.position.z);
+            moveBottom = true;
+        }
+        else
+        {
+            targetPosition = new Vector3(transform.position.x, transform.position.y + 40f, transform.position.z);
+        }
         StartCoroutine(CoroutineCoordinator());
+    }
+    void Update()
+    {
+        if (isStart)
+        {
+
+
+            controllTime += Time.deltaTime;
+            // Debug.Log(controllTime);
+            Debug.Log("Time: " + controllTime);
+        }
+
+        if (isStop)
+        {
+
+
+            controllTime -= Time.deltaTime;
+            // Debug.Log(controllTime);
+            Debug.Log("Time: " + controllTime);
+        }
     }
 
     /// <summary>
@@ -419,5 +464,200 @@ public class Dissolver : MonoBehaviour
         {
             RestoreDefaultMaterials();
         }
+    }
+
+
+    public void FadeIn()
+    {
+        StartCoroutine(FadeIn_I(2.7f));
+
+    }
+    public void FadeOut()
+    {
+        StartCoroutine(FadeOut_I(2.7f));
+
+    }
+    public void TranslateOut()
+    {
+        isStart = true;
+        StartCoroutine("TranslateOut_I");
+    }
+    public void TranslateIn()
+    {
+        isStop = true;
+        StartCoroutine("TranslateIN_I");
+    }
+    private IEnumerator FadeIn_I(float fadeDuration)
+    {
+        Renderer meshRenderer = GetComponent<Renderer>();
+        Material[] mats = meshRenderer.materials;
+        float alpha = 1.0f;
+        float elapsedTime = 0f;
+
+
+        while (elapsedTime < fadeDuration)
+        {
+            elapsedTime += Time.deltaTime;
+
+            alpha = Mathf.Lerp(0, 1, elapsedTime / fadeDuration);
+
+            foreach (Material mat in mats)
+            {
+                if (mat.name == "GlassMat (Instance)")
+                {
+
+                    Debug.Log(mat.name.ToString());
+                }
+                else
+                {
+                    Color cs = mat.color;
+                    cs.a = alpha;
+                    mat.color = cs;
+                }
+
+            }
+            meshRenderer.materials = mats;
+            yield return null;
+
+        }
+    }
+    private IEnumerator FadeOut_I(float fadeDuration)
+    {
+        Renderer meshRenderer = GetComponent<Renderer>();
+        Material[] mats = meshRenderer.materials;
+        float alpha = 1.0f;
+        float elapsedTime = 0f;
+
+
+        while (elapsedTime < fadeDuration)
+        {
+            elapsedTime += Time.deltaTime;
+
+            alpha = Mathf.Lerp(1, 0, elapsedTime / fadeDuration);
+
+            foreach (Material mat in mats)
+            {
+                if (mat.name == "GlassMat (Instance)")
+                {
+
+                    Debug.Log(mat.name.ToString());
+                }
+                else
+                {
+                    Color cs = mat.color;
+                    cs.a = alpha;
+                    mat.color = cs;
+                }
+
+            }
+            meshRenderer.materials = mats;
+            yield return null;
+
+        }
+    }
+    /*private IEnumerator TranslateOut_I(float fadeDuration)
+    {
+        
+        float moveDistance = 1.0f;
+        float elapsedTime = 0f;
+
+
+        while (elapsedTime < fadeDuration)
+        {
+            elapsedTime += Time.deltaTime;
+
+            moveDistance = Mathf.Lerp(0.0000001f, 0.1f, elapsedTime / fadeDuration);
+            //Debug.Log(this.name.ToString() + " " + moveDistance.ToString());
+            //this.transform.position = new Vector3(this.transform.position.x, startPosition.y + moveDistance, this.transform.position.z);
+            this.transform.position = Vector3.MoveTowards(this.transform.position, this.targetPosition, moveDistance);
+            //this.transform.position = new Vector3(this.transform.position.x, this.startPosition.y+moveDistance, this.transform.position.z);
+            /*if (!fadeNow && elapsedTime < 1f)
+            {
+                fadeNow = true;
+                StartCoroutine(FadeOut_I(fadeDuration));
+            }
+            yield return null;
+
+        }
+    }
+    /* private IEnumerator TranslateIn_I(float fadeDuration)
+     {
+
+         //float moveDistance_Tin = 1.0f;
+         float elapsedTime = 0f;
+
+         while (Vector3.Distance(this.transform.position, this.startPosition) >0.01f)
+         {
+
+                 elapsedTime += Time.deltaTime;
+                 currentTime += Time.deltaTime;
+             float t = Mathf.Clamp01(elapsedTime / fadeDuration);
+             t = Mathf.Lerp(0.001f,0.5f,(elapsedTime / fadeDuration));
+             moveDistance_Tin = t * (Vector3.Distance(this.transform.position, this.startPosition));
+             //moveDistance_Tin = 2f * (t / 2f);
+                 this.transform.position = Vector3.MoveTowards(this.transform.position, this.startPosition, moveDistance_Tin);
+
+             yield return null;
+         }
+         Debug.Log("Dauer: " + currentTime.ToString());
+         //this.transform.position = new Vector3(this.transform.position.x, startPosition.y, this.transform.position.z);
+
+     }*/
+
+
+    /* private IEnumerator TranslateIN_I()
+     {
+         float a = (40f * 2.0f) / (time * time);
+         float deltaDistance = Mathf.Abs(transform.position.y - startPos.y);
+         while (deltaDistance > 0.002f)// && controllTime < 4f)
+         {
+             deltaDistance = Mathf.Abs(transform.position.y - startPos.y);
+             Vector3 posTest = new Vector3(transform.position.x, (0.5f * a * Mathf.Pow(controllTime, 2)), transform.position.z);
+             this.transform.position = posTest;
+             yield return null;
+         }
+         isStop = false;
+     }*/
+    private IEnumerator TranslateOut_I()
+    {
+        float a = (Vector3.Distance(transform.position, targetPosition) * 2.0f) / (time * time);
+        while (controllTime <= time)
+        {
+            Debug.Log("Step Size: " + (0.5f * a * Mathf.Pow(controllTime, 2)));
+            Vector3 posTest;
+            if (moveBottom)
+            {
+                posTest = new Vector3(transform.position.x, startPosition.y - (0.5f * a * Mathf.Pow(controllTime, 2)), transform.position.z);
+            }
+            else
+            {
+                posTest = new Vector3(transform.position.x, startPosition.y + (0.5f * a * Mathf.Pow(controllTime, 2)), transform.position.z);
+            }
+            this.transform.position = posTest;
+
+            yield return null;
+        }
+        isStart = false;
+    }
+
+    private IEnumerator TranslateIN_I()
+    {
+        float a = (Vector3.Distance(transform.position, startPosition) * 2.0f) / (time * time);
+        while (controllTime >= 0f)// && controllTime < 4f)
+        {
+            Vector3 posTest;
+            if (moveBottom)
+            {
+                posTest = new Vector3(transform.position.x, startPosition.y - (0.5f * a * Mathf.Pow(controllTime, 2)), transform.position.z);
+            }
+            else
+            {
+                posTest = new Vector3(transform.position.x, startPosition.y + (0.5f * a * Mathf.Pow(controllTime, 2)), transform.position.z);
+            }
+            this.transform.position = posTest;
+            yield return null;
+        }
+        transform.position = startPosition;
+        isStop = false;
     }
 }

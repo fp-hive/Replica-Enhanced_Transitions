@@ -2,16 +2,24 @@
 %TAG !u! tag:unity3d.com,2011:
 --- !u!21 &2100000
 Material:
-  serializedVersion: 6
+  serializedVersion: 8
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: XAxisDissolve
   m_Shader: {fileID: 4800000, guid: 9f7e299f202797a4cb234938560347b2, type: 3}
-  m_ShaderKeywords: _2SIDESSECONDEDGE_ON _ALPHATEST_ON _AXIS_X _DISABLE_SSR_TRANSPARENT
-    _EDGESAFFECT_EMISSION _GLOSSSOURCE1_SPECULARALPHA _GLOSSSOURCE_METALLICALPHA
-    _GUIDEAFFECTSEDGESBLENDING_ON _USEEMISSION_ON
+  m_ValidKeywords:
+  - _2SIDESSECONDEDGE_ON
+  - _ALPHATEST_ON
+  - _AXIS_X
+  - _EDGESAFFECT_EMISSION
+  - _GLOSSSOURCE_METALLICALPHA
+  - _GUIDEAFFECTSEDGESBLENDING_ON
+  m_InvalidKeywords:
+  - _DISABLE_SSR_TRANSPARENT
+  - _GLOSSSOURCE1_SPECULARALPHA
+  - _USEEMISSION_ON
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -97,6 +105,7 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    m_Ints: []
     m_Floats:
     - _0AmountOffsetMin: 0
     - _2SidesSecondEdge: 1
@@ -114,7 +123,7 @@ Material:
     - _Cutoff1: 0
     - _DisplacementGuideTilling: 1
     - _DisplacementGuideTillingSpeed: 0.005
-    - _DissolveAmount: 0.496
+    - _DissolveAmount: 0.224
     - _DissolveEmissionIntesity: 1000
     - _DoubleSidedEnable: 0
     - _DoubleSidedNormalMode: 2
