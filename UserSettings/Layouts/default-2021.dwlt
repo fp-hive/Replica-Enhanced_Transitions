@@ -19,7 +19,7 @@ MonoBehaviour:
     width: 2560
     height: 1357.3334
   m_ShowMode: 4
-  m_Title: Hierarchy
+  m_Title: Scene
   m_RootView: {fileID: 2}
   m_MinSize: {x: 875, y: 300}
   m_MaxSize: {x: 10000, y: 10000}
@@ -119,7 +119,7 @@ MonoBehaviour:
   m_MinSize: {x: 300, y: 200}
   m_MaxSize: {x: 24288, y: 16192}
   vertical: 0
-  controlID: 119
+  controlID: 71
 --- !u!114 &6
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -144,7 +144,7 @@ MonoBehaviour:
   m_MinSize: {x: 200, y: 200}
   m_MaxSize: {x: 16192, y: 16192}
   vertical: 1
-  controlID: 120
+  controlID: 72
 --- !u!114 &7
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -169,7 +169,7 @@ MonoBehaviour:
   m_MinSize: {x: 200, y: 100}
   m_MaxSize: {x: 16192, y: 8096}
   vertical: 0
-  controlID: 121
+  controlID: 73
 --- !u!114 &8
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -274,8 +274,8 @@ MonoBehaviour:
     y: 0
     width: 882
     height: 1307.3334
-  m_MinSize: {x: 276, y: 71}
-  m_MaxSize: {x: 4001, y: 4021}
+  m_MinSize: {x: 275, y: 50}
+  m_MaxSize: {x: 4000, y: 4000}
   m_ActualView: {fileID: 22}
   m_Panes:
   - {fileID: 22}
@@ -2108,9 +2108,9 @@ MonoBehaviour:
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: 0.5078461, y: 2.8933618, z: 5.7737665}
+    m_Target: {x: -1.7222238, y: 1.8137289, z: 3.4943101}
     speed: 2
-    m_Value: {x: 0.5078461, y: 2.8933618, z: 5.7737665}
+    m_Value: {x: -1.7222238, y: 1.8137289, z: 3.4943101}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -2157,13 +2157,13 @@ MonoBehaviour:
     m_GridAxis: 1
     m_gridOpacity: 0.5
   m_Rotation:
-    m_Target: {x: 0.14926937, y: -0.3857516, z: 0.06378531, w: 0.9085181}
+    m_Target: {x: -0.035172984, y: 0.66197413, z: -0.02965528, w: -0.748349}
     speed: 2
-    m_Value: {x: 0.15672556, y: -0.37560835, z: 0.065018654, w: 0.91111356}
+    m_Value: {x: -0.032839537, y: 0.66418546, z: -0.027762208, w: -0.7463301}
   m_Size:
-    m_Target: 2.1667743
+    m_Target: 3.4385302
     speed: 2
-    m_Value: 2.1667743
+    m_Value: 3.6005552
   m_Ortho:
     m_Target: 0
     speed: 2
@@ -2220,23 +2220,23 @@ MonoBehaviour:
   m_SceneHierarchy:
     m_TreeViewState:
       scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: e0faffff
-      m_LastClickedID: -1312
-      m_ExpandedIDs: 98eeffff3ef0ffff7af2ffff98f8ffffd4faffffd8faffffdcfaffffe0faffff02fbffff
+      m_SelectedIDs: 56080200
+      m_LastClickedID: 133206
+      m_ExpandedIDs: 2a29ffff622affffaa46ffff404affff784bffff3456ffff60c1ffff04c3ffff4cc3ffff78c3ffffe4c4ffff54c6fffff8caffff9eccfffff2ccfffff6ccffff4ecdffff4cceffffdaceffff22d5ffff50d5ffff7cd5ffffa8d5ffffa6d6ffff34d7ffff38d7ffff3cd7ffff40d7ffff62d7ffffb09b0000b69b0000009e00000cfb010058fb010094fb01004e060200c60c02006c0d020000110200
       m_RenameOverlay:
         m_UserAcceptedRename: 0
-        m_Name: Platforms
-        m_OriginalName: Platforms
+        m_Name: 
+        m_OriginalName: 
         m_EditFieldRect:
           serializedVersion: 2
           x: 0
           y: 0
           width: 0
           height: 0
-        m_UserData: -5426
+        m_UserData: 0
         m_IsWaitingForDelay: 0
         m_IsRenaming: 0
-        m_OriginalEventType: 0
+        m_OriginalEventType: 11
         m_IsRenamingFilename: 0
         m_ClientGUIView: {fileID: 8}
       m_SearchString: 
@@ -2398,7 +2398,7 @@ MonoBehaviour:
     m_LastAppliedPresetName: Default
     m_SaveData: []
   m_SearchFilter:
-    m_NameFilter: 
+    m_NameFilter: move
     m_ClassNames: []
     m_AssetLabels: []
     m_AssetBundleNames: []
@@ -2410,22 +2410,22 @@ MonoBehaviour:
     m_SkipHidden: 1
     m_SearchArea: 1
     m_Folders:
-    - Assets/ASTROFISH_GAMES/MEDIEVAL_SERIES/MEDIEVAL_VILLAGE/MEDIEVAL_VILLLAGE_HD_DEMO/Mats
+    - Assets/Objects/Materials
     m_Globs: []
-    m_OriginalText: 
+    m_OriginalText: move
   m_ViewMode: 1
   m_StartGridSize: 64
   m_LastFolders:
-  - Assets/ASTROFISH_GAMES/MEDIEVAL_SERIES/MEDIEVAL_VILLAGE/MEDIEVAL_VILLLAGE_HD_DEMO/Mats
+  - Assets/Objects/Materials
   m_LastFoldersGridSize: -1
-  m_LastProjectPath: D:\Unity Projekte\GitHub\Transitions_2
+  m_LastProjectPath: D:\Fabian_Pointecker\Unity Projekte\GitHubRepository\Transitions_2
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
-    scrollPos: {x: 0, y: 79}
-    m_SelectedIDs: 30b80000
-    m_LastClickedID: 47152
-    m_ExpandedIDs: 00000000feb1000092b30000e4b30000e6b30000ecb7000000ca9a3bffffff7f
+    scrollPos: {x: 0, y: 135.66663}
+    m_SelectedIDs: eac20000
+    m_LastClickedID: 49898
+    m_ExpandedIDs: 00000000d2c20000d4c20000d6c20000d8c20000dac20000dcc20000e6c20000f6c200009ec6000000ca9a3bffffff7f
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -2453,7 +2453,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 00000000feb10000
+    m_ExpandedIDs: 00000000d2c20000d4c20000d6c20000d8c20000dac20000dcc20000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -2505,7 +2505,7 @@ MonoBehaviour:
       m_Icon: {fileID: 0}
       m_ResourceFile: 
     m_NewAssetIndexInList: -1
-    m_ScrollPosition: {x: 0, y: 201.33331}
+    m_ScrollPosition: {x: 0, y: 0}
     m_GridSize: 64
   m_SkipHiddenPackages: 1
   m_DirectoriesAreaWidth: 263
@@ -2532,7 +2532,7 @@ MonoBehaviour:
     serializedVersion: 2
     x: 0
     y: 1042.6667
-    width: 1676.3334
+    width: 1677
     height: 316.33337
   m_ViewDataDictionary: {fileID: 0}
   m_OverlayCanvas:
