@@ -93,6 +93,7 @@ public class Dissolver : MonoBehaviour
     float a;
     bool isStart = false;
     bool isStop = false;
+    bool isTranslateOut = false;
     bool moveBottom = false;
     private float startTime;
 
@@ -467,14 +468,14 @@ public class Dissolver : MonoBehaviour
     }
 
 
-    public void FadeIn()
+    public void FadeIn(float fadeDuration)
     {
-        StartCoroutine(FadeIn_I(2.7f));
+        StartCoroutine(FadeIn_I(fadeDuration));
 
     }
-    public void FadeOut()
+    public void FadeOut(float fadeDuration)
     {
-        StartCoroutine(FadeOut_I(2.7f));
+        StartCoroutine(FadeOut_I(fadeDuration));
 
     }
     public void TranslateOut()
@@ -623,18 +624,40 @@ public class Dissolver : MonoBehaviour
         float a = (Vector3.Distance(transform.position, targetPosition) * 2.0f) / (time * time);
         while (controllTime <= time)
         {
+
             Debug.Log("Step Size: " + (0.5f * a * Mathf.Pow(controllTime, 2)));
             Vector3 posTest;
             if (moveBottom)
             {
+                if (!isTranslateOut && this.transform.position.y < -0.038f)
+                {
+                    isTranslateOut = true;
+                    this.FadeOut(0.2f);
+                    
+                    for (int i = 0; i < this.GetComponent<Transform>().transform.childCount;i++)
+                    {
+                        Transform child = this.GetComponent<Transform>().transform.GetChild(i);
+                        child.GetComponent<Dissolver>().FadeOut(0.2f);
+                    }
+                }
                 posTest = new Vector3(transform.position.x, startPosition.y - (0.5f * a * Mathf.Pow(controllTime, 2)), transform.position.z);
             }
             else
             {
+                if (!isTranslateOut && this.transform.position.y > 0.0f)
+                {
+                    isTranslateOut = true;
+                    this.FadeOut(0.2f);
+                    for (int i = 0; i < this.GetComponent<Transform>().transform.childCount;i++)
+                    {
+                        Transform child = this.GetComponent<Transform>().transform.GetChild(i);
+                        child.GetComponent<Dissolver>().FadeOut(0.2f);
+
+                    }
+                }
                 posTest = new Vector3(transform.position.x, startPosition.y + (0.5f * a * Mathf.Pow(controllTime, 2)), transform.position.z);
             }
             this.transform.position = posTest;
-
             yield return null;
         }
         isStart = false;
@@ -645,13 +668,34 @@ public class Dissolver : MonoBehaviour
         float a = (Vector3.Distance(transform.position, startPosition) * 2.0f) / (time * time);
         while (controllTime >= 0f)// && controllTime < 4f)
         {
+
             Vector3 posTest;
             if (moveBottom)
             {
+                if (isTranslateOut && this.transform.position.y > -0.038f)
+                {
+                    isTranslateOut = false;
+                    this.FadeIn(0.2f);
+                    for (int i = 0; i < this.GetComponent<Transform>().transform.childCount; i++)
+                    {
+                        Transform child = this.GetComponent<Transform>().transform.GetChild(i);
+                        child.GetComponent<Dissolver>().FadeIn(0.2f);
+                    }
+                }
                 posTest = new Vector3(transform.position.x, startPosition.y - (0.5f * a * Mathf.Pow(controllTime, 2)), transform.position.z);
             }
             else
             {
+                if (isTranslateOut && this.transform.position.y < 3.5f)
+                {
+                    isTranslateOut = false;
+                    this.FadeIn(0.2f);
+                    for (int i = 0; i < this.GetComponent<Transform>().transform.childCount; i++)
+                    {
+                        Transform child = this.GetComponent<Transform>().transform.GetChild(i);
+                        child.GetComponent<Dissolver>().FadeIn(0.2f);
+                    }
+                }
                 posTest = new Vector3(transform.position.x, startPosition.y + (0.5f * a * Mathf.Pow(controllTime, 2)), transform.position.z);
             }
             this.transform.position = posTest;

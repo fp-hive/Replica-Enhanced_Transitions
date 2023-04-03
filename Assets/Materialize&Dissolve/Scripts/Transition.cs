@@ -115,7 +115,7 @@ public class Transition : MonoBehaviour
                 }
                 if (transitionTyp == TransitionSelector.Translate)
                 {
-                    dissolver.RestoreDefaultMaterials();
+                    dissolver.ReplaceMaterials();
                 }
             }
         }
@@ -134,7 +134,7 @@ public class Transition : MonoBehaviour
                 Dissolver dissolver = replicaObject.GetComponent<Dissolver>();
                 if (dissolver != null && dissolver.name != "Window1")
                 {
-                    dissolver.FadeOut();
+                    dissolver.FadeOut(2.7f);
                 }
 
             }
@@ -153,7 +153,7 @@ public class Transition : MonoBehaviour
                 Dissolver dissolver = replicaObject.GetComponent<Dissolver>();
                 if (dissolver != null && dissolver.name != "Window1")
                 {
-                    dissolver.FadeIn();
+                    dissolver.FadeIn(2.7f);
                 }
 
             }
