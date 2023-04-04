@@ -85,7 +85,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _GuideTexture:
         m_Texture: {fileID: 2800000, guid: 4cbf31330d36c614c9c12a82b586866d, type: 3}
-        m_Scale: {x: 0.4, y: 0.4}
+        m_Scale: {x: 0.1, y: 0.1}
         m_Offset: {x: 0, y: 0}
     - _HeightMap:
         m_Texture: {fileID: 0}
@@ -236,7 +236,7 @@ Material:
     - _GlossSource: 1
     - _Glossiness: 0
     - _GlossyReflections: 1
-    - _GuideAdjuster: 1.421
+    - _GuideAdjuster: 1.547
     - _HeightAmplitude: 0.02
     - _HeightCenter: 0.5
     - _HeightMapParametrization: 0
