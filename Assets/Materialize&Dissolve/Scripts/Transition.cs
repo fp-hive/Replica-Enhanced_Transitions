@@ -31,6 +31,8 @@ public class Transition : MonoBehaviour
     public GameObject targetBottom;
     public GameObject targetTop;
     TransitionSelector currentTransition = TransitionSelector.Fade;
+
+    public Light light;
     // Start is called before the first frame update
     void Start()
     {
@@ -263,7 +265,7 @@ public class Transition : MonoBehaviour
     IEnumerator Target_1_ToReplica_I()
     {
         coroutineIsRunning = true;
-        WaitForSeconds wfs = new WaitForSeconds(0.6f);
+        WaitForSeconds wfs = new WaitForSeconds(0.9f);
         for (int i = target_1_List.Count - 1; i >= 0; i--)
         {
             foreach (GameObject replicaObject in target_1_List[i].replicaObjects)
@@ -290,11 +292,20 @@ public class Transition : MonoBehaviour
             foreach (GameObject replicaObject in replica.replicaObjects)//replicaList[i].replicaObjects
             {
                 Dissolver dissolver = replicaObject.GetComponent<Dissolver>();
-                dissolver.Duration = durationPerObject;
+
+                if (replicaObject.name == "Room")
+                {
+                    dissolver.Duration = 6.7f;
+                }
+                else
+                {
+                    dissolver.Duration = durationPerObject;
+                }
                 dissolver.Dissolve();
             }
             if(count > 6)
             {
+
                 StartCoroutine(Target_1_ToReplica_I());
                 count = 0;
             }

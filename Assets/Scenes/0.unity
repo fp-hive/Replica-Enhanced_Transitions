@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 22.191238, g: 17.753803, b: 25.547562, a: 1}
+  m_IndirectSpecularColor: {r: 6.2279053, g: 3.621933, b: 2.5690136, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -898,7 +898,7 @@ MonoBehaviour:
   m_ShadowResolution:
     m_Override: 512
     m_UseOverride: 0
-    m_Level: 2
+    m_Level: 1
   m_ShadowDimmer: 1
   m_VolumetricShadowDimmer: 0.5
   m_ShadowFadeDistance: 10000
@@ -911,7 +911,7 @@ MonoBehaviour:
   m_PenumbraTint: 0
   m_NormalBias: 0.75
   m_SlopeBias: 0.5
-  m_ShadowUpdateMode: 0
+  m_ShadowUpdateMode: 2
   m_AlwaysDrawDynamicShadows: 0
   m_UpdateShadowOnLightMovement: 1
   m_CachedShadowTranslationThreshold: 0.01
@@ -2874,6 +2874,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Rocks
+      objectReference: {fileID: 0}
+    - target: {fileID: 2062480020969686334, guid: f9a87e556c3a48840adaa16eab7b3a79,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2062480020969686335, guid: f9a87e556c3a48840adaa16eab7b3a79,
         type: 3}
@@ -4956,6 +4961,11 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: ea54de35656dbde4eaa12303738853bc, type: 2}
+    - target: {fileID: 3170326645460705540, guid: 489155ad753598240a94e6b2801fe02f,
+        type: 3}
+      propertyPath: m_LODs.Array.data[0].screenRelativeHeight
+      value: 0.08509787
+      objectReference: {fileID: 0}
     - target: {fileID: 3202999171741747527, guid: 489155ad753598240a94e6b2801fe02f,
         type: 3}
       propertyPath: m_IsActive
@@ -5821,7 +5831,7 @@ MonoBehaviour:
   DissolveRenderers:
   - renderer: {fileID: 1060830369}
     defaultMaterials:
-    - {fileID: 2100000, guid: c324f0dd9c50d924a94d27b24616cf06, type: 2}
+    - {fileID: 2100000, guid: 7c63c3d5afd392c4bacf4e61fa6671aa, type: 2}
     materialsToReplace:
     - {fileID: 2100000, guid: 732101c7ce9058f41ac2dedb87df6bff, type: 2}
     shouldReplaceMaterials: 1
@@ -7468,6 +7478,7 @@ MonoBehaviour:
   replicaList_Room: []
   targetBottom: {fileID: 1024910008}
   targetTop: {fileID: 0}
+  light: {fileID: 157207113}
 --- !u!4 &1344014593
 Transform:
   m_ObjectHideFlags: 0
@@ -8570,7 +8581,7 @@ PrefabInstance:
     - target: {fileID: 1124202178489656514, guid: e69b154d22a1ce14781ab29839fd6a40,
         type: 3}
       propertyPath: m_LODs.Array.data[0].screenRelativeHeight
-      value: 0.086777896
+      value: 0.035123628
       objectReference: {fileID: 0}
     - target: {fileID: 1124202178489656514, guid: e69b154d22a1ce14781ab29839fd6a40,
         type: 3}
@@ -13247,7 +13258,7 @@ MonoBehaviour:
   - renderer: {fileID: 2088781802}
     defaultMaterials:
     - {fileID: 2100000, guid: 65758b4790d758740bb021141b0902b9, type: 2}
-    - {fileID: 2100000, guid: c324f0dd9c50d924a94d27b24616cf06, type: 2}
+    - {fileID: 2100000, guid: 02071836eb9dfa0418eebda96ad1cc2f, type: 2}
     - {fileID: 2100000, guid: 858d68fe964d99344ad2b8b65db63bae, type: 2}
     - {fileID: 2100000, guid: 1432e7ca41a90c84b9d0349fe8fa50ec, type: 2}
     - {fileID: 2100000, guid: 5ee7274e639d12a49a92a57670f3c059, type: 2}

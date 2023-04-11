@@ -137,6 +137,26 @@ MonoBehaviour:
   company: Unity
   priority: 0
   required: 0
+--- !u!114 &-3496576029179690434
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c465bd23c9c4fb442ae89117552a5f3f, type: 3}
+  m_Name: HandTrackingFeature Standalone
+  m_EditorClassIdentifier: 
+  m_enabled: 0
+  nameUi: Ultraleap Hand Tracking
+  version: 1.0.0
+  featureIdInternal: com.ultraleap.tracking.openxr.feature.handtracking
+  openxrExtensionStrings: XR_EXT_hand_tracking
+  company: Ultraleap
+  priority: 0
+  required: 0
 --- !u!114 &-1713157072050000605
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -187,6 +207,7 @@ MonoBehaviour:
   features:
   - {fileID: -3856228059757999478}
   - {fileID: -7846878040398210561}
+  - {fileID: -3496576029179690434}
   - {fileID: 9188207630758862328}
   - {fileID: -4309224043839648630}
   - {fileID: 8267939211154546423}
@@ -493,6 +514,7 @@ MonoBehaviour:
   features:
   - {fileID: 2281544529243520780}
   - {fileID: 1092000374100107229}
+  - {fileID: 5792112577028386773}
   - {fileID: -6431868231570944891}
   - {fileID: 7265242931185773233}
   - {fileID: 7840793039601454427}
@@ -500,6 +522,26 @@ MonoBehaviour:
   - {fileID: 3358869018980369165}
   m_renderMode: 1
   m_depthSubmissionMode: 0
+--- !u!114 &5792112577028386773
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c465bd23c9c4fb442ae89117552a5f3f, type: 3}
+  m_Name: HandTrackingFeature Android
+  m_EditorClassIdentifier: 
+  m_enabled: 0
+  nameUi: Ultraleap Hand Tracking
+  version: 1.0.0
+  featureIdInternal: com.ultraleap.tracking.openxr.feature.handtracking
+  openxrExtensionStrings: XR_EXT_hand_tracking
+  company: Ultraleap
+  priority: 0
+  required: 0
 --- !u!114 &7017296926258224930
 MonoBehaviour:
   m_ObjectHideFlags: 0
