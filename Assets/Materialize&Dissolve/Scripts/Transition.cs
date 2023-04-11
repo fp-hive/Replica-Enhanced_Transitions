@@ -17,7 +17,7 @@ public class Transition : MonoBehaviour
     public List<serializableClass> replicaList = new List<serializableClass>();
     public List<serializableClass> target_1_List = new List<serializableClass>();
     public List<serializableClass> replicaList_Room = new List<serializableClass>();
-
+    public List<serializableClass> onlyTarget1Objs = new List<serializableClass>();
     public enum TransitionSelector
     {
         Fade,
@@ -45,7 +45,7 @@ public class Transition : MonoBehaviour
 
     private List<int> num = new List<int>();
     bool coroutineIsRunning = false;
-
+    bool lastCallToReal = false;
     // Update is called once per frame
     void Update()
     {
@@ -149,6 +149,26 @@ public class Transition : MonoBehaviour
                     break;
             }
         }
+        if (Input.GetKey(KeyCode.F6)) // Replica -> Target
+        {
+            switch (currentTransition)
+            {
+                case TransitionSelector.Fade:
+                    StartCoroutine(ReplicaToReal_Fade(3));
+                    break;
+
+                case TransitionSelector.Dissolve:
+                    StartCoroutine(ReplicaToTarget_1_I());
+                    break;
+
+                case TransitionSelector.Translate:
+                    StartCoroutine(ReplicaToReal_Translate(3));
+                    break;
+
+                default:
+                    break;
+            }
+        }
         if (Input.GetKeyDown("f"))
         {
             ChangeTransitionTyp(TransitionSelector.Fade);
@@ -185,7 +205,7 @@ public class Transition : MonoBehaviour
                 }
             }
         }
-        Debug.Log("Transition " + transitionTyp.ToString() + " active");
+        //Debug.Log("Transition " + transitionTyp.ToString() + " active");
 
     }
 
@@ -245,21 +265,30 @@ public class Transition : MonoBehaviour
     IEnumerator ReplicaToTarget_1_I()
     {
         coroutineIsRunning = true;
+        int count = 0;
         WaitForSeconds wfs = new WaitForSeconds(0.6f);
         for (int i = target_1_List.Count - 1; i >= 0; i--)
         {
+            count++;
             foreach (GameObject replicaObject in target_1_List[i].replicaObjects)
             {
-                Debug.Log(replicaObject.name);
+                //Debug.Log(replicaObject.name);
                 Dissolver dissolver = replicaObject.GetComponent<Dissolver>();
                 dissolver.Duration = durationPerObject;
                 dissolver.Dissolve();
+            }
+            Debug.Log(count);
+            if (count > 6)
+            {
+
+                StartCoroutine(RealToReplica_I_invert());
+                count = 0;
             }
             yield return wfs;
         }
 
         Debug.Log("End");
-        StopCoroutine(ReplicaToReal_I());
+        StopCoroutine(ReplicaToTarget_1_I());
         coroutineIsRunning = false;
     }
     IEnumerator Target_1_ToReplica_I()
@@ -316,7 +345,35 @@ public class Transition : MonoBehaviour
         StopCoroutine(ReplicaToReal_I());
         coroutineIsRunning = false;
     }
+    IEnumerator ReplicaToReal_ohneBack_I()
+    {
+        coroutineIsRunning = true;
+        WaitForSeconds wfs = new WaitForSeconds(0.6f);
+        int count = 0;
+        foreach (serializableClass replica in replicaList)//int i = replicaList.Count - 1; i >= 0; i--
+        {
+            count++;
+            foreach (GameObject replicaObject in replica.replicaObjects)//replicaList[i].replicaObjects
+            {
+                Dissolver dissolver = replicaObject.GetComponent<Dissolver>();
 
+                if (replicaObject.name == "Room")
+                {
+                    dissolver.Duration = 6.7f;
+                }
+                else
+                {
+                    dissolver.Duration = durationPerObject;
+                }
+                dissolver.Dissolve();
+            }
+            yield return wfs;
+        }
+
+        Debug.Log("End");
+        StopCoroutine(ReplicaToReal_I());
+        coroutineIsRunning = false;
+    }
     IEnumerator RealToReplica_I()
     {
         coroutineIsRunning = true;
@@ -334,6 +391,31 @@ public class Transition : MonoBehaviour
 
         Debug.Log("End");
         StopCoroutine(RealToReplica_I());
+        coroutineIsRunning = false;
+    }
+    IEnumerator RealToReplica_I_invert()
+    {
+        coroutineIsRunning = true;
+        WaitForSeconds wfs = new WaitForSeconds(0.6f);
+        for(int i = replicaList.Count - 1; i >= 0; i--)
+        {
+            foreach (GameObject replicaObject in replicaList[i].replicaObjects)
+            {
+                Dissolver dissolver = replicaObject.GetComponent<Dissolver>();
+                dissolver.Duration = durationPerObject;
+                dissolver.Materialize();
+            }
+            yield return wfs;
+        }
+
+        Debug.Log("End");
+        if(lastCallToReal == false)
+        {
+            lastCallToReal = true;
+            StartCoroutine(ReplicaToReal_ohneBack_I()); //hier ende
+        }
+        StopCoroutine(RealToReplica_I_invert());
+
         coroutineIsRunning = false;
     }
 
