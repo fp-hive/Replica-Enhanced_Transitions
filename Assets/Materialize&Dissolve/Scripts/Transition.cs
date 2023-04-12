@@ -17,7 +17,7 @@ public class Transition : MonoBehaviour
     public List<serializableClass> replicaList = new List<serializableClass>();
     public List<serializableClass> target_1_List = new List<serializableClass>();
     public List<serializableClass> replicaList_Room = new List<serializableClass>();
-    public List<serializableClass> onlyTarget1Objs = new List<serializableClass>();
+    public List<GameObject> onlyTarget1Objs = new List<GameObject>();
     public enum TransitionSelector
     {
         Fade,
@@ -33,6 +33,8 @@ public class Transition : MonoBehaviour
     TransitionSelector currentTransition = TransitionSelector.Fade;
 
     public Light light;
+    private float debounceTime = 0.25f;   // Debounce time in seconds
+    private bool isButtonClickable = true;  // Flag to keep track of button clickability
     // Start is called before the first frame update
     void Start()
     {
@@ -78,7 +80,7 @@ public class Transition : MonoBehaviour
                     break;
 
                 case TransitionSelector.Dissolve:
-                    StartCoroutine(ReplicaToReal_I());
+                    StartCoroutine(RemoveReplicaToTarget());
                     break;
 
                 case TransitionSelector.Translate:
@@ -98,7 +100,7 @@ public class Transition : MonoBehaviour
                     break;
 
                 case TransitionSelector.Dissolve:
-                    StartCoroutine(ReplicaToTarget_1_I());
+                    StartCoroutine(ReplicaToTarget_1_I_remove_Target1());
                     break;
 
                 case TransitionSelector.Translate:
@@ -118,7 +120,7 @@ public class Transition : MonoBehaviour
                     break;
 
                 case TransitionSelector.Dissolve:
-                    StartCoroutine(Target_1_ToReplica_I());
+                    StartCoroutine(AddTargetToTarget());
                     break;
 
                 case TransitionSelector.Translate:
@@ -129,8 +131,9 @@ public class Transition : MonoBehaviour
                     break;
             }
         }
-        if (Input.GetKey(KeyCode.F5)) // Replica -> Target
+        if (Input.GetKey(KeyCode.F5) && isButtonClickable) // Replica -> Target
         {
+            isButtonClickable = false;
             switch (currentTransition)
             {
                 case TransitionSelector.Fade:
@@ -138,7 +141,7 @@ public class Transition : MonoBehaviour
                     break;
 
                 case TransitionSelector.Dissolve:
-                    StartCoroutine(ReplicaToReal_I());                    
+                    StartCoroutine(RemoveReplicaToTarget());                    
                     break;
 
                 case TransitionSelector.Translate:
@@ -148,9 +151,11 @@ public class Transition : MonoBehaviour
                 default:
                     break;
             }
+            StartCoroutine(EnableButtonAfterDebounce());
         }
-        if (Input.GetKey(KeyCode.F6)) // Replica -> Target
+        if (Input.GetKey(KeyCode.F6) && isButtonClickable) // Replica -> Target
         {
+            isButtonClickable = false;
             switch (currentTransition)
             {
                 case TransitionSelector.Fade:
@@ -158,7 +163,7 @@ public class Transition : MonoBehaviour
                     break;
 
                 case TransitionSelector.Dissolve:
-                    StartCoroutine(ReplicaToTarget_1_I());
+                    StartCoroutine(RemoveTargetToReplica());
                     break;
 
                 case TransitionSelector.Translate:
@@ -168,6 +173,8 @@ public class Transition : MonoBehaviour
                 default:
                     break;
             }
+            StartCoroutine(EnableButtonAfterDebounce());
+
         }
         if (Input.GetKeyDown("f"))
         {
@@ -181,6 +188,15 @@ public class Transition : MonoBehaviour
         {
             ChangeTransitionTyp(TransitionSelector.Translate);
         }
+    }
+
+    private IEnumerator EnableButtonAfterDebounce()
+    {
+        // Wait for the debounce time
+        yield return new WaitForSeconds(debounceTime);
+
+        // Set the button clickability flag to true
+        isButtonClickable = true;
     }
 
     private void ChangeTransitionTyp(TransitionSelector transitionTyp)
@@ -205,7 +221,7 @@ public class Transition : MonoBehaviour
                 }
             }
         }
-        //Debug.Log("Transition " + transitionTyp.ToString() + " active");
+        Debug.Log("Transition " + transitionTyp.ToString() + " active");
 
     }
 
@@ -262,7 +278,29 @@ public class Transition : MonoBehaviour
     }
 
 
-    IEnumerator ReplicaToTarget_1_I()
+    IEnumerator ReplicaToTarget_1_I_remove_Target1()
+    {
+        coroutineIsRunning = true;
+        int count = 0;
+        WaitForSeconds wfs = new WaitForSeconds(0.6f);
+        for (int i = target_1_List.Count - 1; i >= 0; i--)
+        {
+            count++;
+            foreach (GameObject replicaObject in target_1_List[i].replicaObjects)
+            {
+                //Debug.Log(replicaObject.name);
+                Dissolver dissolver = replicaObject.GetComponent<Dissolver>();
+                dissolver.Duration = durationPerObject;
+                dissolver.Dissolve();
+            }
+            yield return wfs;
+        }
+
+        Debug.Log("End");
+        StopCoroutine(ReplicaToTarget_1_I_remove_Target1());
+        coroutineIsRunning = false;
+    }
+    IEnumerator RemoveTargetToReplica()
     {
         coroutineIsRunning = true;
         int count = 0;
@@ -281,17 +319,17 @@ public class Transition : MonoBehaviour
             if (count > 6)
             {
 
-                StartCoroutine(RealToReplica_I_invert());
+                StartCoroutine(AddReplicaToReplica());
                 count = 0;
             }
             yield return wfs;
         }
 
         Debug.Log("End");
-        StopCoroutine(ReplicaToTarget_1_I());
+        StopCoroutine(RemoveTargetToReplica());
         coroutineIsRunning = false;
     }
-    IEnumerator Target_1_ToReplica_I()
+    IEnumerator AddTargetToTarget()
     {
         coroutineIsRunning = true;
         WaitForSeconds wfs = new WaitForSeconds(0.9f);
@@ -310,11 +348,12 @@ public class Transition : MonoBehaviour
         StopCoroutine(RealToReplica_I());
         coroutineIsRunning = false;
     }
-    IEnumerator ReplicaToReal_I()
+    IEnumerator RemoveReplicaToTarget()
     {
         coroutineIsRunning = true;
         WaitForSeconds wfs = new WaitForSeconds(0.6f);
         int count = 0;
+        Debug.Log("Start RemoveReplicaToTarget");
         foreach (serializableClass replica in replicaList)//int i = replicaList.Count - 1; i >= 0; i--
         {
             count++;
@@ -334,18 +373,18 @@ public class Transition : MonoBehaviour
             }
             if(count > 6)
             {
-
-                StartCoroutine(Target_1_ToReplica_I());
+                Debug.Log("Call StartCoroutine(Target_1_ToReplica_I());");
+                StartCoroutine(AddTargetToTarget());
                 count = 0;
             }
             yield return wfs;
         }
 
         Debug.Log("End");
-        StopCoroutine(ReplicaToReal_I());
+        StopCoroutine(RemoveReplicaToTarget());
         coroutineIsRunning = false;
     }
-    IEnumerator ReplicaToReal_ohneBack_I()
+    IEnumerator RemoveReplicaToReal()
     {
         coroutineIsRunning = true;
         WaitForSeconds wfs = new WaitForSeconds(0.6f);
@@ -371,7 +410,7 @@ public class Transition : MonoBehaviour
         }
 
         Debug.Log("End");
-        StopCoroutine(ReplicaToReal_I());
+        StopCoroutine(RemoveReplicaToTarget());
         coroutineIsRunning = false;
     }
     IEnumerator RealToReplica_I()
@@ -393,7 +432,7 @@ public class Transition : MonoBehaviour
         StopCoroutine(RealToReplica_I());
         coroutineIsRunning = false;
     }
-    IEnumerator RealToReplica_I_invert()
+    IEnumerator AddReplicaToReplica()
     {
         coroutineIsRunning = true;
         WaitForSeconds wfs = new WaitForSeconds(0.6f);
@@ -407,14 +446,17 @@ public class Transition : MonoBehaviour
             }
             yield return wfs;
         }
-
+        foreach(GameObject obj in onlyTarget1Objs)
+        {
+            obj.SetActive(false);
+        }
         Debug.Log("End");
         if(lastCallToReal == false)
         {
             lastCallToReal = true;
-            StartCoroutine(ReplicaToReal_ohneBack_I()); //hier ende
+            StartCoroutine(RemoveReplicaToReal()); //hier ende
         }
-        StopCoroutine(RealToReplica_I_invert());
+        StopCoroutine(AddReplicaToReplica());
 
         coroutineIsRunning = false;
     }

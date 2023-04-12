@@ -119,7 +119,7 @@ public class Dissolver : MonoBehaviour
 
             controllTime += Time.deltaTime;
             // Debug.Log(controllTime);
-            Debug.Log("Time: " + controllTime);
+            //Debug.Log("Time: " + controllTime);
         }
 
         if (isStop)
@@ -128,7 +128,7 @@ public class Dissolver : MonoBehaviour
 
             controllTime -= Time.deltaTime;
             // Debug.Log(controllTime);
-            Debug.Log("Time: " + controllTime);
+            //Debug.Log("Time: " + controllTime);
         }
     }
 
@@ -420,7 +420,7 @@ public class Dissolver : MonoBehaviour
                 foreach (var mat in obj.renderer.materials)
                 {
                     mat.SetFloat("_DissolveAmount", m_DissolveAmount);
-                    Debug.Log("dissolve " + m_DissolveAmount + mat.name);
+                    //Debug.Log("dissolve " + m_DissolveAmount + mat.name);
                 }
             }
             yield return null;
@@ -507,7 +507,7 @@ public class Dissolver : MonoBehaviour
                 if (mat.name == "GlassMat (Instance)")
                 {
 
-                    Debug.Log(mat.name.ToString());
+                    //Debug.Log(mat.name.ToString());
                 }
                 else
                 {
@@ -541,7 +541,7 @@ public class Dissolver : MonoBehaviour
                 if (mat.name == "GlassMat (Instance)")
                 {
 
-                    Debug.Log(mat.name.ToString());
+                    //Debug.Log(mat.name.ToString());
                 }
                 else
                 {
@@ -625,7 +625,7 @@ public class Dissolver : MonoBehaviour
         while (controllTime <= time)
         {
 
-            Debug.Log("Step Size: " + (0.5f * a * Mathf.Pow(controllTime, 2)));
+            //Debug.Log("Step Size: " + (0.5f * a * Mathf.Pow(controllTime, 2)));
             Vector3 posTest;
             if (moveBottom)
             {
