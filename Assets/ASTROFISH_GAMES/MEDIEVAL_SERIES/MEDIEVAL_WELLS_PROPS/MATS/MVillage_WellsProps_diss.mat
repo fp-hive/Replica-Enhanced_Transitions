@@ -245,7 +245,7 @@ Material:
     - _GlossSource: 1
     - _Glossiness: 0
     - _GlossyReflections: 1
-    - _GuideAdjuster: 1.701
+    - _GuideAdjuster: 1.609
     - _HeightAmplitude: 0.02
     - _HeightCenter: 0.5
     - _HeightMapParametrization: 0

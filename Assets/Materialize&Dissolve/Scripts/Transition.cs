@@ -26,9 +26,11 @@ public class Transition : MonoBehaviour
         Translate
     }
 
-    float durationPerObject = 2.7f;
-    float durationStateChange = 4f;
-
+    float durationPerObject = 1.5f;//2.7f
+    float durationStateChange = 4f;//
+    float durationRoom = 3f;//6f
+    float waitToFinischCoroutine = 1f;//2f
+    float durationNextObj = 0.4f;//0.6f
     public GameObject targetBottom;
     public GameObject targetTop;
     TransitionSelector currentTransition = TransitionSelector.Fade;
@@ -39,10 +41,19 @@ public class Transition : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        if (true)
+        {
+            durationPerObject = 1.5f;
+            durationRoom = 3f;
+            waitToFinischCoroutine = 1f;
+            durationNextObj = 0.4f;
+        }
         num.Add(1);
         num.Add(2);
         num.Add(3);
         num.Add(4);
+        ChangeTransitionTyp(TransitionSelector.Dissolve);
+        StartCoroutine(RemoveTargetToReplica());
     }
 
 
@@ -154,7 +165,7 @@ public class Transition : MonoBehaviour
             }
             StartCoroutine(EnableButtonAfterDebounce());
         }
-        if (Input.GetKey(KeyCode.F6) && isButtonClickable) // Replica -> Target
+        if (Input.GetKey(KeyCode.F6) && isButtonClickable) //  Target -> Replica
         {
             isButtonClickable = false;
             switch (currentTransition)
@@ -228,7 +239,7 @@ public class Transition : MonoBehaviour
 
     IEnumerator ReplicaToReal_Fade(float duration)
     {
-        WaitForSeconds wfs = new WaitForSeconds(0.6f);
+        WaitForSeconds wfs = new WaitForSeconds(durationNextObj);
 
         for (int i = replicaList.Count - 1; i >= 0; i--)
         {
@@ -246,7 +257,7 @@ public class Transition : MonoBehaviour
     }
     IEnumerator RealToReplica_Fade(float duration)
     {
-        WaitForSeconds wfs = new WaitForSeconds(0.6f);
+        WaitForSeconds wfs = new WaitForSeconds(durationNextObj);
 
 
         for (int i = 0; i <= replicaList.Count; i++)
@@ -283,7 +294,7 @@ public class Transition : MonoBehaviour
     {
         coroutineIsRunning = true;
         int count = 0;
-        WaitForSeconds wfs = new WaitForSeconds(0.6f);
+        WaitForSeconds wfs = new WaitForSeconds(durationNextObj);
         for (int i = target_1_List.Count - 1; i >= 0; i--)
         {
             count++;
@@ -305,7 +316,7 @@ public class Transition : MonoBehaviour
     {
         coroutineIsRunning = true;
         int count = 0;
-        WaitForSeconds wfs = new WaitForSeconds(0.6f);
+        WaitForSeconds wfs = new WaitForSeconds(durationNextObj);
         foreach (serializableClass target in target_1_List) 
         {
             count++;
@@ -319,7 +330,6 @@ public class Transition : MonoBehaviour
             Debug.Log(count);
             if (count > 6)
             {
-
                 StartCoroutine(AddReplicaToReplica());
                 count = 0;
             }
@@ -333,7 +343,7 @@ public class Transition : MonoBehaviour
     IEnumerator AddTargetToTarget()
     {
         coroutineIsRunning = true;
-        WaitForSeconds wfs = new WaitForSeconds(0.9f);
+        WaitForSeconds wfs = new WaitForSeconds(durationNextObj);
         for (int i = target_1_List.Count - 1; i >= 0; i--)
         {
             foreach (GameObject replicaObject in target_1_List[i].replicaObjects)
@@ -352,7 +362,7 @@ public class Transition : MonoBehaviour
     IEnumerator RemoveReplicaToTarget()
     {
         coroutineIsRunning = true;
-        WaitForSeconds wfs = new WaitForSeconds(0.6f);
+        WaitForSeconds wfs = new WaitForSeconds(durationNextObj);
         int count = 0;
         Debug.Log("Start RemoveReplicaToTarget");
         foreach (serializableClass replica in replicaList)//int i = replicaList.Count - 1; i >= 0; i--
@@ -364,7 +374,7 @@ public class Transition : MonoBehaviour
 
                 if (replicaObject.name == "Room")
                 {
-                    dissolver.Duration = 6.7f;
+                    dissolver.Duration = durationRoom;
                 }
                 else
                 {
@@ -376,6 +386,7 @@ public class Transition : MonoBehaviour
             {
                 Debug.Log("Call StartCoroutine(Target_1_ToReplica_I());");
                 StartCoroutine(AddTargetToTarget());
+                Core.XRSceneManager.Instance.arVRToggle.SetModeToVR();
                 count = 0;
             }
             yield return wfs;
@@ -388,18 +399,18 @@ public class Transition : MonoBehaviour
     IEnumerator RemoveReplicaToReal()
     {
         coroutineIsRunning = true;
-        WaitForSeconds wfs = new WaitForSeconds(0.6f);
+        WaitForSeconds wfs = new WaitForSeconds(durationNextObj);
         int count = 0;
-        foreach (serializableClass replica in replicaList)//int i = replicaList.Count - 1; i >= 0; i--
+        for (int i = replicaList.Count - 1; i >= 0; i--)//int i = replicaList.Count - 1; i >= 0; i--
         {
             count++;
-            foreach (GameObject replicaObject in replica.replicaObjects)//replicaList[i].replicaObjects
+            foreach (GameObject replicaObject in replicaList[i].replicaObjects)//replicaList[i].replicaObjects
             {
                 Dissolver dissolver = replicaObject.GetComponent<Dissolver>();
 
                 if (replicaObject.name == "Room")
                 {
-                    dissolver.Duration = 6.7f;
+                    dissolver.Duration = durationRoom;//
                 }
                 else
                 {
@@ -417,7 +428,7 @@ public class Transition : MonoBehaviour
     IEnumerator RemoveReplicaOnly()
     {
         coroutineIsRunning = true;
-        WaitForSeconds wfs = new WaitForSeconds(0.6f);
+        WaitForSeconds wfs = new WaitForSeconds(durationNextObj);
         int count = 0;
         foreach (serializableClass replica in replicaList)//int i = replicaList.Count - 1; i >= 0; i--
         {
@@ -428,7 +439,7 @@ public class Transition : MonoBehaviour
 
                 if (replicaObject.name == "Room")
                 {
-                    dissolver.Duration = 6.7f;
+                    dissolver.Duration = durationRoom;//6
                 }
                 else
                 {
@@ -447,7 +458,7 @@ public class Transition : MonoBehaviour
     {
         coroutineIsRunning = true;
         int count = 0;
-        WaitForSeconds wfs = new WaitForSeconds(0.6f);
+        WaitForSeconds wfs = new WaitForSeconds(durationNextObj);
         foreach (serializableClass replica in replicaList)
         {
             count++;
@@ -460,7 +471,7 @@ public class Transition : MonoBehaviour
             yield return wfs;
 
         }
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(waitToFinischCoroutine);
         StartCoroutine(RemoveReplicaToTarget());
         Debug.Log("Call StartCoroutine(RemoveReplicaToTarget())");
 
@@ -475,7 +486,7 @@ public class Transition : MonoBehaviour
     IEnumerator AddReplicaToReplica()
     {
         coroutineIsRunning = true;
-        WaitForSeconds wfs = new WaitForSeconds(0.6f);
+        WaitForSeconds wfs = new WaitForSeconds(durationNextObj);
         for(int i = replicaList.Count - 1; i >= 0; i--)
         {
             foreach (GameObject replicaObject in replicaList[i].replicaObjects)
@@ -491,7 +502,9 @@ public class Transition : MonoBehaviour
             obj.SetActive(false);
         }
         Debug.Log("End");
-        yield return new WaitForSeconds(2f);
+        Core.XRSceneManager.Instance.arVRToggle.SetModeToAR();
+
+        yield return new WaitForSeconds(waitToFinischCoroutine);
         StartCoroutine(RemoveReplicaToReal()); //hier ende
         
         StopCoroutine(AddReplicaToReplica());

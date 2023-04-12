@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 25.049171, g: 19.56929, b: 27.218468, a: 1}
+  m_IndirectSpecularColor: {r: 6.227974, g: 3.621872, b: 2.56909, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -5042,6 +5042,11 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 3d32bbe97515e1a42b6c214d98023b25, type: 2}
+    - target: {fileID: 953665172987708465, guid: 489155ad753598240a94e6b2801fe02f,
+        type: 3}
+      propertyPath: m_LODs.Array.data[0].screenRelativeHeight
+      value: 0.021631282
+      objectReference: {fileID: 0}
     - target: {fileID: 1034562667991394747, guid: 489155ad753598240a94e6b2801fe02f,
         type: 3}
       propertyPath: m_IsActive
@@ -5192,6 +5197,21 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 02759bf3689fbc641ac493c17fd0aed5, type: 2}
+    - target: {fileID: 2446597515066883712, guid: 489155ad753598240a94e6b2801fe02f,
+        type: 3}
+      propertyPath: m_LODs.Array.data[0].screenRelativeHeight
+      value: 0.08292742
+      objectReference: {fileID: 0}
+    - target: {fileID: 2446597515066883712, guid: 489155ad753598240a94e6b2801fe02f,
+        type: 3}
+      propertyPath: m_LODs.Array.data[1].screenRelativeHeight
+      value: 0.051968545
+      objectReference: {fileID: 0}
+    - target: {fileID: 2446597515732623107, guid: 489155ad753598240a94e6b2801fe02f,
+        type: 3}
+      propertyPath: m_LODs.Array.data[0].screenRelativeHeight
+      value: 0.17537922
+      objectReference: {fileID: 0}
     - target: {fileID: 2832078098860447758, guid: 489155ad753598240a94e6b2801fe02f,
         type: 3}
       propertyPath: m_IsActive
@@ -6002,6 +6022,11 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 3d32bbe97515e1a42b6c214d98023b25, type: 2}
+    - target: {fileID: 8710205591474588844, guid: 489155ad753598240a94e6b2801fe02f,
+        type: 3}
+      propertyPath: m_LODs.Array.data[0].screenRelativeHeight
+      value: 0.0761605
+      objectReference: {fileID: 0}
     - target: {fileID: 8838117771284325142, guid: 489155ad753598240a94e6b2801fe02f,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -7847,21 +7872,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   replicaList:
   - replicaObjects:
+    - {fileID: 1905042533}
+    - {fileID: 1062243868}
+    - {fileID: 2025919455}
     - {fileID: 1900276078}
     - {fileID: 1418328746}
     - {fileID: 1381467543}
     - {fileID: 887841673}
   - replicaObjects:
+    - {fileID: 1277776769018350728}
+    - {fileID: 5481947850002904167}
+    - {fileID: 1941565262398415733}
     - {fileID: 1399477094}
     - {fileID: 1320867619}
     - {fileID: 1535123591}
     - {fileID: 713876711}
-    - {fileID: 1277776769018350728}
-    - {fileID: 5481947850002904167}
-    - {fileID: 1941565262398415733}
-    - {fileID: 1905042533}
-    - {fileID: 1062243868}
-    - {fileID: 2025919455}
   - replicaObjects:
     - {fileID: 625570451}
     - {fileID: 492842897}
@@ -9308,7 +9333,7 @@ PrefabInstance:
     - target: {fileID: 1211216668102433043, guid: e69b154d22a1ce14781ab29839fd6a40,
         type: 3}
       propertyPath: m_LODs.Array.data[0].screenRelativeHeight
-      value: 0.044918388
+      value: 0.04169048
       objectReference: {fileID: 0}
     - target: {fileID: 1211216668102433043, guid: e69b154d22a1ce14781ab29839fd6a40,
         type: 3}
@@ -9333,7 +9358,7 @@ PrefabInstance:
     - target: {fileID: 1322609639253813816, guid: e69b154d22a1ce14781ab29839fd6a40,
         type: 3}
       propertyPath: m_LODs.Array.data[0].screenRelativeHeight
-      value: 0.05238685
+      value: 0.036445398
       objectReference: {fileID: 0}
     - target: {fileID: 1322609639253813816, guid: e69b154d22a1ce14781ab29839fd6a40,
         type: 3}
@@ -9413,7 +9438,7 @@ PrefabInstance:
     - target: {fileID: 2759811191348448343, guid: e69b154d22a1ce14781ab29839fd6a40,
         type: 3}
       propertyPath: m_LODs.Array.data[0].screenRelativeHeight
-      value: 0.040251903
+      value: 0.03430271
       objectReference: {fileID: 0}
     - target: {fileID: 2759811191348448343, guid: e69b154d22a1ce14781ab29839fd6a40,
         type: 3}
@@ -9575,6 +9600,16 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 0034a3a85a8f16145878436ba04be9ac, type: 2}
+    - target: {fileID: 5179862938183971876, guid: e69b154d22a1ce14781ab29839fd6a40,
+        type: 3}
+      propertyPath: m_LODs.Array.data[0].screenRelativeHeight
+      value: 0.080784686
+      objectReference: {fileID: 0}
+    - target: {fileID: 5179862938183971876, guid: e69b154d22a1ce14781ab29839fd6a40,
+        type: 3}
+      propertyPath: m_LODs.Array.data[1].screenRelativeHeight
+      value: 0.027471358
+      objectReference: {fileID: 0}
     - target: {fileID: 5395837043976843571, guid: e69b154d22a1ce14781ab29839fd6a40,
         type: 3}
       propertyPath: m_IsActive
@@ -9743,12 +9778,12 @@ PrefabInstance:
     - target: {fileID: 7410841530002597418, guid: e69b154d22a1ce14781ab29839fd6a40,
         type: 3}
       propertyPath: m_LODs.Array.data[0].screenRelativeHeight
-      value: 0.053251404
+      value: 0.03360251
       objectReference: {fileID: 0}
     - target: {fileID: 7410841530002597418, guid: e69b154d22a1ce14781ab29839fd6a40,
         type: 3}
       propertyPath: m_LODs.Array.data[1].screenRelativeHeight
-      value: 0.031668898
+      value: 0.019433653
       objectReference: {fileID: 0}
     - target: {fileID: 7410841530021163114, guid: e69b154d22a1ce14781ab29839fd6a40,
         type: 3}
@@ -13718,8 +13753,8 @@ Transform:
   m_GameObject: {fileID: 2025919455}
   m_LocalRotation: {x: -0.07305461, y: -0.0000000037252894, z: -0.0000000022118907,
     w: 0.997328}
-  m_LocalPosition: {x: -0.0006714276, y: 0.2136, z: -0.0235}
-  m_LocalScale: {x: 1.547517, y: 2.0446, z: 1.1016691}
+  m_LocalPosition: {x: -0.00095, y: 0.195, z: -0.0194}
+  m_LocalScale: {x: 1.401361, y: 1.7806422, z: 1.1016691}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1396349136}
