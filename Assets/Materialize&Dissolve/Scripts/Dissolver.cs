@@ -637,21 +637,29 @@ public class Dissolver : MonoBehaviour
                     for (int i = 0; i < this.GetComponent<Transform>().transform.childCount;i++)
                     {
                         Transform child = this.GetComponent<Transform>().transform.GetChild(i);
-                        child.GetComponent<Dissolver>().FadeOut(0.2f);
+                        Dissolver dissolverObj = child.GetComponent<Dissolver>();
+                        if (dissolverObj != null)
+                        {
+                            dissolverObj.FadeOut(0.2f);
+                        }
                     }
                 }
                 posTest = new Vector3(transform.position.x, startPosition.y - (0.5f * a * Mathf.Pow(controllTime, 2)), transform.position.z);
             }
             else
             {
-                if (!isTranslateOut && this.transform.position.y > 0.0f)
+                if (!isTranslateOut && this.transform.position.y > 2.0f)
                 {
                     isTranslateOut = true;
                     this.FadeOut(0.2f);
                     for (int i = 0; i < this.GetComponent<Transform>().transform.childCount;i++)
                     {
                         Transform child = this.GetComponent<Transform>().transform.GetChild(i);
-                        child.GetComponent<Dissolver>().FadeOut(0.2f);
+                        Dissolver dissolverObj = child.GetComponent<Dissolver>();
+                        if (dissolverObj != null)
+                        {
+                            dissolverObj.FadeOut(0.2f);
+                        }
 
                     }
                 }
@@ -679,7 +687,11 @@ public class Dissolver : MonoBehaviour
                     for (int i = 0; i < this.GetComponent<Transform>().transform.childCount; i++)
                     {
                         Transform child = this.GetComponent<Transform>().transform.GetChild(i);
-                        child.GetComponent<Dissolver>().FadeIn(0.2f);
+                        Dissolver dissolverObj = child.GetComponent<Dissolver>();
+                        if (dissolverObj != null)
+                        {
+                            dissolverObj.FadeIn(0.2f);
+                        }
                     }
                 }
                 posTest = new Vector3(transform.position.x, startPosition.y - (0.5f * a * Mathf.Pow(controllTime, 2)), transform.position.z);
@@ -693,7 +705,11 @@ public class Dissolver : MonoBehaviour
                     for (int i = 0; i < this.GetComponent<Transform>().transform.childCount; i++)
                     {
                         Transform child = this.GetComponent<Transform>().transform.GetChild(i);
-                        child.GetComponent<Dissolver>().FadeIn(0.2f);
+                        Dissolver dissolverObj = child.GetComponent<Dissolver>();
+                        if (dissolverObj != null)
+                        {
+                            dissolverObj.FadeIn(0.2f);
+                        };
                     }
                 }
                 posTest = new Vector3(transform.position.x, startPosition.y + (0.5f * a * Mathf.Pow(controllTime, 2)), transform.position.z);

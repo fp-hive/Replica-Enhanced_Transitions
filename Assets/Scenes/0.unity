@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 6.227974, g: 3.621872, b: 2.56909, a: 1}
+  m_IndirectSpecularColor: {r: 3.0805736, g: 1.0699857, b: 0.62737906, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -7875,14 +7875,15 @@ MonoBehaviour:
     - {fileID: 1905042533}
     - {fileID: 1062243868}
     - {fileID: 2025919455}
+    - {fileID: 1277776769018350728}
+    - {fileID: 5481947850002904167}
+    - {fileID: 1941565262398415733}
+  - replicaObjects:
     - {fileID: 1900276078}
     - {fileID: 1418328746}
     - {fileID: 1381467543}
     - {fileID: 887841673}
   - replicaObjects:
-    - {fileID: 1277776769018350728}
-    - {fileID: 5481947850002904167}
-    - {fileID: 1941565262398415733}
     - {fileID: 1399477094}
     - {fileID: 1320867619}
     - {fileID: 1535123591}
@@ -8049,6 +8050,7 @@ MonoBehaviour:
   targetBottom: {fileID: 1024910008}
   targetTop: {fileID: 0}
   light: {fileID: 157207113}
+  testWithVarjo: 0
 --- !u!4 &1344014593
 Transform:
   m_ObjectHideFlags: 0
@@ -8242,7 +8244,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1396349136}
   m_Layer: 0
-  m_Name: display_1 (1)
+  m_Name: display_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
