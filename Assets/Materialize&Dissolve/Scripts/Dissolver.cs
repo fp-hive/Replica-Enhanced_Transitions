@@ -504,17 +504,17 @@ public class Dissolver : MonoBehaviour
 
             foreach (Material mat in mats)
             {
-                if (mat.name == "GlassMat (Instance)")
+                /*if (mat.name == "GlassMat (Instance)")
                 {
 
                     //Debug.Log(mat.name.ToString());
                 }
                 else
-                {
+                {*/
                     Color cs = mat.color;
                     cs.a = alpha;
                     mat.color = cs;
-                }
+                //}
 
             }
             meshRenderer.materials = mats;
@@ -538,17 +538,17 @@ public class Dissolver : MonoBehaviour
 
             foreach (Material mat in mats)
             {
-                if (mat.name == "GlassMat (Instance)")
+                /*if (mat.name == "GlassMat (Instance)")
                 {
 
                     //Debug.Log(mat.name.ToString());
                 }
                 else
-                {
+                {*/
                     Color cs = mat.color;
                     cs.a = alpha;
                     mat.color = cs;
-                }
+                //}
 
             }
             meshRenderer.materials = mats;
