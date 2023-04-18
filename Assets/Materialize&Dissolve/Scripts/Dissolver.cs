@@ -478,15 +478,15 @@ public class Dissolver : MonoBehaviour
         StartCoroutine(FadeOut_I(fadeDuration));
 
     }
-    public void TranslateOut()
+    public void TranslateOut(float time)
     {
         isStart = true;
-        StartCoroutine("TranslateOut_I");
+        StartCoroutine(TranslateOut_I(time));
     }
-    public void TranslateIn()
+    public void TranslateIn(float time)
     {
         isStop = true;
-        StartCoroutine("TranslateIN_I");
+        StartCoroutine(TranslateIN_I(time));
     }
     private IEnumerator FadeIn_I(float fadeDuration)
     {
@@ -504,17 +504,21 @@ public class Dissolver : MonoBehaviour
 
             foreach (Material mat in mats)
             {
-                /*if (mat.name == "GlassMat (Instance)")
+                if (mat.name == "GlassMat (Instance)")
                 {
-
-                    //Debug.Log(mat.name.ToString());
+                    Color cs = mat.color;
+                    if(cs.a >= 0.5f)
+                    {
+                        cs.a = 0.5f;
+                        mat.color = cs;
+                    }
                 }
                 else
-                {*/
+                {
                     Color cs = mat.color;
                     cs.a = alpha;
                     mat.color = cs;
-                //}
+                }
 
             }
             meshRenderer.materials = mats;
@@ -538,17 +542,21 @@ public class Dissolver : MonoBehaviour
 
             foreach (Material mat in mats)
             {
-                /*if (mat.name == "GlassMat (Instance)")
+                if (mat.name == "GlassMat (Instance)")
                 {
-
-                    //Debug.Log(mat.name.ToString());
+                    Color cs = mat.color;
+                    if (cs.a >= 0.5f)
+                    {
+                        cs.a = 0.5f;
+                        mat.color = cs;
+                    }
                 }
                 else
-                {*/
+                {
                     Color cs = mat.color;
                     cs.a = alpha;
                     mat.color = cs;
-                //}
+                }
 
             }
             meshRenderer.materials = mats;
@@ -619,7 +627,7 @@ public class Dissolver : MonoBehaviour
          }
          isStop = false;
      }*/
-    private IEnumerator TranslateOut_I()
+    private IEnumerator TranslateOut_I(float time)
     {
         float a = (Vector3.Distance(transform.position, targetPosition) * 2.0f) / (time * time);
         while (controllTime <= time)
@@ -671,7 +679,7 @@ public class Dissolver : MonoBehaviour
         isStart = false;
     }
 
-    private IEnumerator TranslateIN_I()
+    private IEnumerator TranslateIN_I(float time)
     {
         float a = (Vector3.Distance(transform.position, startPosition) * 2.0f) / (time * time);
         while (controllTime >= 0f)// && controllTime < 4f)

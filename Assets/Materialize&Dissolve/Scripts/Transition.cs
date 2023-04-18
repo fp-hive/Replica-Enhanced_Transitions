@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Burst.CompilerServices;
 using UnityEngine;
+using static Transition;
 using static UHI.Tracking.InteractionEngine.Examples.SimpleInteractionGlow;
 using static UnityEngine.GraphicsBuffer;
 
@@ -33,40 +34,44 @@ public class Transition : MonoBehaviour
     float durationNextObj = 0.4f;//0.6f
     public GameObject targetBottom;
     public GameObject targetTop;
-    TransitionSelector currentTransition = TransitionSelector.Fade;
+    TransitionSelector currentTransition = TransitionSelector.Dissolve;
 
     public Light light;
     public bool testWithVarjo = false;
     private float debounceTime = 0.25f;   // Debounce time in seconds
     private bool isButtonClickable = true;  // Flag to keep track of button clickability
+
+    private float stopWatchStart = 0.0f;
+    private float stopWatchEnd = 0.0f;
     // Start is called before the first frame update
     void Start()
     {
         if (true)
         {
-            durationPerObject = 1.5f;
+            durationPerObject = 1.6f;           // Dissolve 13-15   Translate 13-14   Fade 13-15
             durationRoom = 3f;
             waitToFinischCoroutine = 2f;
             durationNextObj = 0.4f;
         }
         if (false)
         {
-            durationPerObject = 1.5f;
+            durationPerObject = 1.0f;           // Dissolve 10-11  Translate    Fade 
             durationRoom = 3f;
-            waitToFinischCoroutine = 2f;
-            durationNextObj = 0.4f;
+            waitToFinischCoroutine = 1.5f;
+            durationNextObj = 0.3f;
         }
         num.Add(1);
         num.Add(2);
         num.Add(3);
         num.Add(4);
-        ChangeTransitionTyp(TransitionSelector.Translate);
+        //ChangeTransitionTyp(TransitionSelector.Translate);
         //StartCoroutine(RemoveTargetToReplica_Dissolve());
     }
 
 
     private List<int> num = new List<int>();
-    bool coroutineIsRunning = false;
+    bool coroutineIsRunning_AddReplicaToReplica_Translate = false;
+    bool coroutineIsRunning_RemoveReplicaToTarget_Translate = false;
     bool lastCallToReal = false;
     // Update is called once per frame
     void Update()
@@ -153,6 +158,7 @@ public class Transition : MonoBehaviour
         }
         if (Input.GetKey(KeyCode.F5) && isButtonClickable) // Replica -> Target
         {
+            stopWatchStart = Time.time;
             isButtonClickable = false;
             switch (currentTransition)
             {
@@ -175,6 +181,7 @@ public class Transition : MonoBehaviour
         }
         if (Input.GetKey(KeyCode.F6) && isButtonClickable) //  Target -> Replica
         {
+            stopWatchStart = Time.time;
             isButtonClickable = false;
             switch (currentTransition)
             {
@@ -208,6 +215,10 @@ public class Transition : MonoBehaviour
         {
             ChangeTransitionTyp(TransitionSelector.Translate);
         }
+        if (Input.GetKeyDown("r"))
+        {
+            ResetTranslate();
+        }
     }
 
     private IEnumerator EnableButtonAfterDebounce()
@@ -221,6 +232,10 @@ public class Transition : MonoBehaviour
 
     private void ChangeTransitionTyp(TransitionSelector transitionTyp)
     {
+        if( currentTransition == TransitionSelector.Translate)
+        {
+            ResetTranslate();
+        }
         currentTransition = transitionTyp;
         foreach (serializableClass replica in replicaList)
         {
@@ -260,8 +275,19 @@ public class Transition : MonoBehaviour
                 }
             }
         }
-        Debug.Log("Transition " + transitionTyp.ToString() + " active");
-
+        Debug.Log("Transition " + transitionTyp.ToString() + " active") ;
+        if (transitionTyp == TransitionSelector.Dissolve)
+        {
+            ResetDissolve();
+        }
+        if (transitionTyp == TransitionSelector.Fade)
+        {
+            ResetFade();
+        }
+        if (transitionTyp == TransitionSelector.Translate)
+        {
+            ResetForTranslate();
+        }
     }
 
     IEnumerator ReplicaToReal_Fade(float duration)
@@ -319,7 +345,6 @@ public class Transition : MonoBehaviour
 
     IEnumerator ReplicaToTarget_1_I_remove_Target1()
     {
-        coroutineIsRunning = true;
         int count = 0;
         WaitForSeconds wfs = new WaitForSeconds(durationNextObj);
         for (int i = target_1_List.Count - 1; i >= 0; i--)
@@ -337,11 +362,9 @@ public class Transition : MonoBehaviour
 
         Debug.Log("End");
         StopCoroutine(ReplicaToTarget_1_I_remove_Target1());
-        coroutineIsRunning = false;
     }
     IEnumerator RemoveTargetToReplica_Dissolve()
     {
-        coroutineIsRunning = true;
         int count = 0;
         WaitForSeconds wfs = new WaitForSeconds(durationNextObj);
         foreach (serializableClass target in target_1_List) 
@@ -365,11 +388,9 @@ public class Transition : MonoBehaviour
 
         Debug.Log("End");
         StopCoroutine(RemoveTargetToReplica_Dissolve());
-        coroutineIsRunning = false;
     }
     IEnumerator RemoveTargetToReplica_Fade()
     {
-        coroutineIsRunning = true;
         int count = 0;
         WaitForSeconds wfs = new WaitForSeconds(durationNextObj);
         foreach (serializableClass target in target_1_List)
@@ -393,11 +414,9 @@ public class Transition : MonoBehaviour
 
         Debug.Log("End");
         StopCoroutine(RemoveTargetToReplica_Dissolve());
-        coroutineIsRunning = false;
     }
     IEnumerator AddTargetToTarget_Dissolve()
     {
-        coroutineIsRunning = true;
         WaitForSeconds wfs = new WaitForSeconds(durationNextObj);
         for (int i = target_1_List.Count - 1; i >= 0; i--)
         {
@@ -412,11 +431,12 @@ public class Transition : MonoBehaviour
 
         Debug.Log("End");
         StopCoroutine(AddReplicaToReplicaAndTarget_Dissolve());
-        coroutineIsRunning = false;
+        stopWatchEnd = Time.time - stopWatchStart;
+        Debug.Log(stopWatchEnd.ToString());
+        stopWatchEnd = 0;
     }
     IEnumerator AddTargetToTarget_Fade()
     {
-        coroutineIsRunning = true;
         WaitForSeconds wfs = new WaitForSeconds(durationNextObj);
         for (int i = target_1_List.Count - 1; i >= 0; i--)
         {
@@ -431,11 +451,12 @@ public class Transition : MonoBehaviour
 
         Debug.Log("End");
         StopCoroutine(AddReplicaToReplicaAndTarget_Dissolve());
-        coroutineIsRunning = false;
+        stopWatchEnd = Time.time - stopWatchStart;
+        Debug.Log(stopWatchEnd.ToString());
+        stopWatchEnd = 0;
     }
     IEnumerator RemoveReplicaToTarget_Dissolve()
     {
-        coroutineIsRunning = true;
         WaitForSeconds wfs = new WaitForSeconds(durationNextObj);
         int count = 0;
         Debug.Log("Start RemoveReplicaToTarget");
@@ -468,11 +489,9 @@ public class Transition : MonoBehaviour
 
         Debug.Log("End");
         StopCoroutine(RemoveReplicaToTarget_Dissolve());
-        coroutineIsRunning = false;
     }
     IEnumerator RemoveReplicaToTarget_Fade()
     {
-        coroutineIsRunning = true;
         WaitForSeconds wfs = new WaitForSeconds(durationNextObj);
         int count = 0;
         Debug.Log("Start RemoveReplicaToTarget_Fade");
@@ -505,11 +524,9 @@ public class Transition : MonoBehaviour
 
         Debug.Log("End");
         StopCoroutine(RemoveReplicaToTarget_Fade());
-        coroutineIsRunning = false;
     }
     IEnumerator RemoveReplicaToReal_Dissolve()
     {
-        coroutineIsRunning = true;
         WaitForSeconds wfs = new WaitForSeconds(durationNextObj);
         int count = 0;
         for (int i = replicaList.Count - 1; i >= 0; i--)//int i = replicaList.Count - 1; i >= 0; i--
@@ -534,11 +551,12 @@ public class Transition : MonoBehaviour
 
         Debug.Log("End");
         StopCoroutine(RemoveReplicaToTarget_Dissolve());
-        coroutineIsRunning = false;
+        stopWatchEnd = Time.time - stopWatchStart;
+        Debug.Log(stopWatchEnd.ToString());
+        stopWatchEnd = 0;
     }
     IEnumerator RemoveReplicaToReal_Fade()
     {
-        coroutineIsRunning = true;
         WaitForSeconds wfs = new WaitForSeconds(durationNextObj);
         int count = 0;
         for (int i = replicaList.Count - 1; i >= 0; i--)//int i = replicaList.Count - 1; i >= 0; i--
@@ -563,11 +581,12 @@ public class Transition : MonoBehaviour
 
         Debug.Log("End");
         StopCoroutine(RemoveReplicaToTarget_Dissolve());
-        coroutineIsRunning = false;
+        stopWatchEnd = Time.time - stopWatchStart ;
+        Debug.Log(stopWatchEnd.ToString());
+        stopWatchEnd = 0;
     }
     IEnumerator RemoveReplicaOnly()
     {
-        coroutineIsRunning = true;
         WaitForSeconds wfs = new WaitForSeconds(durationNextObj);
         int count = 0;
         foreach (serializableClass replica in replicaList)//int i = replicaList.Count - 1; i >= 0; i--
@@ -592,11 +611,9 @@ public class Transition : MonoBehaviour
 
         Debug.Log("End RemoveReplicaOnly");
         StopCoroutine(RemoveReplicaOnly());
-        coroutineIsRunning = false;
     }
     IEnumerator AddReplicaToReplicaAndTarget_Dissolve()
     {
-        coroutineIsRunning = true;
         int count = 0;
         WaitForSeconds wfs = new WaitForSeconds(durationNextObj);
         foreach (serializableClass replica in replicaList)
@@ -621,11 +638,9 @@ public class Transition : MonoBehaviour
         }
         Debug.Log("End AddReplicaToReplicaAndTarget_Dissolve");
         StopCoroutine(AddReplicaToReplicaAndTarget_Dissolve());
-        coroutineIsRunning = false;
     }
     IEnumerator AddReplicaToReplicaAndTarget_Fade()
     {
-        coroutineIsRunning = true;
         int count = 0;
         WaitForSeconds wfs = new WaitForSeconds(durationNextObj);
         foreach (serializableClass replica in replicaList)
@@ -650,11 +665,9 @@ public class Transition : MonoBehaviour
         }
         Debug.Log("End AddReplicaToReplicaAndTarget_Fade");
         StopCoroutine(AddReplicaToReplicaAndTarget_Fade());
-        coroutineIsRunning = false;
     }
     IEnumerator AddReplicaToReplica_Dissolve()
     {
-        coroutineIsRunning = true;
         WaitForSeconds wfs = new WaitForSeconds(durationNextObj);
         for(int i = replicaList.Count - 1; i >= 0; i--)
         {
@@ -681,11 +694,9 @@ public class Transition : MonoBehaviour
         
         StopCoroutine(AddReplicaToReplica_Dissolve());
 
-        coroutineIsRunning = false;
     }
     IEnumerator AddReplicaToReplica_Fade()
     {
-        coroutineIsRunning = true;
         WaitForSeconds wfs = new WaitForSeconds(durationNextObj);
         for (int i = replicaList.Count - 1; i >= 0; i--)
         {
@@ -712,14 +723,13 @@ public class Transition : MonoBehaviour
 
         StopCoroutine(AddReplicaToReplica_Fade());
 
-        coroutineIsRunning = false;
     }
 
     IEnumerator RemoveReplicaToReal_Translate()
     {
 
 
-        WaitForSeconds wfs = new WaitForSeconds(0.6f);
+        WaitForSeconds wfs = new WaitForSeconds(durationNextObj);
         int count = 0;
 
         for (int i = replicaList.Count - 1; i >= 0; i--)
@@ -733,7 +743,14 @@ public class Transition : MonoBehaviour
                     //dissolver.startPosition = replicaObject.transform.position;
                     //dissolver.targetPosition = new Vector3(replicaObject.transform.position.x, replicaObject.transform.position.y+6f, replicaObject.transform.position.z);
 
-                    dissolver.TranslateOut();
+                    if (replicaObject.name == "Room")
+                    {
+                        dissolver.TranslateOut(2f);
+                    }
+                    else
+                    {
+                        dissolver.TranslateOut(durationPerObject);
+                    }
                 }
 
             }
@@ -749,7 +766,7 @@ public class Transition : MonoBehaviour
     {
 
 
-        WaitForSeconds wfs = new WaitForSeconds(0.6f);
+        WaitForSeconds wfs = new WaitForSeconds(durationNextObj);
         int count = 0;
 
         foreach (serializableClass replica in replicaList)
@@ -762,14 +779,21 @@ public class Transition : MonoBehaviour
                 {
                     //dissolver.startPosition = replicaObject.transform.position;
                     //dissolver.targetPosition = new Vector3(replicaObject.transform.position.x, replicaObject.transform.position.y+6f, replicaObject.transform.position.z);
-
-                    dissolver.TranslateOut();
+                    if (replicaObject.name == "Room")
+                    {
+                        dissolver.TranslateOut(2f);
+                    }
+                    else
+                    {
+                        dissolver.TranslateOut(durationPerObject);
+                    }
                 }
 
             }
-            if (count > 4)
+            if (count > 4 && !coroutineIsRunning_RemoveReplicaToTarget_Translate) 
             {
                 count = 0;
+                coroutineIsRunning_RemoveReplicaToTarget_Translate = true;
                 StartCoroutine(AddTargetToTarget_Translate());
             }
             yield return wfs;
@@ -779,7 +803,7 @@ public class Transition : MonoBehaviour
     {
 
 
-        WaitForSeconds wfs = new WaitForSeconds(0.6f);
+        WaitForSeconds wfs = new WaitForSeconds(durationNextObj);
 
 
         for (int i = replicaList.Count - 1; i >= 0; i--)
@@ -792,18 +816,21 @@ public class Transition : MonoBehaviour
                     //dissolver.startPosition = replicaObject.transform.position;
                     //dissolver.targetPosition = new Vector3(replicaObject.transform.position.x, replicaObject.transform.position.y+6f, replicaObject.transform.position.z);
 
-                    dissolver.TranslateOut();
+                    dissolver.TranslateOut(durationPerObject);
                 }
 
             }
             yield return wfs;
         }
+        stopWatchEnd = Time.time - stopWatchStart;
+        Debug.Log(stopWatchEnd.ToString());
+        stopWatchEnd = 0;
     }
     IEnumerator RemoveTargetToReplica_Translate()
     {
 
 
-        WaitForSeconds wfs = new WaitForSeconds(0.6f);
+        WaitForSeconds wfs = new WaitForSeconds(durationNextObj);
 
         int count = 0;
         for (int i = target_1_List.Count - 1; i >= 0; i--)
@@ -817,13 +844,14 @@ public class Transition : MonoBehaviour
                     //dissolver.startPosition = replicaObject.transform.position;
                     //dissolver.targetPosition = new Vector3(replicaObject.transform.position.x, replicaObject.transform.position.y+6f, replicaObject.transform.position.z);
 
-                    dissolver.TranslateOut();
+                    dissolver.TranslateOut(durationPerObject);
                 }
 
             }
-            if (count >2)
+            if (count > 1 && !coroutineIsRunning_AddReplicaToReplica_Translate)
             {
                 count = 0;
+                coroutineIsRunning_AddReplicaToReplica_Translate = true;
                 StartCoroutine(AddReplicaToReplica_Translate());
             }
             yield return wfs;
@@ -832,7 +860,7 @@ public class Transition : MonoBehaviour
     }
     IEnumerator AddReplicaToReplica_Translate()
     {
-        WaitForSeconds wfs = new WaitForSeconds(0.6f);
+        WaitForSeconds wfs = new WaitForSeconds(durationNextObj);
 
 
         for (int i = replicaList.Count - 1; i >= 0; i--)
@@ -842,7 +870,7 @@ public class Transition : MonoBehaviour
                 Dissolver dissolver = replicaObject.GetComponent<Dissolver>();
                 if (dissolver != null && (dissolver.transform.parent.name == "RoomOutline" || dissolver.transform.parent.name == "display_1" || dissolver.transform.parent.name == "display_2"))
                 {
-                    dissolver.TranslateIn();
+                    dissolver.TranslateIn(durationPerObject);
                 }
 
             }
@@ -853,13 +881,14 @@ public class Transition : MonoBehaviour
         {
             obj.SetActive(false);
         }
-        yield return new WaitForSeconds(2.5f);
+        yield return new WaitForSeconds(waitToFinischCoroutine);
         StartCoroutine(RemoveReplicaOnly_Translate());
+        coroutineIsRunning_AddReplicaToReplica_Translate = false;
     }
 
     IEnumerator AddReplicaToReplicaAndTarget_Translate()
     {
-        WaitForSeconds wfs = new WaitForSeconds(0.6f);
+        WaitForSeconds wfs = new WaitForSeconds(durationNextObj);
 
 
         for (int i = 0; i < replicaList.Count; i++)
@@ -869,14 +898,14 @@ public class Transition : MonoBehaviour
                 Dissolver dissolver = replicaObject.GetComponent<Dissolver>();
                 if (dissolver != null && (dissolver.transform.parent.name == "RoomOutline" || dissolver.transform.parent.name == "display_1" || dissolver.transform.parent.name == "display_2"))
                 {
-                    dissolver.TranslateIn();
+                    dissolver.TranslateIn(durationPerObject);
                 }
 
             }
             yield return wfs;
         }
         //Hier F2
-        yield return new WaitForSeconds(2.5f);
+        yield return new WaitForSeconds(waitToFinischCoroutine);
         StartCoroutine(RemoveReplicaToTarget_Translate());
         foreach (GameObject obj in onlyTarget1Objs)
         {
@@ -885,7 +914,7 @@ public class Transition : MonoBehaviour
     }
     IEnumerator AddTargetToTarget_Translate()
     {
-        WaitForSeconds wfs = new WaitForSeconds(0.6f);
+        WaitForSeconds wfs = new WaitForSeconds(durationNextObj);
 
 
         for (int i = 0; i < target_1_List.Count; i++)
@@ -895,11 +924,142 @@ public class Transition : MonoBehaviour
                 Dissolver dissolver = replicaObject.GetComponent<Dissolver>();
                 if (dissolver != null)// && (dissolver.transform.parent.name == "RoomOutline" || dissolver.transform.parent.name == "display_1" || dissolver.transform.parent.name == "display_2"))
                 {
-                    dissolver.TranslateIn();
+                    dissolver.TranslateIn(durationPerObject);
                 }
 
             }
             yield return wfs;
+        }
+        stopWatchEnd = Time.time - stopWatchStart;
+        Debug.Log(stopWatchEnd.ToString());
+        stopWatchEnd = 0;
+        coroutineIsRunning_RemoveReplicaToTarget_Translate = false;
+    }
+
+    private void ResetDissolve()
+    {
+        foreach (serializableClass replica in replicaList)
+        {
+            foreach (GameObject replicaObject in replica.replicaObjects)
+            {
+                Dissolver dissolver = replicaObject.GetComponent<Dissolver>();
+                if (dissolver != null)
+                {
+                    dissolver.Duration = 0.01f;
+                    dissolver.Dissolve();
+                }
+
+            }
+
+        }
+        foreach (serializableClass target in target_1_List)
+        {
+            foreach (GameObject targetObject in target.replicaObjects)
+            {
+                Dissolver dissolver = targetObject.GetComponent<Dissolver>();
+                if (dissolver != null)
+                {
+                    dissolver.Duration = 0.01f;
+                    dissolver.Dissolve();
+                }
+            }
+
+        }
+        foreach (GameObject obj in onlyTarget1Objs)
+        {
+            obj.SetActive(false);
+        }
+    }
+    private void ResetFade()
+    {
+        foreach (serializableClass replica in replicaList)
+        {
+            foreach (GameObject replicaObject in replica.replicaObjects)
+            {
+                Dissolver dissolver = replicaObject.GetComponent<Dissolver>();
+                if (dissolver != null)
+                {
+                    dissolver.Duration = 0.01f;
+                    dissolver.FadeOut(0.01f);
+                }
+            }
+
+        }
+        foreach (serializableClass target in target_1_List)
+        {
+            foreach (GameObject targetObject in target.replicaObjects)
+            {
+                Dissolver dissolver = targetObject.GetComponent<Dissolver>();
+                if (dissolver != null)
+                {
+                    dissolver.Duration = 0.01f;
+                    dissolver.FadeOut(0.01f);
+                }
+            }
+
+        }
+        foreach (GameObject obj in onlyTarget1Objs)
+        {
+            obj.SetActive(false);
+        }
+    }
+    private void ResetTranslate()
+    {
+        for (int i = 0; i < target_1_List.Count; i++)
+        {
+            foreach (GameObject targetObject in target_1_List[i].replicaObjects)
+            {
+                Dissolver dissolver = targetObject.GetComponent<Dissolver>();
+                if (dissolver != null)// && (dissolver.transform.parent.name == "RoomOutline" || dissolver.transform.parent.name == "display_1" || dissolver.transform.parent.name == "display_2"))
+                {
+                    dissolver.TranslateIn(0.1f);
+                }
+
+            }
+        }
+        for (int i = 0; i < replicaList.Count; i++)
+        {
+            foreach (GameObject replicaObject in replicaList[i].replicaObjects)
+            {
+                Dissolver dissolver = replicaObject.GetComponent<Dissolver>();
+                if (dissolver != null && (dissolver.transform.parent.name == "RoomOutline" || dissolver.transform.parent.name == "display_1" || dissolver.transform.parent.name == "display_2"))
+                {
+                    dissolver.TranslateIn(0.1f);
+                }
+
+            }
+        }
+        //ResetFade();
+    }
+    private void ResetForTranslate()
+    {
+        for (int i = 0; i < target_1_List.Count; i++)
+        {
+            foreach (GameObject targetObject in target_1_List[i].replicaObjects)
+            {
+                Dissolver dissolver = targetObject.GetComponent<Dissolver>();
+                if (dissolver != null)// && (dissolver.transform.parent.name == "RoomOutline" || dissolver.transform.parent.name == "display_1" || dissolver.transform.parent.name == "display_2"))
+                {
+                    dissolver.TranslateOut(0.1f);
+                }
+
+            }
+        }
+        for (int i = 0; i < replicaList.Count; i++)
+        {
+            foreach (GameObject replicaObject in replicaList[i].replicaObjects)
+            {
+                Dissolver dissolver = replicaObject.GetComponent<Dissolver>();
+                if (dissolver != null && (dissolver.transform.parent.name == "RoomOutline" || dissolver.transform.parent.name == "display_1" || dissolver.transform.parent.name == "display_2"))
+                {
+                    dissolver.TranslateOut(0.1f);
+                }
+
+            }
+        }
+        foreach (GameObject obj in onlyTarget1Objs)
+        {
+            obj.SetActive(false);
         }
     }
 }
