@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 20.58141, g: 16.62833, b: 24.428223, a: 1}
+  m_IndirectSpecularColor: {r: 6.2277527, g: 3.6216774, b: 2.568861, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -717,6 +717,36 @@ PrefabInstance:
         type: 3}
       propertyPath: m_StaticEditorFlags
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4051110437054966831, guid: db72df50bbb555a43900bdc3ec5da828,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.59203
+      objectReference: {fileID: 0}
+    - target: {fileID: 4051110437054966831, guid: db72df50bbb555a43900bdc3ec5da828,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.59223
+      objectReference: {fileID: 0}
+    - target: {fileID: 4051110437054966831, guid: db72df50bbb555a43900bdc3ec5da828,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.16612
+      objectReference: {fileID: 0}
+    - target: {fileID: 4051110437054966831, guid: db72df50bbb555a43900bdc3ec5da828,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.0020348
+      objectReference: {fileID: 0}
+    - target: {fileID: 4051110437054966831, guid: db72df50bbb555a43900bdc3ec5da828,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.0079888
+      objectReference: {fileID: 0}
+    - target: {fileID: 4051110437054966831, guid: db72df50bbb555a43900bdc3ec5da828,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.0000028211
       objectReference: {fileID: 0}
     - target: {fileID: 4384627020437612471, guid: db72df50bbb555a43900bdc3ec5da828,
         type: 3}
@@ -4795,12 +4825,6 @@ MonoBehaviour:
   AutomaticallyRestoreDefaultMaterials: 0
   meshesDetection: 0
   InitialState: 1
---- !u!1 &886572924 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2902309639197969666, guid: 489155ad753598240a94e6b2801fe02f,
-    type: 3}
-  m_PrefabInstance: {fileID: 1002636646}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &887841673 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1734602575630404122, guid: f268a579e7728504a81dd945af8fe7b2,
@@ -8142,7 +8166,6 @@ MonoBehaviour:
     - {fileID: 1450992223}
     - {fileID: 1665905700}
     - {fileID: 700295793}
-    - {fileID: 1496489633}
   - replicaObjects:
     - {fileID: 193558314}
     - {fileID: 1821808387}
@@ -8197,7 +8220,6 @@ MonoBehaviour:
   - {fileID: 1137265855}
   - {fileID: 2017848023}
   - {fileID: 1218356988}
-  - {fileID: 886572924}
   - {fileID: 1526605048}
   - {fileID: 815638189}
   - {fileID: 1268998159}
@@ -8221,6 +8243,13 @@ MonoBehaviour:
   - {fileID: 2041895867}
   - {fileID: 918216047}
   - {fileID: 192187356}
+  replicaTranslateList:
+  - {fileID: 1572447073}
+  - {fileID: 1988624791}
+  - {fileID: 1226462665}
+  - {fileID: 629508408}
+  - {fileID: 491490813}
+  - {fileID: 2075782646}
   targetBottom: {fileID: 1024910008}
   targetTop: {fileID: 0}
   light: {fileID: 157207113}
