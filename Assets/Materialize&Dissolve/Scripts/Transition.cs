@@ -1,3 +1,4 @@
+using Leap.Unity;
 using Leap.Unity.Infix;
 using System;
 using System.Collections;
@@ -477,10 +478,10 @@ public class Transition : MonoBehaviour
     {
         int count = 0;
         WaitForSeconds wfs = new WaitForSeconds(durationNextObj);
-        foreach (serializableClass target in target_1_List)
+        for (int i = target_1_List.Count - 1; i >= 0; i--)
         {
             count++;
-            foreach (GameObject replicaObject in target.replicaObjects)
+            foreach (GameObject replicaObject in target_1_List[i].replicaObjects)
             {
                 //Debug.Log(replicaObject.name);
                 Dissolver dissolver = replicaObject.GetComponent<Dissolver>();
@@ -616,7 +617,9 @@ public class Transition : MonoBehaviour
         WaitForSeconds wfs = new WaitForSeconds(durationNextObj);
         int count = 0;
         Debug.Log("Start RemoveReplicaToTarget");
-        foreach (serializableClass replica in replicaList)//int i = replicaList.Count - 1; i >= 0; i--
+        List<serializableClass> tempList = replicaList;
+        tempList.Swap(6, 11);
+        foreach (serializableClass replica in tempList)//int i = replicaList.Count - 1; i >= 0; i--
         {
             count++;
             foreach (GameObject replicaObject in replica.replicaObjects)//replicaList[i].replicaObjects
@@ -651,7 +654,9 @@ public class Transition : MonoBehaviour
         WaitForSeconds wfs = new WaitForSeconds(durationNextObj);
         int count = 0;
         Debug.Log("Start RemoveReplicaToTarget_Combine");
-        foreach (serializableClass replica in replicaList)//int i = replicaList.Count - 1; i >= 0; i--
+        List<serializableClass> tempList = replicaList;
+        tempList.Swap(6, 11);
+        foreach (serializableClass replica in tempList)//int i = replicaList.Count - 1; i >= 0; i--
         {
             count++;
             foreach (GameObject replicaObject in replica.replicaObjects)//replicaList[i].replicaObjects
@@ -697,7 +702,9 @@ public class Transition : MonoBehaviour
         WaitForSeconds wfs = new WaitForSeconds(durationNextObj);
         int count = 0;
         Debug.Log("Start RemoveReplicaToTarget_Fade");
-        foreach (serializableClass replica in replicaList)//int i = replicaList.Count - 1; i >= 0; i--
+        List<serializableClass> tempList = replicaList;
+        tempList.Swap(6, 11);
+        foreach (serializableClass replica in tempList)//int i = replicaList.Count - 1; i >= 0; i--
         {
             count++;
             foreach (GameObject replicaObject in replica.replicaObjects)//replicaList[i].replicaObjects
@@ -731,10 +738,12 @@ public class Transition : MonoBehaviour
     {
         WaitForSeconds wfs = new WaitForSeconds(durationNextObj);
         int count = 0;
-        for (int i = replicaList.Count - 1; i >= 0; i--)//int i = replicaList.Count - 1; i >= 0; i--
+        List<serializableClass> tempList = replicaList;
+        tempList.Swap(6, 11);
+        for (int i = tempList.Count - 1; i >= 0; i--)//int i = replicaList.Count - 1; i >= 0; i--
         {
             count++;
-            foreach (GameObject replicaObject in replicaList[i].replicaObjects)//replicaList[i].replicaObjects
+            foreach (GameObject replicaObject in tempList[i].replicaObjects)//replicaList[i].replicaObjects
             {
                 Dissolver dissolver = replicaObject.GetComponent<Dissolver>();
 
@@ -802,10 +811,12 @@ public class Transition : MonoBehaviour
     {
         WaitForSeconds wfs = new WaitForSeconds(durationNextObj);
         int count = 0;
-        for (int i = replicaList.Count - 1; i >= 0; i--)//int i = replicaList.Count - 1; i >= 0; i--
+        List<serializableClass> tempList = replicaList;
+        tempList.Swap(6, 11);
+        for (int i = tempList.Count - 1; i >= 0; i--)//int i = replicaList.Count - 1; i >= 0; i--
         {
             count++;
-            foreach (GameObject replicaObject in replicaList[i].replicaObjects)//replicaList[i].replicaObjects
+            foreach (GameObject replicaObject in tempList[i].replicaObjects)//replicaList[i].replicaObjects
             {
                 Dissolver dissolver = replicaObject.GetComponent<Dissolver>();
 
@@ -1081,6 +1092,7 @@ public class Transition : MonoBehaviour
             {
                 count=0;
                 StartCoroutine(AddTargetToTarget_Translate());
+                if (testWithVarjo) { Core.XRSceneManager.Instance.arVRToggle.SetModeToVR(); }
             }
             yield return wfs;
         }
@@ -1091,8 +1103,9 @@ public class Transition : MonoBehaviour
 
         WaitForSeconds wfs = new WaitForSeconds(durationNextObj);
         int count = 0;
-
-        foreach (serializableClass replica in replicaList)
+        List<serializableClass> tempList = replicaList;
+        tempList.Swap(6, 11);
+        foreach (serializableClass replica in tempList)
         {
             count++;
             foreach (GameObject replicaObject in replica.replicaObjects)
@@ -1113,7 +1126,7 @@ public class Transition : MonoBehaviour
                 }
 
             }
-            if (count > 2 && !coroutineIsRunning_RemoveReplicaToTarget_Translate) 
+            if (count > 4 && !coroutineIsRunning_RemoveReplicaToTarget_Translate) 
             {
                 count = 0;
                 coroutineIsRunning_RemoveReplicaToTarget_Translate = true;
@@ -1128,10 +1141,11 @@ public class Transition : MonoBehaviour
 
         WaitForSeconds wfs = new WaitForSeconds(durationNextObj);
 
-
-        for (int i = replicaList.Count - 1; i >= 0; i--)
+        List<serializableClass> tempList = replicaList;
+        tempList.Swap(6, 11);
+        for (int i = tempList.Count - 1; i >= 0; i--)
         {
-            foreach (GameObject replicaObject in replicaList[i].replicaObjects)
+            foreach (GameObject replicaObject in tempList[i].replicaObjects)
             {
                 Dissolver dissolver = replicaObject.GetComponent<Dissolver>();
                 if (dissolver != null && (dissolver.transform.parent.name == "RoomOutline" || dissolver.transform.parent.name == "display_1" || dissolver.transform.parent.name == "display_2"))
@@ -1156,7 +1170,7 @@ public class Transition : MonoBehaviour
         WaitForSeconds wfs = new WaitForSeconds(durationNextObj);
 
         int count = 0;
-        for (int i = target_1_List.Count - 1; i >= 0; i--)
+        for (int i = 0; i < target_1_List.Count; i++)//int i = target_1_List.Count - 1; i >= 0; i--
         {
             count++;
             foreach (GameObject replicaObject in target_1_List[i].replicaObjects)
@@ -1185,7 +1199,6 @@ public class Transition : MonoBehaviour
     {
         WaitForSeconds wfs = new WaitForSeconds(durationNextObj);
 
-
         for (int i = replicaList.Count - 1; i >= 0; i--)
         {
             foreach (GameObject replicaObject in replicaList[i].replicaObjects)
@@ -1203,6 +1216,10 @@ public class Transition : MonoBehaviour
         foreach(GameObject obj in onlyTarget1Objs)
         {
             obj.SetActive(false);
+        }
+        if (testWithVarjo)
+        {
+            Core.XRSceneManager.Instance.arVRToggle.SetModeToAR();
         }
         yield return new WaitForSeconds(waitToFinischCoroutine);
         StartCoroutine(RemoveReplicaOnly_Translate());
@@ -1240,7 +1257,7 @@ public class Transition : MonoBehaviour
         WaitForSeconds wfs = new WaitForSeconds(durationNextObj);
 
 
-        for (int i = 0; i < target_1_List.Count; i++)
+        for (int i = target_1_List.Count - 1; i >= 0; i--)
         {
             foreach (GameObject replicaObject in target_1_List[i].replicaObjects)
             {

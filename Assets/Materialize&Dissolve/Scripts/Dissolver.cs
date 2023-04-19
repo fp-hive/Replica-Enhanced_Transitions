@@ -706,7 +706,7 @@ public class Dissolver : MonoBehaviour
             }
             else
             {
-                if (isTranslateOut && this.transform.position.y < 3.5f)
+                if (isTranslateOut && this.transform.position.y < 4.5f)
                 {
                     isTranslateOut = false;
                     this.FadeIn(0.2f);
