@@ -25,6 +25,11 @@ public class Transition : MonoBehaviour
     public List<GameObject> replicaTranslateList = new List<GameObject>();
     private List<string> replicaFadeStringList = new List<string>();
     public List<GameObject> replicaFadeList = new List<GameObject>();
+
+    private List<string> target1TranslateStringList = new List<string>();
+    public List<GameObject> target1TranslateList = new List<GameObject>();
+    private List<string> target1FadeStringList = new List<string>();
+    public List<GameObject> target1FadeList = new List<GameObject>();
     public enum TransitionSelector
     {
         Fade,
@@ -59,14 +64,14 @@ public class Transition : MonoBehaviour
             waitToFinischCoroutine = 2.5f;
             durationNextObj = 0.5f;
         }
-        if (false)
+        if (true)
         {
             durationPerObject = 2.0f;           // Dissolve 11-12  Translate 11-12   Fade 11-12
             durationRoom = 3.5f;
             waitToFinischCoroutine = 2.5f;
             durationNextObj = 0.3f;
         }
-        if (true)
+        if (false)
         {
             durationPerObject = 1.5f;           // Dissolve 11-12  Translate 11-12   Fade 11-12
             durationRoom = 3.5f;
@@ -86,6 +91,15 @@ public class Transition : MonoBehaviour
         foreach (GameObject obj in replicaFadeList)
         {
             replicaFadeStringList.Add(obj.name);
+        }
+
+        foreach (GameObject obj in target1TranslateList)
+        {
+            target1TranslateStringList.Add(obj.name);
+        }
+        foreach (GameObject obj in target1FadeList)
+        {
+            target1FadeStringList.Add(obj.name);
         }
     }
 
@@ -219,7 +233,9 @@ public class Transition : MonoBehaviour
                 case TransitionSelector.Translate:
                     StartCoroutine(RemoveTargetToReplica_Translate());
                     break;
-
+                case TransitionSelector.Combine:
+                    StartCoroutine(RemoveTargetToReplica_Combine());
+                    break;
                 default:
                     break;
             }
@@ -280,15 +296,23 @@ public class Transition : MonoBehaviour
                 {
                     dissolver.ReplaceMaterials();
                 }
-                if (transitionTyp == TransitionSelector.Combine)
+                if (transitionTyp == TransitionSelector.Combine) 
                 {
-                    if(dissolver.name == "rollo1" || dissolver.name == "Jalusie" || dissolver.name == "rollo2")
+                    /*if(dissolver.name == "rollo1" || dissolver.name == "Jalusie" || dissolver.name == "rollo2" || dissolver.name == "Curtain1" || dissolver.name == "Curtain2" || dissolver.name == "Curtain3")
                     {
                         dissolver.ReplaceMaterials();
                     }
-                    else if (dissolver.name == "Room" || dissolver.name == "Roof") {
+                    else if (dissolver.name == "Room" || dissolver.name == "Roof" || dissolver.name == "Door" || dissolver.name == "Handle" || dissolver.name == "Lock") {
                         dissolver.ReplaceMaterials();
 
+                    }*/
+                    if (replicaFadeStringList.Contains(dissolver.name))
+                    {
+                        dissolver.ReplaceMaterials();
+                    }
+                    else if (replicaTranslateStringList.Contains(dissolver.name))
+                    {
+                        dissolver.ReplaceMaterials();
                     }
                     else
                     {
@@ -313,6 +337,21 @@ public class Transition : MonoBehaviour
                 if (transitionTyp == TransitionSelector.Translate)
                 {
                     dissolver.ReplaceMaterials();
+                }
+                if (transitionTyp == TransitionSelector.Combine)
+                {
+                    if (target1FadeStringList.Contains(dissolver.name))
+                    {
+                        dissolver.ReplaceMaterials();
+                    }
+                    else if (target1TranslateStringList.Contains(dissolver.name))
+                    {
+                        dissolver.ReplaceMaterials();
+                    }
+                    else
+                    {
+                        dissolver.RestoreDefaultMaterials();
+                    }
                 }
             }
         }
@@ -434,6 +473,44 @@ public class Transition : MonoBehaviour
         Debug.Log("End");
         StopCoroutine(RemoveTargetToReplica_Dissolve());
     }
+    IEnumerator RemoveTargetToReplica_Combine()
+    {
+        int count = 0;
+        WaitForSeconds wfs = new WaitForSeconds(durationNextObj);
+        foreach (serializableClass target in target_1_List)
+        {
+            count++;
+            foreach (GameObject replicaObject in target.replicaObjects)
+            {
+                //Debug.Log(replicaObject.name);
+                Dissolver dissolver = replicaObject.GetComponent<Dissolver>();
+                dissolver.Duration = durationPerObject;
+                string name = dissolver.name;
+                if (target1TranslateStringList.Contains(name))
+                {
+                    dissolver.TranslateOut(durationPerObject + 1f);
+                }
+                else if (target1FadeStringList.Contains(name))
+                {
+                    dissolver.FadeOut(durationPerObject);
+                }
+                else
+                {
+                    dissolver.Dissolve();
+                }
+            }
+            Debug.Log(count);
+            if (count > 6)
+            {
+                StartCoroutine(AddReplicaToReplica_Combine());
+                count = 0;
+            }
+            yield return wfs;
+        }
+
+        Debug.Log("End");
+        StopCoroutine(RemoveTargetToReplica_Dissolve());
+    }
     IEnumerator RemoveTargetToReplica_Fade()
     {
         int count = 0;
@@ -489,7 +566,21 @@ public class Transition : MonoBehaviour
             {
                 Dissolver dissolver = replicaObject.GetComponent<Dissolver>();
                 dissolver.Duration = durationPerObject;
-                dissolver.Materialize();
+
+                string name = dissolver.name;
+                Debug.Log(name);
+                if (target1TranslateStringList.Contains(name))
+                {
+                    dissolver.TranslateIn(durationPerObject + 1f);
+                }
+                else if (target1FadeStringList.Contains(name))
+                {
+                    dissolver.FadeIn(durationPerObject);
+                }
+                else
+                {
+                    dissolver.Materialize();
+                }
             }
             yield return wfs;
         }
@@ -575,9 +666,9 @@ public class Transition : MonoBehaviour
                 {
                     dissolver.Duration = durationPerObject;
                 }
-                if (replicaTranslateStringList.Contains(name))
+                if (replicaTranslateStringList.Contains(name) && (dissolver.transform.parent.name == "RoomOutline" || dissolver.transform.parent.name == "display_1" || dissolver.transform.parent.name == "display_2"))
                 {
-                    dissolver.TranslateOut(durationPerObject);
+                    dissolver.TranslateOut(durationPerObject+1f);
                 }
                 else if (replicaFadeStringList.Contains(name))
                 {
@@ -662,6 +753,47 @@ public class Transition : MonoBehaviour
 
         Debug.Log("End");
         StopCoroutine(RemoveReplicaToTarget_Dissolve());
+        stopWatchEnd = Time.time - stopWatchStart;
+        Debug.Log(stopWatchEnd.ToString());
+        stopWatchEnd = 0;
+    }
+    IEnumerator RemoveReplicaToReal_Combine()
+    {
+        WaitForSeconds wfs = new WaitForSeconds(durationNextObj);
+        int count = 0;
+        for (int i = replicaList.Count - 1; i >= 0; i--)//int i = replicaList.Count - 1; i >= 0; i--
+        {
+            count++;
+            foreach (GameObject replicaObject in replicaList[i].replicaObjects)//replicaList[i].replicaObjects
+            {
+                Dissolver dissolver = replicaObject.GetComponent<Dissolver>();
+                string name = dissolver.name;
+                if (replicaObject.name == "Room")
+                {
+                    dissolver.Duration = durationRoom;//
+                }
+                else
+                {
+                    dissolver.Duration = durationPerObject;
+                }
+                if (replicaTranslateStringList.Contains(name) && (dissolver.transform.parent.name == "RoomOutline" || dissolver.transform.parent.name == "display_1" || dissolver.transform.parent.name == "display_2"))
+                {
+                    dissolver.TranslateOut(durationPerObject + 1f);
+                }
+                else if (replicaFadeStringList.Contains(name))
+                {
+                    dissolver.FadeOut(durationPerObject);
+                }
+                else
+                {
+                    dissolver.Dissolve();
+                }
+            }
+            yield return wfs;
+        }
+
+        Debug.Log("End");
+        StopCoroutine(RemoveReplicaToReal_Combine());
         stopWatchEnd = Time.time - stopWatchStart;
         Debug.Log(stopWatchEnd.ToString());
         stopWatchEnd = 0;
@@ -763,9 +895,9 @@ public class Transition : MonoBehaviour
                 Dissolver dissolver = replicaObject.GetComponent<Dissolver>();
                 dissolver.Duration = durationPerObject;
                 string name = dissolver.name;
-                if(replicaTranslateStringList.Contains(name))
+                if(replicaTranslateStringList.Contains(name) && (dissolver.transform.parent.name == "RoomOutline" || dissolver.transform.parent.name == "display_1" || dissolver.transform.parent.name == "display_2"))
                 {
-                    dissolver.TranslateIn(durationPerObject);
+                    dissolver.TranslateIn(durationPerObject+1f);
                 }
                 else if (replicaFadeStringList.Contains(name))
                 {
@@ -843,6 +975,47 @@ public class Transition : MonoBehaviour
         StartCoroutine(RemoveReplicaToReal_Dissolve()); //hier ende
         
         StopCoroutine(AddReplicaToReplica_Dissolve());
+
+    }
+    IEnumerator AddReplicaToReplica_Combine()
+    {
+        WaitForSeconds wfs = new WaitForSeconds(durationNextObj);
+        for (int i = replicaList.Count - 1; i >= 0; i--)
+        {
+            foreach (GameObject replicaObject in replicaList[i].replicaObjects)
+            {
+                Dissolver dissolver = replicaObject.GetComponent<Dissolver>();
+                dissolver.Duration = durationPerObject;
+                string name = dissolver.name;
+                if (replicaTranslateStringList.Contains(name) && (dissolver.transform.parent.name == "RoomOutline" || dissolver.transform.parent.name == "display_1" || dissolver.transform.parent.name == "display_2"))
+                {
+                    dissolver.TranslateIn(durationPerObject + 1f);
+                }
+                else if (replicaFadeStringList.Contains(name))
+                {
+                    dissolver.FadeIn(durationPerObject);
+                }
+                else 
+                {
+                    dissolver.Materialize();
+                }
+            }
+            yield return wfs;
+        }
+        foreach (GameObject obj in onlyTarget1Objs)
+        {
+            obj.SetActive(false);
+        }
+        Debug.Log("End");
+        if (testWithVarjo)
+        {
+            Core.XRSceneManager.Instance.arVRToggle.SetModeToAR();
+        }
+
+        yield return new WaitForSeconds(waitToFinischCoroutine);
+        StartCoroutine(RemoveReplicaToReal_Combine()); //hier ende
+
+        StopCoroutine(AddReplicaToReplica_Combine());
 
     }
     IEnumerator AddReplicaToReplica_Fade()
@@ -1223,11 +1396,11 @@ public class Transition : MonoBehaviour
                 if (dissolver != null)
                 {
                     dissolver.Duration = 0.01f;
-                    if (dissolver.name == "rollo1" || dissolver.name == "rollo2")
+                    if (dissolver.name == "rollo1" || dissolver.name == "rollo2" || dissolver.name == "Curtain1" || dissolver.name == "Curtain2" || dissolver.name == "Curtain3")
                     {
                         dissolver.TranslateOut(durationPerObject);
                     }
-                    else if (dissolver.name == "Roof" || dissolver.name == "Room")
+                    else if (dissolver.name == "Roof" || dissolver.name == "Room" || dissolver.name == "Door" || dissolver.name == "Handle" || dissolver.name == "Lock")
                     {
                         dissolver.FadeOut(durationPerObject);
                     }
@@ -1249,7 +1422,18 @@ public class Transition : MonoBehaviour
                 if (dissolver != null)
                 {
                     dissolver.Duration = 0.01f;
-                    dissolver.Dissolve();
+                    if (target1FadeStringList.Contains(dissolver.name))
+                    {
+                        dissolver.FadeOut(durationPerObject);
+                    }
+                    else if (target1TranslateStringList.Contains(dissolver.name))
+                    {
+                        dissolver.TranslateOut(durationPerObject);
+                    }
+                    else
+                    {
+                        dissolver.Dissolve();
+                    }
                 }
             }
 

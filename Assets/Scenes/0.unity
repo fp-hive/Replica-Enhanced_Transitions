@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 25.317984, g: 19.74381, b: 27.382383, a: 1}
+  m_IndirectSpecularColor: {r: 18.985579, g: 15.618592, b: 23.169308, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -5211,6 +5211,11 @@ PrefabInstance:
       propertyPath: m_LocalPosition.z
       value: 1.281
       objectReference: {fileID: 0}
+    - target: {fileID: 2315852597012981787, guid: 489155ad753598240a94e6b2801fe02f,
+        type: 3}
+      propertyPath: m_TagString
+      value: targetBottom
+      objectReference: {fileID: 0}
     - target: {fileID: 2315852597014918873, guid: 489155ad753598240a94e6b2801fe02f,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -5333,6 +5338,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3429216393366481321, guid: 489155ad753598240a94e6b2801fe02f,
         type: 3}
+      propertyPath: m_Name
+      value: Medieval_PlasterWalls_B_MasonaryWall_LOD0_wall2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3429216393366481321, guid: 489155ad753598240a94e6b2801fe02f,
+        type: 3}
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
@@ -5356,6 +5366,11 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: bd934b9fa51aec94f93d840484997c72, type: 2}
+    - target: {fileID: 3429216393549512273, guid: 489155ad753598240a94e6b2801fe02f,
+        type: 3}
+      propertyPath: m_Name
+      value: Medieval_PlasterWalls_B_MasonaryWall_LOD0_wall
+      objectReference: {fileID: 0}
     - target: {fileID: 3429216393549512273, guid: 489155ad753598240a94e6b2801fe02f,
         type: 3}
       propertyPath: m_IsActive
@@ -6006,6 +6021,11 @@ PrefabInstance:
       propertyPath: m_LODs.Array.data[0].screenRelativeHeight
       value: 0.17548391
       objectReference: {fileID: 0}
+    - target: {fileID: 8080369452459863095, guid: 489155ad753598240a94e6b2801fe02f,
+        type: 3}
+      propertyPath: m_TagString
+      value: targetBottom
+      objectReference: {fileID: 0}
     - target: {fileID: 8080369452462060277, guid: 489155ad753598240a94e6b2801fe02f,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -6016,6 +6036,11 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 02759bf3689fbc641ac493c17fd0aed5, type: 2}
+    - target: {fileID: 8080369453452047577, guid: 489155ad753598240a94e6b2801fe02f,
+        type: 3}
+      propertyPath: m_TagString
+      value: targetBottom
+      objectReference: {fileID: 0}
     - target: {fileID: 8080369454111926662, guid: 489155ad753598240a94e6b2801fe02f,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -8049,7 +8074,7 @@ GameObject:
   - component: {fileID: 1344014592}
   m_Layer: 0
   m_Name: TransitionObject
-  m_TagString: Untagged
+  m_TagString: targetBottom
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -8135,15 +8160,13 @@ MonoBehaviour:
     - {fileID: 1060830367}
   target_1_List:
   - replicaObjects:
-    - {fileID: 1587910054}
-    - {fileID: 303604064}
-    - {fileID: 670073766}
-    - {fileID: 2139242928}
-    - {fileID: 35679178}
-    - {fileID: 698814807}
-    - {fileID: 1768619741}
-    - {fileID: 1706776373}
-    - {fileID: 1231480455}
+    - {fileID: 579356324}
+    - {fileID: 950301267}
+    - {fileID: 1122870828}
+    - {fileID: 2033075501}
+    - {fileID: 367240733}
+    - {fileID: 1955324934}
+    - {fileID: 848933247}
   - replicaObjects:
     - {fileID: 1180320586}
     - {fileID: 1320324249}
@@ -8152,14 +8175,6 @@ MonoBehaviour:
     - {fileID: 70064068}
     - {fileID: 449638067}
     - {fileID: 306061517}
-  - replicaObjects:
-    - {fileID: 579356324}
-    - {fileID: 950301267}
-    - {fileID: 1122870828}
-    - {fileID: 2033075501}
-    - {fileID: 367240733}
-    - {fileID: 1955324934}
-    - {fileID: 848933247}
   - replicaObjects:
     - {fileID: 1074155495}
     - {fileID: 1503414854}
@@ -8178,6 +8193,16 @@ MonoBehaviour:
     - {fileID: 989768762}
     - {fileID: 1133059698}
     - {fileID: 325583417}
+  - replicaObjects:
+    - {fileID: 1587910054}
+    - {fileID: 303604064}
+    - {fileID: 670073766}
+    - {fileID: 2139242928}
+    - {fileID: 35679178}
+    - {fileID: 698814807}
+    - {fileID: 1768619741}
+    - {fileID: 1706776373}
+    - {fileID: 1231480455}
   - replicaObjects:
     - {fileID: 208008354}
     - {fileID: 562246752}
@@ -8245,14 +8270,39 @@ MonoBehaviour:
   - {fileID: 192187356}
   replicaTranslateList:
   - {fileID: 1572447073}
-  - {fileID: 1988624791}
-  - {fileID: 1226462665}
   - {fileID: 629508408}
   - {fileID: 491490813}
   - {fileID: 2075782646}
+  - {fileID: 1226462665}
+  - {fileID: 1988624791}
   replicaFadeList:
   - {fileID: 2088781796}
   - {fileID: 1060830367}
+  - {fileID: 290336771}
+  - {fileID: 1748638109}
+  - {fileID: 9229079}
+  target1TranslateList:
+  - {fileID: 670073766}
+  - {fileID: 857016385}
+  - {fileID: 2139242928}
+  - {fileID: 1706776373}
+  - {fileID: 1768619741}
+  - {fileID: 35679178}
+  - {fileID: 1587910054}
+  - {fileID: 2095492554}
+  - {fileID: 646583608}
+  - {fileID: 208008354}
+  - {fileID: 562246752}
+  - {fileID: 1695549224}
+  - {fileID: 1017818934}
+  target1FadeList:
+  - {fileID: 1180320586}
+  - {fileID: 706328280}
+  - {fileID: 1520237325}
+  - {fileID: 306061517}
+  - {fileID: 579356324}
+  - {fileID: 950301267}
+  - {fileID: 706328280}
   targetBottom: {fileID: 1024910008}
   targetTop: {fileID: 0}
   light: {fileID: 157207113}

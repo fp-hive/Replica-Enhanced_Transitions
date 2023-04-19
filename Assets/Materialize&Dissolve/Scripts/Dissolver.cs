@@ -656,7 +656,7 @@ public class Dissolver : MonoBehaviour
             }
             else
             {
-                if (!isTranslateOut && this.transform.position.y > 2.0f)
+                if (!isTranslateOut && this.transform.position.y > 3.0f)
                 {
                     isTranslateOut = true;
                     this.FadeOut(0.2f);
@@ -688,7 +688,7 @@ public class Dissolver : MonoBehaviour
             Vector3 posTest;
             if (moveBottom)
             {
-                if (isTranslateOut && this.transform.position.y > -0.038f)
+                if (isTranslateOut && this.transform.position.y > -2.038f)
                 {
                     isTranslateOut = false;
                     this.FadeIn(0.2f);
