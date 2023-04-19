@@ -20,6 +20,26 @@ MonoBehaviour:
   company: Ultraleap
   priority: 0
   required: 0
+--- !u!114 &-8680531880783687617
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c465bd23c9c4fb442ae89117552a5f3f, type: 3}
+  m_Name: HandTrackingFeature Android
+  m_EditorClassIdentifier: 
+  m_enabled: 0
+  nameUi: Ultraleap Hand Tracking
+  version: 1.0.0
+  featureIdInternal: com.ultraleap.tracking.openxr.feature.handtracking
+  openxrExtensionStrings: XR_EXT_hand_tracking
+  company: Ultraleap
+  priority: 0
+  required: 0
 --- !u!114 &-7846878040398210561
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -38,6 +58,26 @@ MonoBehaviour:
   featureIdInternal: com.unity.openxr.feature.input.eyetracking
   openxrExtensionStrings: XR_EXT_eye_gaze_interaction
   company: Unity
+  priority: 0
+  required: 0
+--- !u!114 &-7500285754128681096
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c465bd23c9c4fb442ae89117552a5f3f, type: 3}
+  m_Name: HandTrackingFeature Standalone
+  m_EditorClassIdentifier: 
+  m_enabled: 0
+  nameUi: Ultraleap Hand Tracking
+  version: 1.0.0
+  featureIdInternal: com.ultraleap.tracking.openxr.feature.handtracking
+  openxrExtensionStrings: XR_EXT_hand_tracking
+  company: Ultraleap
   priority: 0
   required: 0
 --- !u!114 &-7307246709164619805
@@ -247,6 +287,7 @@ MonoBehaviour:
   features:
   - {fileID: -3856228059757999478}
   - {fileID: -7846878040398210561}
+  - {fileID: -7500285754128681096}
   - {fileID: 9188207630758862328}
   - {fileID: -4309224043839648630}
   - {fileID: 8267939211154546423}
@@ -553,6 +594,7 @@ MonoBehaviour:
   features:
   - {fileID: 2281544529243520780}
   - {fileID: 1092000374100107229}
+  - {fileID: -8680531880783687617}
   - {fileID: -6431868231570944891}
   - {fileID: 7265242931185773233}
   - {fileID: 7840793039601454427}
