@@ -31,6 +31,9 @@ public class Transition : MonoBehaviour
     public List<GameObject> target1TranslateList = new List<GameObject>();
     private List<string> target1FadeStringList = new List<string>();
     public List<GameObject> target1FadeList = new List<GameObject>();
+
+    public List<GameObject> target1List = new List<GameObject>();
+    public List<GameObject> target2List = new List<GameObject>();
     public enum TransitionSelector
     {
         Fade,
@@ -55,6 +58,8 @@ public class Transition : MonoBehaviour
 
     private float stopWatchStart = 0.0f;
     private float stopWatchEnd = 0.0f;
+
+    private bool isTarget2 = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -261,6 +266,34 @@ public class Transition : MonoBehaviour
         if (Input.GetKeyDown("r"))
         {
             ResetForCombine();
+        }
+        if (Input.GetKey(KeyCode.Keypad1) && isButtonClickable) //  Target -> Replica
+        {
+            isButtonClickable = false;
+            isTarget2 = false;
+            foreach(GameObject obj in target1List)
+            {
+                obj.SetActive(true);
+            }
+            foreach (GameObject obj in target2List)
+            {
+                obj.SetActive(false);
+            }
+            StartCoroutine(EnableButtonAfterDebounce());
+        }
+        if (Input.GetKey(KeyCode.Keypad2) && isButtonClickable) //  Target -> Replica
+        {
+            isButtonClickable = false;
+            isTarget2 = true;
+            foreach (GameObject obj in target1List)
+            {
+                obj.SetActive(false);
+            }
+            foreach (GameObject obj in target2List)
+            {
+                obj.SetActive(true);
+            }
+            StartCoroutine(EnableButtonAfterDebounce());
         }
     }
 
