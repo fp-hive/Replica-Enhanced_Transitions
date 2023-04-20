@@ -430,6 +430,8 @@ public class Transition : MonoBehaviour
                 }
                 if (transitionTyp == TransitionSelector.Dissolve)
                 {
+                    Debug.Log(dissolver.name);
+
                     dissolver.RestoreDefaultMaterials();
                 }
                 if (transitionTyp == TransitionSelector.Translate)
@@ -659,11 +661,12 @@ public class Transition : MonoBehaviour
     IEnumerator AddTargetToTarget2_Dissolve()
     {
         WaitForSeconds wfs = new WaitForSeconds(durationNextObj);
-        for (int i = target_2_List.Count - 1; i >= 0; i--)
+        for (int i = 0; i < target_2_List.Count; i++)
         {
             foreach (GameObject replicaObject in target_2_List[i].replicaObjects)
             {
                 Dissolver dissolver = replicaObject.GetComponent<Dissolver>();
+                Debug.Log(dissolver.name);
                 dissolver.Duration = durationPerObject;
                 dissolver.Materialize();
             }

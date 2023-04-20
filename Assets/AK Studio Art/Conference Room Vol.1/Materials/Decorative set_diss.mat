@@ -1,5 +1,21 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-7929790724997161226
+MonoBehaviour:
+  m_ObjectHideFlags: 11
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da692e001514ec24dbc4cca1949ff7e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  version: 12
+  hdPluginSubTargetMaterialVersions:
+    m_Keys: []
+    m_Values: 
 --- !u!21 &2100000
 Material:
   serializedVersion: 8
@@ -7,7 +23,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Table 1_diss
+  m_Name: Decorative set_diss
   m_Shader: {fileID: 4800000, guid: e8f804b4329e47940b9ae5b836d96844, type: 3}
   m_ValidKeywords:
   - _ALPHATEST_ON
@@ -38,7 +54,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BaseColorMap:
-        m_Texture: {fileID: 2800000, guid: b7319b77a13f2e343b8c15fac8fd4001, type: 3}
+        m_Texture: {fileID: 2800000, guid: e55c50bf249140949ad0ac464fb2f139, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BentNormalMap:
@@ -50,7 +66,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BumpMap:
-        m_Texture: {fileID: 2800000, guid: 354af41f84a18b043b4cc5d8a98dca15, type: 3}
+        m_Texture: {fileID: 2800000, guid: 39277da085698bf45b4a1398e37e0dbf, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _CoatMaskMap:
@@ -83,7 +99,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _GuideTexture:
         m_Texture: {fileID: 2800000, guid: 4cbf31330d36c614c9c12a82b586866d, type: 3}
-        m_Scale: {x: 1, y: 1}
+        m_Scale: {x: 0.5, y: 0.5}
         m_Offset: {x: 0, y: 0}
     - _HeightMap:
         m_Texture: {fileID: 0}
@@ -98,23 +114,23 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: b7319b77a13f2e343b8c15fac8fd4001, type: 3}
+        m_Texture: {fileID: 2800000, guid: e55c50bf249140949ad0ac464fb2f139, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MaskMap:
-        m_Texture: {fileID: 2800000, guid: 8541b7f304049ac40bec17a007c29e0d, type: 3}
+        m_Texture: {fileID: 2800000, guid: 70cf1f885bdf5a545ad68d05563ebdcc, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
-        m_Texture: {fileID: 2800000, guid: 2240b94c157752f4d9b3982a373cd8bf, type: 3}
+        m_Texture: {fileID: 2800000, guid: 5cfeb0eabefeeb448866528fa0320fa6, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicTexture:
-        m_Texture: {fileID: 2800000, guid: 8541b7f304049ac40bec17a007c29e0d, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _NormalMap:
-        m_Texture: {fileID: 2800000, guid: 354af41f84a18b043b4cc5d8a98dca15, type: 3}
+        m_Texture: {fileID: 2800000, guid: 39277da085698bf45b4a1398e37e0dbf, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _NormalMapOS:
@@ -122,7 +138,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
-        m_Texture: {fileID: 2800000, guid: 7759b58dd380158458dd0494317eba7c, type: 3}
+        m_Texture: {fileID: 2800000, guid: 91eac84fa2d4bc548a40ae568bc187e2, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _OcclusionMap1:
@@ -176,7 +192,7 @@ Material:
     m_Ints: []
     m_Floats:
     - _AORemapMax: 1
-    - _AORemapMin: 0
+    - _AORemapMin: 0.525
     - _ATDistance: 1
     - _AddPrecomputedVelocity: 0
     - _AdvancedInpector: 0
@@ -192,7 +208,7 @@ Material:
     - _AlphaToMaskInspectorValue: 0
     - _Anisotropy: 0
     - _BlendMode: 0
-    - _BumpScale: 0.21
+    - _BumpScale: 1
     - _CoatMask: 0
     - _CullMode: 2
     - _CullModeForward: 2
@@ -213,7 +229,7 @@ Material:
     - _DoubleSidedGIMode: 0
     - _DoubleSidedNormalMode: 1
     - _DstBlend: 0
-    - _EdgeWidth: 0.0065
+    - _EdgeWidth: 0.0047
     - _EditorEnd: 0
     - _EditorStart: 0
     - _EmissionIntesity: 1000
@@ -227,9 +243,9 @@ Material:
     - _EnergyConservingSpecularColor: 1
     - _GlossMapScale: 1
     - _GlossSource: 1
-    - _Glossiness: 0.414
+    - _Glossiness: 0.849
     - _GlossyReflections: 1
-    - _GuideAdjuster: 1.553
+    - _GuideAdjuster: 1.863
     - _HeightAmplitude: 0.02
     - _HeightCenter: 0.5
     - _HeightMapParametrization: 0
@@ -248,11 +264,11 @@ Material:
     - _Metallic: 1
     - _MetallicRemapMax: 1
     - _MetallicRemapMin: 0
-    - _MetallicValue: 0.144
+    - _MetallicValue: 0.471
     - _Mode: 0
     - _NormalMapSpace: 0
-    - _NormalScale: 0.21
-    - _OcclusionStrength: 1
+    - _NormalScale: 1
+    - _OcclusionStrength: 0.475
     - _OpaqueCullMode: 2
     - _PPDLodThreshold: 5
     - _PPDMaxSamples: 15
@@ -313,9 +329,9 @@ Material:
     - _ZTestTransparent: 4
     - _ZWrite: 1
     m_Colors:
-    - _BaseColor: {r: 0.09433959, g: 0.09433959, b: 0.09433959, a: 1}
+    - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _BaseColorMap_MipInfo: {r: 0, g: 0, b: 0, a: 0}
-    - _Color: {r: 0.09433956, g: 0.09433956, b: 0.09433956, a: 1}
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _DiffusionProfileAsset: {r: 0, g: 0, b: 0, a: 0}
     - _DissolveColor: {r: 1, g: 0, b: 0, a: 0}
     - _DoubleSidedConstants: {r: 1, g: 1, b: -1, a: 0}
@@ -331,19 +347,3 @@ Material:
     - _UVMappingMask: {r: 1, g: 0, b: 0, a: 0}
     - _UVMappingMaskEmissive: {r: 1, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []
---- !u!114 &6331744874494716203
-MonoBehaviour:
-  m_ObjectHideFlags: 11
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: da692e001514ec24dbc4cca1949ff7e8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  version: 12
-  hdPluginSubTargetMaterialVersions:
-    m_Keys: []
-    m_Values: 
