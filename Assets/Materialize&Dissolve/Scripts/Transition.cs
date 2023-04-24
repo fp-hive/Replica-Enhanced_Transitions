@@ -21,6 +21,7 @@ public class Transition : MonoBehaviour
     public List<serializableClass> target_1_List = new List<serializableClass>();
     public List<serializableClass> replicaList_Room = new List<serializableClass>();
     public List<GameObject> onlyTarget1Objs = new List<GameObject>();
+    public List<GameObject> onlyTarget2Objs = new List<GameObject>();
 
     private List<string> replicaTranslateStringList = new List<string>();
     public List<GameObject> replicaTranslateList = new List<GameObject>();
@@ -255,24 +256,49 @@ public class Transition : MonoBehaviour
         {
             stopWatchStart = Time.time;
             isButtonClickable = false;
-            switch (currentTransition)
+            if (isTarget2)
             {
-                case TransitionSelector.Fade:
-                    StartCoroutine(RemoveTargetToReplica_Fade());
-                    break;
+                switch (currentTransition)
+                {
+                    case TransitionSelector.Fade:
+                        StartCoroutine(AddReplicaToReplicaAndTarget_Fade());
+                        break;
 
-                case TransitionSelector.Dissolve:
-                    StartCoroutine(RemoveTargetToReplica_Dissolve());
-                    break;
+                    case TransitionSelector.Dissolve:
+                        StartCoroutine(RemoveTarget2ToReplica_Dissolve());
+                        break;
 
-                case TransitionSelector.Translate:
-                    StartCoroutine(RemoveTargetToReplica_Translate());
-                    break;
-                case TransitionSelector.Combine:
-                    StartCoroutine(RemoveTargetToReplica_Combine());
-                    break;
-                default:
-                    break;
+                    case TransitionSelector.Translate:
+                        StartCoroutine(AddReplicaToReplicaAndTarget_Translate());
+                        break;
+                    case TransitionSelector.Combine:
+                        StartCoroutine(AddReplicaToReplicaAndTarget_Combine());
+                        break;
+                    default:
+                        break;
+                }
+            }
+            else
+            {
+                switch (currentTransition)
+                {
+                    case TransitionSelector.Fade:
+                        StartCoroutine(RemoveTargetToReplica_Fade());
+                        break;
+
+                    case TransitionSelector.Dissolve:
+                        StartCoroutine(RemoveTargetToReplica_Dissolve());
+                        break;
+
+                    case TransitionSelector.Translate:
+                        StartCoroutine(RemoveTargetToReplica_Translate());
+                        break;
+                    case TransitionSelector.Combine:
+                        StartCoroutine(RemoveTargetToReplica_Combine());
+                        break;
+                    default:
+                        break;
+                }
             }
             StartCoroutine(EnableButtonAfterDebounce());
         }
@@ -573,6 +599,32 @@ public class Transition : MonoBehaviour
 
         Debug.Log("End");
         StopCoroutine(RemoveTargetToReplica_Dissolve());
+    }
+    IEnumerator RemoveTarget2ToReplica_Dissolve()
+    {
+        int count = 0;
+        WaitForSeconds wfs = new WaitForSeconds(durationNextObj);
+        foreach (serializableClass target in target_2_List)
+        {
+            count++;
+            foreach (GameObject replicaObject in target.replicaObjects)
+            {
+                //Debug.Log(replicaObject.name);
+                Dissolver dissolver = replicaObject.GetComponent<Dissolver>();
+                dissolver.Duration = durationPerObject;
+                dissolver.Dissolve();
+            }
+            Debug.Log(count);
+            if (count > 6)
+            {
+                StartCoroutine(AddReplicaToReplica_2_Dissolve());
+                count = 0;
+            }
+            yield return wfs;
+        }
+
+        Debug.Log("End");
+        StopCoroutine(RemoveTarget2ToReplica_Dissolve());
     }
     IEnumerator RemoveTargetToReplica_Combine()
     {
@@ -1073,10 +1125,10 @@ public class Transition : MonoBehaviour
         StartCoroutine(RemoveReplicaToTarget2_Dissolve());
         //Debug.Log("Call StartCoroutine(RemoveReplicaToTarget())");
 
-        /*foreach (GameObject obj in onlyTarget1Objs)
+        foreach (GameObject obj in onlyTarget2Objs)
         {
             obj.SetActive(true);
-        }*/
+        }
         //Debug.Log("End AddReplicaToReplicaAndTarget_Dissolve");
         StopCoroutine(AddReplicaToReplicaAndTarget2_Dissolve());
     }
@@ -1171,6 +1223,35 @@ public class Transition : MonoBehaviour
         yield return new WaitForSeconds(waitToFinischCoroutine);
         StartCoroutine(RemoveReplicaToReal_Dissolve()); //hier ende
         
+        StopCoroutine(AddReplicaToReplica_Dissolve());
+
+    }
+    IEnumerator AddReplicaToReplica_2_Dissolve()
+    {
+        WaitForSeconds wfs = new WaitForSeconds(durationNextObj);
+        for (int i = replicaList.Count - 1; i >= 0; i--)
+        {
+            foreach (GameObject replicaObject in replicaList[i].replicaObjects)
+            {
+                Dissolver dissolver = replicaObject.GetComponent<Dissolver>();
+                dissolver.Duration = durationPerObject;
+                dissolver.Materialize();
+            }
+            yield return wfs;
+        }
+        foreach (GameObject obj in onlyTarget2Objs)
+        {
+            obj.SetActive(false);
+        }
+        Debug.Log("End");
+        if (testWithVarjo)
+        {
+            Core.XRSceneManager.Instance.arVRToggle.SetModeToAR();
+        }
+
+        yield return new WaitForSeconds(waitToFinischCoroutine);
+        StartCoroutine(RemoveReplicaToReal_Dissolve()); //hier ende
+
         StopCoroutine(AddReplicaToReplica_Dissolve());
 
     }
@@ -1493,6 +1574,10 @@ public class Transition : MonoBehaviour
                     }
                 }
 
+            }
+            foreach (GameObject obj in onlyTarget2Objs)
+            {
+                obj.SetActive(false);
             }
 
         }
