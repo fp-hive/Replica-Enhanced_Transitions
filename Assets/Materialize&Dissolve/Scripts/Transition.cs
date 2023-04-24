@@ -291,7 +291,7 @@ public class Transition : MonoBehaviour
                         StartCoroutine(RemoveTarget2ToReplica_Translate());
                         break;
                     case TransitionSelector.Combine:
-                        StartCoroutine(AddReplicaToReplicaAndTarget_Combine());
+                        StartCoroutine(RemoveTarget2ToReplica_Combine());
                         break;
                     default:
                         break;
@@ -679,6 +679,44 @@ public class Transition : MonoBehaviour
             if (count > 6)
             {
                 StartCoroutine(AddReplicaToReplica_Combine());
+                count = 0;
+            }
+            yield return wfs;
+        }
+
+        Debug.Log("End");
+        StopCoroutine(RemoveTargetToReplica_Dissolve());
+    }
+    IEnumerator RemoveTarget2ToReplica_Combine()
+    {
+        int count = 0;
+        WaitForSeconds wfs = new WaitForSeconds(durationNextObj);
+        for (int i = target_2_List.Count - 1; i >= 0; i--)
+        {
+            count++;
+            foreach (GameObject replicaObject in target_2_List[i].replicaObjects)
+            {
+                //Debug.Log(replicaObject.name);
+                Dissolver dissolver = replicaObject.GetComponent<Dissolver>();
+                dissolver.Duration = durationPerObject;
+                string name = dissolver.name;
+                if (target2TranslateStringList.Contains(name))
+                {
+                    dissolver.TranslateOut(durationPerObject + 1f);
+                }
+                else if (target2FadeStringList.Contains(name))
+                {
+                    dissolver.FadeOut(durationPerObject);
+                }
+                else
+                {
+                    dissolver.Dissolve();
+                }
+            }
+            Debug.Log(count);
+            if (count > 3)
+            {
+                StartCoroutine(AddReplicaToReplica2_Combine());
                 count = 0;
             }
             yield return wfs;
@@ -1554,6 +1592,48 @@ public class Transition : MonoBehaviour
             yield return wfs;
         }
         foreach (GameObject obj in onlyTarget1Objs)
+        {
+            obj.SetActive(false);
+        }
+        Debug.Log("End");
+        if (testWithVarjo)
+        {
+            Core.XRSceneManager.Instance.arVRToggle.SetModeToAR();
+        }
+        boxObj.SetActive(true);
+        ligtComponent.RequestShadowMapRendering();
+        yield return new WaitForSeconds(waitToFinischCoroutine);
+        StartCoroutine(RemoveReplicaToReal_Combine()); //hier ende
+
+        StopCoroutine(AddReplicaToReplica_Combine());
+
+    }
+    IEnumerator AddReplicaToReplica2_Combine()
+    {
+        WaitForSeconds wfs = new WaitForSeconds(durationNextObj);
+        for (int i = replicaList.Count - 1; i >= 0; i--)
+        {
+            foreach (GameObject replicaObject in replicaList[i].replicaObjects)
+            {
+                Dissolver dissolver = replicaObject.GetComponent<Dissolver>();
+                dissolver.Duration = durationPerObject;
+                string name = dissolver.name;
+                if (replicaTranslateStringList.Contains(name) && (dissolver.transform.parent.name == "RoomOutline" || dissolver.transform.parent.name == "display_1" || dissolver.transform.parent.name == "display_2"))
+                {
+                    dissolver.TranslateIn(durationPerObject + 1f);
+                }
+                else if (replicaFadeStringList.Contains(name))
+                {
+                    dissolver.FadeIn(durationPerObject);
+                }
+                else
+                {
+                    dissolver.Materialize();
+                }
+            }
+            yield return wfs;
+        }
+        foreach (GameObject obj in onlyTarget2Objs)
         {
             obj.SetActive(false);
         }
