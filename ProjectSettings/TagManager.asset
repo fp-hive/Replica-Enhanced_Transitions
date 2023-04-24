@@ -8,6 +8,7 @@ TagManager:
   - Fracture
   - HandModels
   - targetBottom
+  - shadowBox
   layers:
   - Default
   - TransparentFX
