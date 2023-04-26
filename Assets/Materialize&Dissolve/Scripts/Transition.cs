@@ -44,6 +44,7 @@ public class Transition : MonoBehaviour
 
     public List<serializableClass> target_2_List = new List<serializableClass>();
 
+    private bool isVC = true;
     public enum TransitionSelector
     {
         Fade,
@@ -62,6 +63,7 @@ public class Transition : MonoBehaviour
     TransitionSelector currentTransition = TransitionSelector.Dissolve;
 
     public Light light;
+    public Light lightNoNVC;
     HDAdditionalLightData ligtComponent; 
 
     public bool testWithVarjo = false;
@@ -130,6 +132,7 @@ public class Transition : MonoBehaviour
         }
         boxObj = GameObject.FindGameObjectWithTag("shadowBox");
         ligtComponent = light.GetComponent<HDAdditionalLightData>();
+
     }
 
 
@@ -318,6 +321,26 @@ public class Transition : MonoBehaviour
                     default:
                         break;
                 }
+            }
+            StartCoroutine(EnableButtonAfterDebounce());
+        }
+        if (Input.GetKeyDown("v") && isButtonClickable) //  Target -> Replica
+        {
+            isButtonClickable = false;
+            isVC = !isVC;
+            if(isVC)
+            {
+                lightNoNVC.GetComponent<Light>().enabled = false;
+                light.GetComponent<Light>().enabled = true;
+
+                Debug.Log("VC is on");
+            }
+            else
+            {
+                light.GetComponent<Light>().enabled = false;
+                lightNoNVC.GetComponent<Light>().enabled = true;
+
+                Debug.Log("VC is off");
             }
             StartCoroutine(EnableButtonAfterDebounce());
         }
@@ -1819,7 +1842,7 @@ public class Transition : MonoBehaviour
                 }
 
             }
-            if (count > 3 && !coroutineIsRunning_RemoveReplicaToTarget_Translate)
+            if (count > 4 && !coroutineIsRunning_RemoveReplicaToTarget_Translate)
             {
                 count = 0;
                 coroutineIsRunning_RemoveReplicaToTarget_Translate = true;
@@ -1909,7 +1932,7 @@ public class Transition : MonoBehaviour
                     //dissolver.startPosition = replicaObject.transform.position;
                     //dissolver.targetPosition = new Vector3(replicaObject.transform.position.x, replicaObject.transform.position.y+6f, replicaObject.transform.position.z);
 
-                    dissolver.TranslateOut(durationPerObject);
+                    dissolver.TranslateOut(durationPerObject+1f);
                 }
 
             }
@@ -2076,7 +2099,7 @@ public class Transition : MonoBehaviour
                 Dissolver dissolver = replicaObject.GetComponent<Dissolver>();
                 if (dissolver != null)// && (dissolver.transform.parent.name == "RoomOutline" || dissolver.transform.parent.name == "display_1" || dissolver.transform.parent.name == "display_2"))
                 {
-                    dissolver.TranslateIn(durationPerObject);
+                    dissolver.TranslateIn(durationPerObject+1f);
                 }
 
             }

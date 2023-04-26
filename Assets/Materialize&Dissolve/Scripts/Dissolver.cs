@@ -119,7 +119,7 @@ public class Dissolver : MonoBehaviour
 
             controllTime += Time.deltaTime;
             // Debug.Log(controllTime);
-            //Debug.Log("Time: " + controllTime);
+            Debug.Log("Time: " + controllTime);
         }
 
         if (isStop)
@@ -128,7 +128,7 @@ public class Dissolver : MonoBehaviour
 
             controllTime -= Time.deltaTime;
             // Debug.Log(controllTime);
-            //Debug.Log("Time: " + controllTime);
+            Debug.Log("Time: " + controllTime);
         }
     }
 
