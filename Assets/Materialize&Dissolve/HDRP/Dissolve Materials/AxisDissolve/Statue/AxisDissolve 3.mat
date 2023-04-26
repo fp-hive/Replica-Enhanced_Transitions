@@ -117,7 +117,7 @@ Material:
     - _Cutoff: 0.5
     - _DisplacementGuideTilling: 1
     - _DisplacementGuideTillingSpeed: 0.005
-    - _DissolveAmount: 0.394
+    - _DissolveAmount: 0.189
     - _DissolveEmissionIntesity: 1000
     - _DoubleSidedEnable: 0
     - _DoubleSidedNormalMode: 2

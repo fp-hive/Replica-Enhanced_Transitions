@@ -6,9 +6,11 @@ using System.Collections.Generic;
 using Unity.Burst.CompilerServices;
 using UnityEngine;
 using UnityEngine.Rendering.HighDefinition;
+using UnityEngine.InputSystem;
 using static Transition;
 using static UHI.Tracking.InteractionEngine.Examples.SimpleInteractionGlow;
 using static UnityEngine.GraphicsBuffer;
+using UnityEngine.XR.Interaction.Toolkit;
 
 public class Transition : MonoBehaviour
 {
@@ -64,17 +66,87 @@ public class Transition : MonoBehaviour
 
     public Light light;
     public Light lightNoNVC;
-    HDAdditionalLightData ligtComponent; 
+    HDAdditionalLightData lightComponent; 
 
     public bool testWithVarjo = false;
     private float debounceTime = 0.25f;   // Debounce time in seconds
     private bool isButtonClickable = true;  // Flag to keep track of button clickability
-
+    private float debounceTimeController = 15.25f;   // Debounce time in seconds
+    private bool isControllerClickable = true;  // Flag to keep track of button clickability
     private float stopWatchStart = 0.0f;
     private float stopWatchEnd = 0.0f;
 
     private bool isTarget2 = false;
     private GameObject boxObj;
+
+    public InputAction startTransitionAction;
+
+    private bool isRealEnvironment = true;
+    public GameObject leftController;
+    public GameObject rightController;
+
+    private void Awake()
+    {
+        startTransitionAction.started += ctx =>
+        {
+            Debug.Log("Init");
+            if (isButtonClickable)
+            {
+                StartCoroutine(StartPeriodicHaptics());
+
+                if (isRealEnvironment)
+                {
+                    isRealEnvironment = ChangeToVR();
+                }
+                else
+                {
+                    isRealEnvironment = ChangeToReal();
+                }
+            }
+
+        };
+
+        startTransitionAction.performed += ctx =>
+        {
+
+            Debug.Log("action performed");
+
+        };
+
+        startTransitionAction.canceled += ctx =>
+        { //if pressed too fast
+            Debug.Log("action canceled");
+        };
+    }
+
+    IEnumerator StartPeriodicHaptics()
+    {
+        // Trigger haptics every second
+        var delay = new WaitForSeconds(0.1f);
+        int count = 120;
+        int antiCount = 0;
+        int ampliCounter;
+        while (count>0)
+        {
+            antiCount++;
+            count--;
+            ampliCounter = count;
+            if (count < 60)
+            {
+                ampliCounter = antiCount;
+            }
+            SendHaptics(((ampliCounter / 120f)-1)*-1);
+            yield return delay;
+        }
+    }
+
+    void SendHaptics(float ampli)
+    {
+        ActionBasedController _rightControllerScript = rightController.GetComponent<ActionBasedController>();
+        if (_rightControllerScript != null)
+            _rightControllerScript.SendHapticImpulse(ampli, 1f);
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -131,7 +203,7 @@ public class Transition : MonoBehaviour
             target2FadeStringList.Add(obj.name);
         }
         boxObj = GameObject.FindGameObjectWithTag("shadowBox");
-        ligtComponent = light.GetComponent<HDAdditionalLightData>();
+        lightComponent = light.GetComponent<HDAdditionalLightData>();
 
     }
 
@@ -225,104 +297,11 @@ public class Transition : MonoBehaviour
         }
         if (Input.GetKey(KeyCode.F5) && isButtonClickable) // Replica -> Target
         {
-            stopWatchStart = Time.time;
-            isButtonClickable = false;
-            if (isTarget2)
-            {
-                switch (currentTransition)
-                {
-                    case TransitionSelector.Fade:
-                        StartCoroutine(AddReplicaToReplicaAndTarget2_Fade());
-                        break;
 
-                    case TransitionSelector.Dissolve:
-                        StartCoroutine(AddReplicaToReplicaAndTarget2_Dissolve());
-                        break;
-
-                    case TransitionSelector.Translate:
-                        StartCoroutine(AddReplicaToReplicaAndTarget2_Translate());
-                        break;
-                    case TransitionSelector.Combine:
-                        StartCoroutine(AddReplicaToReplicaAndTarget2_Combine());
-                        break;
-                    default:
-                        break;
-                }
-            }
-            else
-            {
-                switch (currentTransition)
-                {
-                    case TransitionSelector.Fade:
-                        StartCoroutine(AddReplicaToReplicaAndTarget_Fade());
-                        break;
-
-                    case TransitionSelector.Dissolve:
-                        StartCoroutine(AddReplicaToReplicaAndTarget_Dissolve());
-                        break;
-
-                    case TransitionSelector.Translate:
-                        StartCoroutine(AddReplicaToReplicaAndTarget_Translate());
-                        break;
-                    case TransitionSelector.Combine:
-                        StartCoroutine(AddReplicaToReplicaAndTarget_Combine());
-                        break;
-                    default:
-                        break;
-                }
-            }
-
-            StartCoroutine(EnableButtonAfterDebounce());
         }
         if (Input.GetKey(KeyCode.F6) && isButtonClickable) //  Target -> Replica
         {
-            stopWatchStart = Time.time;
-            isButtonClickable = false;
-            if (isTarget2)
-            {
-                switch (currentTransition)
-                {
-                    case TransitionSelector.Fade:
-                        StartCoroutine(RemoveTarget2ToReplica_Fade());
-                        break;
 
-                    case TransitionSelector.Dissolve:
-                        StartCoroutine(RemoveTarget2ToReplica_Dissolve());
-                        break;
-
-                    case TransitionSelector.Translate:
-                        StartCoroutine(RemoveTarget2ToReplica_Translate());
-                        break;
-                    case TransitionSelector.Combine:
-                        StartCoroutine(RemoveTarget2ToReplica_Combine());
-                        break;
-                    default:
-                        break;
-                }
-            }
-            else
-            {
-                switch (currentTransition)
-                {
-                    case TransitionSelector.Fade:
-                        StartCoroutine(RemoveTargetToReplica_Fade());
-                        break;
-
-                    case TransitionSelector.Dissolve:
-                        StartCoroutine(RemoveTargetToReplica_Dissolve());
-                        break;
-
-                    case TransitionSelector.Translate:
-                        StartCoroutine(RemoveTargetToReplica_Translate());
-                        break;
-                    case TransitionSelector.Combine:
-                        StartCoroutine(RemoveTargetToReplica_Combine());
-                        break;
-                    default:
-                        break;
-                }
-            }
-            StartCoroutine(EnableButtonAfterDebounce());
         }
         if (Input.GetKeyDown("v") && isButtonClickable) //  Target -> Replica
         {
@@ -366,7 +345,7 @@ public class Transition : MonoBehaviour
         }
         if (Input.GetKeyDown("s"))
         {
-            ligtComponent.RequestShadowMapRendering();
+            lightComponent.RequestShadowMapRendering();
         }
         if (Input.GetKey(KeyCode.Keypad1) && isButtonClickable) //  Target -> Replica
         {
@@ -398,6 +377,119 @@ public class Transition : MonoBehaviour
         }
     }
 
+    private bool ChangeToVR()
+    {
+        stopWatchStart = Time.time;
+        isControllerClickable = false;
+        if (isTarget2)
+        {
+            switch (currentTransition)
+            {
+                case TransitionSelector.Fade:
+                    StartCoroutine(AddReplicaToReplicaAndTarget2_Fade());
+                    break;
+
+                case TransitionSelector.Dissolve:
+                    StartCoroutine(AddReplicaToReplicaAndTarget2_Dissolve());
+                    break;
+
+                case TransitionSelector.Translate:
+                    StartCoroutine(AddReplicaToReplicaAndTarget2_Translate());
+                    break;
+                case TransitionSelector.Combine:
+                    StartCoroutine(AddReplicaToReplicaAndTarget2_Combine());
+                    break;
+                default:
+                    break;
+            }
+        }
+        else
+        {
+            switch (currentTransition)
+            {
+                case TransitionSelector.Fade:
+                    StartCoroutine(AddReplicaToReplicaAndTarget_Fade());
+                    break;
+
+                case TransitionSelector.Dissolve:
+                    StartCoroutine(AddReplicaToReplicaAndTarget_Dissolve());
+                    break;
+
+                case TransitionSelector.Translate:
+                    StartCoroutine(AddReplicaToReplicaAndTarget_Translate());
+                    break;
+                case TransitionSelector.Combine:
+                    StartCoroutine(AddReplicaToReplicaAndTarget_Combine());
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        StartCoroutine(EnableControllerAfterDebounce());
+        return false;
+    }
+    private bool ChangeToReal()
+    {
+        stopWatchStart = Time.time;
+        isControllerClickable = false;
+        if (isTarget2)
+        {
+            switch (currentTransition)
+            {
+                case TransitionSelector.Fade:
+                    StartCoroutine(RemoveTarget2ToReplica_Fade());
+                    break;
+
+                case TransitionSelector.Dissolve:
+                    StartCoroutine(RemoveTarget2ToReplica_Dissolve());
+                    break;
+
+                case TransitionSelector.Translate:
+                    StartCoroutine(RemoveTarget2ToReplica_Translate());
+                    break;
+                case TransitionSelector.Combine:
+                    StartCoroutine(RemoveTarget2ToReplica_Combine());
+                    break;
+                default:
+                    break;
+            }
+        }
+        else
+        {
+            switch (currentTransition)
+            {
+                case TransitionSelector.Fade:
+                    StartCoroutine(RemoveTargetToReplica_Fade());
+                    break;
+
+                case TransitionSelector.Dissolve:
+                    StartCoroutine(RemoveTargetToReplica_Dissolve());
+                    break;
+
+                case TransitionSelector.Translate:
+                    StartCoroutine(RemoveTargetToReplica_Translate());
+                    break;
+                case TransitionSelector.Combine:
+                    StartCoroutine(RemoveTargetToReplica_Combine());
+                    break;
+                default:
+                    break;
+            }
+        }
+        StartCoroutine(EnableControllerAfterDebounce());
+        return true;
+    }
+    private void OnEnable()
+    {
+        startTransitionAction.Enable();
+    }
+
+    private void OnDisable()
+    {
+        startTransitionAction.Disable();
+    }
+
     private IEnumerator EnableButtonAfterDebounce()
     {
         // Wait for the debounce time
@@ -405,6 +497,14 @@ public class Transition : MonoBehaviour
 
         // Set the button clickability flag to true
         isButtonClickable = true;
+    }
+    private IEnumerator EnableControllerAfterDebounce()
+    {
+        // Wait for the debounce time
+        yield return new WaitForSeconds(debounceTimeController);
+
+        // Set the button clickability flag to true
+        isControllerClickable = true;
     }
 
     private void ChangeTransitionTyp(TransitionSelector transitionTyp)
@@ -819,7 +919,7 @@ public class Transition : MonoBehaviour
         stopWatchEnd = Time.time - stopWatchStart;
         Debug.Log("Dissolve to Target: " + stopWatchEnd.ToString());
         stopWatchEnd = 0;
-        ligtComponent.RequestShadowMapRendering();
+        lightComponent.RequestShadowMapRendering();
     }
     IEnumerator AddTargetToTarget2_Dissolve()
     {
@@ -835,7 +935,7 @@ public class Transition : MonoBehaviour
             }
             yield return wfs;
         }
-        ligtComponent.RequestShadowMapRendering();
+        lightComponent.RequestShadowMapRendering();
 
         Debug.Log("End");
         StopCoroutine(AddReplicaToReplicaAndTarget2_Dissolve());
@@ -950,7 +1050,7 @@ public class Transition : MonoBehaviour
         stopWatchEnd = Time.time - stopWatchStart;
         Debug.Log("Fade to Target 2: " + stopWatchEnd.ToString());
         stopWatchEnd = 0;
-        ligtComponent.RequestShadowMapRendering();
+        lightComponent.RequestShadowMapRendering();
 
     }
     IEnumerator RemoveReplicaToTarget_Dissolve()
@@ -984,7 +1084,9 @@ public class Transition : MonoBehaviour
                 if (testWithVarjo) { Core.XRSceneManager.Instance.arVRToggle.SetModeToVR(); }
                 count = 0;
                 boxObj.SetActive(false);
-                ligtComponent.RequestShadowMapRendering();
+
+                lightComponent.SetIntensity(3000);
+                lightComponent.RequestShadowMapRendering();
             }
             yield return wfs;
         }
@@ -1022,7 +1124,9 @@ public class Transition : MonoBehaviour
                 StartCoroutine(AddTargetToTarget2_Dissolve());
                 if (testWithVarjo) { Core.XRSceneManager.Instance.arVRToggle.SetModeToVR(); }
                 boxObj.SetActive(false);
-                ligtComponent.RequestShadowMapRendering();
+
+                lightComponent.SetIntensity(3000);
+                lightComponent.RequestShadowMapRendering();
                 count = 0;
             }
             yield return wfs;
@@ -1073,7 +1177,7 @@ public class Transition : MonoBehaviour
                 if (testWithVarjo) { Core.XRSceneManager.Instance.arVRToggle.SetModeToVR(); }
                 count = 0;
                 boxObj.SetActive(false);
-                ligtComponent.RequestShadowMapRendering();
+                lightComponent.RequestShadowMapRendering();
             }
             yield return wfs;
         }
@@ -1123,7 +1227,7 @@ public class Transition : MonoBehaviour
                 if (testWithVarjo) { Core.XRSceneManager.Instance.arVRToggle.SetModeToVR(); }
                 count = 0;
                 boxObj.SetActive(false);
-                ligtComponent.RequestShadowMapRendering();
+                lightComponent.RequestShadowMapRendering();
             }
             yield return wfs;
         }
@@ -1161,7 +1265,8 @@ public class Transition : MonoBehaviour
                 StartCoroutine(AddTargetToTarget_Fade());
                 if (testWithVarjo) { Core.XRSceneManager.Instance.arVRToggle.SetModeToVR(); }
                 boxObj.SetActive(false);
-                ligtComponent.RequestShadowMapRendering();
+                lightComponent.SetIntensity(3000);
+                lightComponent.RequestShadowMapRendering();
                 count = 0;
             }
             yield return wfs;
@@ -1200,7 +1305,8 @@ public class Transition : MonoBehaviour
                 StartCoroutine(AddTargetToTarget2_Fade());
                 if (testWithVarjo) { Core.XRSceneManager.Instance.arVRToggle.SetModeToVR(); }
                 boxObj.SetActive(false);
-                ligtComponent.RequestShadowMapRendering();
+                lightComponent.SetIntensity(3000);
+                lightComponent.RequestShadowMapRendering();
                 count = 0;
             }
             yield return wfs;
@@ -1552,7 +1658,7 @@ public class Transition : MonoBehaviour
         }
 
         boxObj.SetActive(true);
-        ligtComponent.RequestShadowMapRendering();
+        lightComponent.RequestShadowMapRendering();
 
         yield return new WaitForSeconds(waitToFinischCoroutine);
         StartCoroutine(RemoveReplicaToReal_Dissolve()); //hier ende
@@ -1624,7 +1730,7 @@ public class Transition : MonoBehaviour
             Core.XRSceneManager.Instance.arVRToggle.SetModeToAR();
         }
         boxObj.SetActive(true);
-        ligtComponent.RequestShadowMapRendering();
+        lightComponent.RequestShadowMapRendering();
         yield return new WaitForSeconds(waitToFinischCoroutine);
         StartCoroutine(RemoveReplicaToReal_Combine()); //hier ende
 
@@ -1666,7 +1772,7 @@ public class Transition : MonoBehaviour
             Core.XRSceneManager.Instance.arVRToggle.SetModeToAR();
         }
         boxObj.SetActive(true);
-        ligtComponent.RequestShadowMapRendering();
+        lightComponent.RequestShadowMapRendering();
         yield return new WaitForSeconds(waitToFinischCoroutine);
         StartCoroutine(RemoveReplicaToReal_Combine()); //hier ende
 
@@ -1696,7 +1802,7 @@ public class Transition : MonoBehaviour
             Core.XRSceneManager.Instance.arVRToggle.SetModeToAR();
         }
         boxObj.SetActive(true);
-        ligtComponent.RequestShadowMapRendering();
+        lightComponent.RequestShadowMapRendering();
         yield return new WaitForSeconds(waitToFinischCoroutine);
         StartCoroutine(RemoveReplicaToReal_Fade()); //hier ende
 
@@ -1726,7 +1832,7 @@ public class Transition : MonoBehaviour
             Core.XRSceneManager.Instance.arVRToggle.SetModeToAR();
         }
         boxObj.SetActive(true);
-        ligtComponent.RequestShadowMapRendering();
+        lightComponent.RequestShadowMapRendering();
         yield return new WaitForSeconds(waitToFinischCoroutine);
         StartCoroutine(RemoveReplicaToReal_Fade()); //hier ende
 
@@ -1808,7 +1914,7 @@ public class Transition : MonoBehaviour
                 if (testWithVarjo) { Core.XRSceneManager.Instance.arVRToggle.SetModeToVR(); }
                 StartCoroutine(AddTargetToTarget_Translate());
                 boxObj.SetActive(false);
-                ligtComponent.RequestShadowMapRendering();
+                lightComponent.RequestShadowMapRendering();
             }
             yield return wfs;
         }
@@ -1849,7 +1955,7 @@ public class Transition : MonoBehaviour
                 if (testWithVarjo) { Core.XRSceneManager.Instance.arVRToggle.SetModeToVR(); }
                 StartCoroutine(AddTargetToTarget2_Translate());
                 boxObj.SetActive(false);
-                ligtComponent.RequestShadowMapRendering();
+                lightComponent.RequestShadowMapRendering();
             }
             yield return wfs;
         }
@@ -1973,7 +2079,7 @@ public class Transition : MonoBehaviour
             Core.XRSceneManager.Instance.arVRToggle.SetModeToAR();
         }
         boxObj.SetActive(true);
-        ligtComponent.RequestShadowMapRendering();
+        lightComponent.RequestShadowMapRendering();
         yield return new WaitForSeconds(waitToFinischCoroutine);
         StartCoroutine(RemoveReplicaOnly_Translate());
         coroutineIsRunning_AddReplicaToReplica_Translate = false;
@@ -2005,7 +2111,7 @@ public class Transition : MonoBehaviour
             Core.XRSceneManager.Instance.arVRToggle.SetModeToAR();
         }
         boxObj.SetActive(true);
-        ligtComponent.RequestShadowMapRendering();
+        lightComponent.RequestShadowMapRendering();
         yield return new WaitForSeconds(waitToFinischCoroutine);
         StartCoroutine(RemoveReplicaOnly_Translate());
         coroutineIsRunning_AddReplicaToReplica_Translate = false;
