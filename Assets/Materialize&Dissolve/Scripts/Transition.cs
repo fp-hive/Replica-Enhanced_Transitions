@@ -47,6 +47,8 @@ public class Transition : MonoBehaviour
     public List<serializableClass> target_2_List = new List<serializableClass>();
 
     private bool isVC = true;
+    private bool isClouds = false;
+
     public enum TransitionSelector
     {
         Fade,
@@ -66,6 +68,10 @@ public class Transition : MonoBehaviour
 
     public Light light;
     public Light lightNoNVC;
+    public Light lightClouds;
+    public Light AreaLight1;
+    public Light AreaLight2;
+
     HDAdditionalLightData lightComponent; 
 
     public bool testWithVarjo = false;
@@ -295,9 +301,21 @@ public class Transition : MonoBehaviour
                     break;
             }
         }
-        if (Input.GetKey(KeyCode.F5) && isButtonClickable) // Replica -> Target
+        if (Input.GetKey(KeyCode.F5) && isControllerClickable) // Replica -> Target
         {
+            if (isControllerClickable)
+            {
+                StartCoroutine(StartPeriodicHaptics());
 
+                if (isRealEnvironment)
+                {
+                    isRealEnvironment = ChangeToVR();
+                }
+                else
+                {
+                    isRealEnvironment = ChangeToReal();
+                }
+            }
         }
         if (Input.GetKey(KeyCode.F6) && isButtonClickable) //  Target -> Replica
         {
@@ -320,6 +338,28 @@ public class Transition : MonoBehaviour
                 lightNoNVC.GetComponent<Light>().enabled = true;
 
                 Debug.Log("VC is off");
+            }
+            StartCoroutine(EnableButtonAfterDebounce());
+        }
+        if (Input.GetKeyDown("w") && isButtonClickable) //  Target -> Replica
+        {
+            isButtonClickable = false;
+            isClouds = !isClouds;
+            if (!isClouds)
+            {
+                lightClouds.GetComponent<Light>().enabled = false;
+                light.GetComponent<Light>().enabled = true;
+                AreaLight1.GetComponent<Light>().enabled = false;
+                AreaLight2.GetComponent<Light>().enabled = false;
+                Debug.Log("Sun Clouds is off");
+            }
+            else
+            {
+                light.GetComponent<Light>().enabled = false;
+                lightClouds.GetComponent<Light>().enabled = true;
+                AreaLight1.GetComponent<Light>().enabled = true;
+                AreaLight2.GetComponent<Light>().enabled = true;
+                Debug.Log("Sun Clouds is on");
             }
             StartCoroutine(EnableButtonAfterDebounce());
         }
@@ -1053,6 +1093,42 @@ public class Transition : MonoBehaviour
         lightComponent.RequestShadowMapRendering();
 
     }
+    private void LightToTarget1()
+    {
+        light.GetComponent<Light>().enabled = false;
+        lightClouds.GetComponent<Light>().enabled = false;
+        lightNoNVC.GetComponent<Light>().enabled = true;
+        lightNoNVC.GetComponent<HDAdditionalLightData>().SetIntensity(3000);
+        AreaLight1.GetComponent<Light>().enabled = false;
+        AreaLight2.GetComponent<Light>().enabled = false;
+    }
+    private void LightToReplica()
+    {
+        if (isClouds)
+        {
+            light.GetComponent<Light>().enabled = false;
+            lightNoNVC.GetComponent<Light>().enabled = false;
+            lightClouds.GetComponent<Light>().enabled = true;
+            AreaLight1.GetComponent<Light>().enabled = true;
+            AreaLight2.GetComponent<Light>().enabled = true;
+        }
+        else if (isVC)
+        {
+            lightClouds.GetComponent<Light>().enabled = false;
+            lightNoNVC.GetComponent<Light>().enabled = false;
+            light.GetComponent<Light>().enabled = true;
+            AreaLight1.GetComponent<Light>().enabled = false;
+            AreaLight2.GetComponent<Light>().enabled = false;
+        }
+        else // non VC Condition
+        {
+            lightClouds.GetComponent<Light>().enabled = false;
+            light.GetComponent<Light>().enabled = false;
+            lightNoNVC.GetComponent<Light>().enabled = true;
+            AreaLight1.GetComponent<Light>().enabled = false;
+            AreaLight2.GetComponent<Light>().enabled = false;
+        }
+    }
     IEnumerator RemoveReplicaToTarget_Dissolve()
     {
         WaitForSeconds wfs = new WaitForSeconds(durationNextObj);
@@ -1084,8 +1160,7 @@ public class Transition : MonoBehaviour
                 if (testWithVarjo) { Core.XRSceneManager.Instance.arVRToggle.SetModeToVR(); }
                 count = 0;
                 boxObj.SetActive(false);
-
-                lightComponent.SetIntensity(3000);
+                LightToTarget1();
                 lightComponent.RequestShadowMapRendering();
             }
             yield return wfs;
