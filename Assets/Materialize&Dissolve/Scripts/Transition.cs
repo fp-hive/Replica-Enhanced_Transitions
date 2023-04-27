@@ -777,6 +777,7 @@ public class Transition : MonoBehaviour
             Debug.Log(count);
             if (count > 6)
             {
+                LightToReplica();
                 StartCoroutine(AddReplicaToReplica_Dissolve());
                 count = 0;
             }
@@ -803,6 +804,7 @@ public class Transition : MonoBehaviour
             Debug.Log(count);
             if (count > 4)
             {
+                LightToReplica();
                 StartCoroutine(AddReplicaToReplica_2_Dissolve());
                 count = 0;
             }
@@ -841,6 +843,7 @@ public class Transition : MonoBehaviour
             Debug.Log(count);
             if (count > 6)
             {
+                LightToReplica();
                 StartCoroutine(AddReplicaToReplica_Combine());
                 count = 0;
             }
@@ -879,6 +882,7 @@ public class Transition : MonoBehaviour
             Debug.Log(count);
             if (count > 3)
             {
+                LightToReplica();
                 StartCoroutine(AddReplicaToReplica2_Combine());
                 count = 0;
             }
@@ -905,6 +909,7 @@ public class Transition : MonoBehaviour
             Debug.Log(count);
             if (count > 6)
             {
+                LightToReplica();
                 StartCoroutine(AddReplicaToReplica_Fade());
                 count = 0;
             }
@@ -931,6 +936,7 @@ public class Transition : MonoBehaviour
             Debug.Log(count);
             if (count > 4)
             {
+                LightToReplica();
                 StartCoroutine(AddReplicaToReplica2_Fade());
                 count = 0;
             }
@@ -1098,7 +1104,16 @@ public class Transition : MonoBehaviour
         light.GetComponent<Light>().enabled = false;
         lightClouds.GetComponent<Light>().enabled = false;
         lightNoNVC.GetComponent<Light>().enabled = true;
-        lightNoNVC.GetComponent<HDAdditionalLightData>().SetIntensity(3000);
+        lightNoNVC.GetComponent<HDAdditionalLightData>().SetIntensity(5000);
+        AreaLight1.GetComponent<Light>().enabled = false;
+        AreaLight2.GetComponent<Light>().enabled = false;
+    }
+    private void LightToTarget2()
+    {
+        light.GetComponent<Light>().enabled = false;
+        lightClouds.GetComponent<Light>().enabled = false;
+        lightNoNVC.GetComponent<Light>().enabled = true;
+        lightNoNVC.GetComponent<HDAdditionalLightData>().SetIntensity(6500);
         AreaLight1.GetComponent<Light>().enabled = false;
         AreaLight2.GetComponent<Light>().enabled = false;
     }
@@ -1127,6 +1142,8 @@ public class Transition : MonoBehaviour
             lightNoNVC.GetComponent<Light>().enabled = true;
             AreaLight1.GetComponent<Light>().enabled = false;
             AreaLight2.GetComponent<Light>().enabled = false;
+            lightNoNVC.GetComponent<HDAdditionalLightData>().SetIntensity(13000);
+
         }
     }
     IEnumerator RemoveReplicaToTarget_Dissolve()
@@ -1200,7 +1217,8 @@ public class Transition : MonoBehaviour
                 if (testWithVarjo) { Core.XRSceneManager.Instance.arVRToggle.SetModeToVR(); }
                 boxObj.SetActive(false);
 
-                lightComponent.SetIntensity(3000);
+                LightToTarget2();
+
                 lightComponent.RequestShadowMapRendering();
                 count = 0;
             }
@@ -1252,6 +1270,7 @@ public class Transition : MonoBehaviour
                 if (testWithVarjo) { Core.XRSceneManager.Instance.arVRToggle.SetModeToVR(); }
                 count = 0;
                 boxObj.SetActive(false);
+                LightToTarget1();
                 lightComponent.RequestShadowMapRendering();
             }
             yield return wfs;
@@ -1302,6 +1321,8 @@ public class Transition : MonoBehaviour
                 if (testWithVarjo) { Core.XRSceneManager.Instance.arVRToggle.SetModeToVR(); }
                 count = 0;
                 boxObj.SetActive(false);
+                LightToTarget2();
+
                 lightComponent.RequestShadowMapRendering();
             }
             yield return wfs;
@@ -1340,7 +1361,7 @@ public class Transition : MonoBehaviour
                 StartCoroutine(AddTargetToTarget_Fade());
                 if (testWithVarjo) { Core.XRSceneManager.Instance.arVRToggle.SetModeToVR(); }
                 boxObj.SetActive(false);
-                lightComponent.SetIntensity(3000);
+                LightToTarget1();
                 lightComponent.RequestShadowMapRendering();
                 count = 0;
             }
@@ -1380,7 +1401,7 @@ public class Transition : MonoBehaviour
                 StartCoroutine(AddTargetToTarget2_Fade());
                 if (testWithVarjo) { Core.XRSceneManager.Instance.arVRToggle.SetModeToVR(); }
                 boxObj.SetActive(false);
-                lightComponent.SetIntensity(3000);
+                LightToTarget2();
                 lightComponent.RequestShadowMapRendering();
                 count = 0;
             }
@@ -1989,6 +2010,7 @@ public class Transition : MonoBehaviour
                 if (testWithVarjo) { Core.XRSceneManager.Instance.arVRToggle.SetModeToVR(); }
                 StartCoroutine(AddTargetToTarget_Translate());
                 boxObj.SetActive(false);
+                LightToTarget1();
                 lightComponent.RequestShadowMapRendering();
             }
             yield return wfs;
@@ -2030,6 +2052,8 @@ public class Transition : MonoBehaviour
                 if (testWithVarjo) { Core.XRSceneManager.Instance.arVRToggle.SetModeToVR(); }
                 StartCoroutine(AddTargetToTarget2_Translate());
                 boxObj.SetActive(false);
+                LightToTarget2();
+
                 lightComponent.RequestShadowMapRendering();
             }
             yield return wfs;
@@ -2088,6 +2112,7 @@ public class Transition : MonoBehaviour
             if (count > 1 && !coroutineIsRunning_AddReplicaToReplica_Translate)
             {
                 count = 0;
+                LightToReplica();
                 coroutineIsRunning_AddReplicaToReplica_Translate = true;
                 StartCoroutine(AddReplicaToReplica_Translate());
             }
@@ -2120,6 +2145,7 @@ public class Transition : MonoBehaviour
             if (count > 2 && !coroutineIsRunning_AddReplicaToReplica_Translate)
             {
                 count = 0;
+                LightToReplica();
                 coroutineIsRunning_AddReplicaToReplica_Translate = true;
                 StartCoroutine(AddReplicaToReplica2_Translate());
             }
