@@ -221,7 +221,7 @@ public class Transition : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKey(KeyCode.F1))
+        /*if (Input.GetKey(KeyCode.F1))
         {
             switch (currentTransition)
             {
@@ -260,7 +260,7 @@ public class Transition : MonoBehaviour
                 default:
                     break;
             }
-        }
+        }*/
         if (Input.GetKey(KeyCode.F3))
         {
             switch (currentTransition)
@@ -387,7 +387,7 @@ public class Transition : MonoBehaviour
         {
             lightComponent.RequestShadowMapRendering();
         }
-        if (Input.GetKey(KeyCode.Keypad1) && isButtonClickable) //  Target -> Replica
+        if (Input.GetKey(KeyCode.F1) && isButtonClickable) //  Target -> Replica
         {
             isButtonClickable = false;
             isTarget2 = false;
@@ -401,7 +401,7 @@ public class Transition : MonoBehaviour
             }
             StartCoroutine(EnableButtonAfterDebounce());
         }
-        if (Input.GetKey(KeyCode.Keypad2) && isButtonClickable) //  Target -> Replica
+        if (Input.GetKey(KeyCode.F2) && isButtonClickable) //  Target -> Replica
         {
             isButtonClickable = false;
             isTarget2 = true;
