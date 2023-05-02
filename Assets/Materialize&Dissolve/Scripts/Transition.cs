@@ -91,13 +91,21 @@ public class Transition : MonoBehaviour
     public GameObject leftController;
     public GameObject rightController;
 
+    public AudioSource audioSource;
+    public AudioClip transitionSound;
+
+    public static Transition transitionScript;
+
     private void Awake()
     {
+        transitionScript = this;
         startTransitionAction.started += ctx =>
         {
             Debug.Log("Init");
             if (isButtonClickable)
             {
+                audioSource.PlayOneShot(transitionSound);
+
                 StartCoroutine(StartPeriodicHaptics());
 
                 if (isRealEnvironment)
@@ -146,6 +154,10 @@ public class Transition : MonoBehaviour
         }
     }
 
+    public bool getIsTarget2()
+    {
+        return isTarget2;
+    }
     void SendHaptics(float ampli)
     {
         ActionBasedController _rightControllerScript = rightController.GetComponent<ActionBasedController>();
@@ -305,6 +317,8 @@ public class Transition : MonoBehaviour
         {
             if (isControllerClickable)
             {
+                audioSource.PlayOneShot(transitionSound);
+
                 StartCoroutine(StartPeriodicHaptics());
 
                 if (isRealEnvironment)
