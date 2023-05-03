@@ -1118,7 +1118,7 @@ public class Transition : MonoBehaviour
         light.GetComponent<Light>().enabled = false;
         lightClouds.GetComponent<Light>().enabled = false;
         lightNoNVC.GetComponent<Light>().enabled = true;
-        lightNoNVC.GetComponent<HDAdditionalLightData>().SetIntensity(5000);
+        //lightNoNVC.GetComponent<HDAdditionalLightData>().SetIntensity(5000);
         AreaLight1.GetComponent<Light>().enabled = false;
         AreaLight2.GetComponent<Light>().enabled = false;
     }
@@ -1127,7 +1127,7 @@ public class Transition : MonoBehaviour
         light.GetComponent<Light>().enabled = false;
         lightClouds.GetComponent<Light>().enabled = false;
         lightNoNVC.GetComponent<Light>().enabled = true;
-        lightNoNVC.GetComponent<HDAdditionalLightData>().SetIntensity(6500);
+        //lightNoNVC.GetComponent<HDAdditionalLightData>().SetIntensity(6500);
         AreaLight1.GetComponent<Light>().enabled = false;
         AreaLight2.GetComponent<Light>().enabled = false;
     }
@@ -1156,7 +1156,7 @@ public class Transition : MonoBehaviour
             lightNoNVC.GetComponent<Light>().enabled = true;
             AreaLight1.GetComponent<Light>().enabled = false;
             AreaLight2.GetComponent<Light>().enabled = false;
-            lightNoNVC.GetComponent<HDAdditionalLightData>().SetIntensity(13000);
+            //lightNoNVC.GetComponent<HDAdditionalLightData>().SetIntensity(13000);
 
         }
     }
@@ -2002,7 +2002,7 @@ public class Transition : MonoBehaviour
             foreach (GameObject replicaObject in replica.replicaObjects)
             {
                 Dissolver dissolver = replicaObject.GetComponent<Dissolver>();
-                if (dissolver != null && (dissolver.transform.parent.name == "RoomOutline" || dissolver.transform.parent.name == "display_1" || dissolver.transform.parent.name == "display_2"))
+                if (dissolver != null && (dissolver.transform.parent.name == "RoomOutline" || dissolver.transform.parent.name == "display_1" || dissolver.transform.parent.name == "display_2" || dissolver.transform.parent.name == "NEC"))
                 {
                     //dissolver.startPosition = replicaObject.transform.position;
                     //dissolver.targetPosition = new Vector3(replicaObject.transform.position.x, replicaObject.transform.position.y+6f, replicaObject.transform.position.z);
@@ -2044,7 +2044,7 @@ public class Transition : MonoBehaviour
             foreach (GameObject replicaObject in replica.replicaObjects)
             {
                 Dissolver dissolver = replicaObject.GetComponent<Dissolver>();
-                if (dissolver != null && (dissolver.transform.parent.name == "RoomOutline" || dissolver.transform.parent.name == "display_1" || dissolver.transform.parent.name == "display_2"))
+                if (dissolver != null && (dissolver.transform.parent.name == "RoomOutline" || dissolver.transform.parent.name == "display_1" || dissolver.transform.parent.name == "display_2" || dissolver.transform.parent.name == "NEC"))
                 {
                     //dissolver.startPosition = replicaObject.transform.position;
                     //dissolver.targetPosition = new Vector3(replicaObject.transform.position.x, replicaObject.transform.position.y+6f, replicaObject.transform.position.z);
@@ -2242,7 +2242,7 @@ public class Transition : MonoBehaviour
             foreach (GameObject replicaObject in replicaList[i].replicaObjects)
             {
                 Dissolver dissolver = replicaObject.GetComponent<Dissolver>();
-                if (dissolver != null && (dissolver.transform.parent.name == "RoomOutline" || dissolver.transform.parent.name == "display_1" || dissolver.transform.parent.name == "display_2"))
+                if (dissolver != null && (dissolver.transform.parent.name == "RoomOutline" || dissolver.transform.parent.name == "display_1" || dissolver.transform.parent.name == "display_2" || dissolver.transform.parent.name == "NEC"))
                 {
                     dissolver.TranslateIn(durationPerObject);
                 }
@@ -2268,7 +2268,7 @@ public class Transition : MonoBehaviour
             foreach (GameObject replicaObject in replicaList[i].replicaObjects)
             {
                 Dissolver dissolver = replicaObject.GetComponent<Dissolver>();
-                if (dissolver != null && (dissolver.transform.parent.name == "RoomOutline" || dissolver.transform.parent.name == "display_1" || dissolver.transform.parent.name == "display_2"))
+                if (dissolver != null && (dissolver.transform.parent.name == "RoomOutline" || dissolver.transform.parent.name == "display_1" || dissolver.transform.parent.name == "display_2" || dissolver.transform.parent.name == "NEC"))
                 {
                     dissolver.TranslateIn(durationPerObject);
                 }
@@ -2489,7 +2489,7 @@ public class Transition : MonoBehaviour
             foreach (GameObject replicaObject in replicaList[i].replicaObjects)
             {
                 Dissolver dissolver = replicaObject.GetComponent<Dissolver>();
-                if (dissolver != null && (dissolver.transform.parent.name == "RoomOutline" || dissolver.transform.parent.name == "display_1" || dissolver.transform.parent.name == "display_2"))
+                if (dissolver != null && (dissolver.transform.parent.name == "RoomOutline" || dissolver.transform.parent.name == "display_1" || dissolver.transform.parent.name == "display_2" || dissolver.transform.parent.name == "NEC"))
                 {
                     dissolver.TranslateIn(0.1f);
                 }
@@ -2544,7 +2544,7 @@ public class Transition : MonoBehaviour
             foreach (GameObject replicaObject in replicaList[i].replicaObjects)
             {
                 Dissolver dissolver = replicaObject.GetComponent<Dissolver>();
-                if (dissolver != null && (dissolver.transform.parent.name == "RoomOutline" || dissolver.transform.parent.name == "display_1" || dissolver.transform.parent.name == "display_2"))
+                if (dissolver != null && (dissolver.transform.parent.name == "RoomOutline" || dissolver.transform.parent.name == "display_1" || dissolver.transform.parent.name == "display_2" || dissolver.transform.parent.name == "NEC"))
                 {
                     dissolver.TranslateOut(0.1f);
                 }
