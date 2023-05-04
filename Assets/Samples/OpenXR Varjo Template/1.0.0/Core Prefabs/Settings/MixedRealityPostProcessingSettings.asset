@@ -46,7 +46,7 @@ MonoBehaviour:
     m_Value: 1
   fixedExposure:
     m_OverrideState: 1
-    m_Value: 0.8823525
+    m_Value: 6.5
   compensation:
     m_OverrideState: 0
     m_Value: 0
@@ -369,7 +369,7 @@ MonoBehaviour:
   active: 0
   intensity:
     m_OverrideState: 1
-    m_Value: 1
+    m_Value: 0
 --- !u!114 &-1390856932492482457
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -613,7 +613,7 @@ MonoBehaviour:
     m_Value: 20000
   updateMode:
     m_OverrideState: 1
-    m_Value: 2
+    m_Value: 0
   updatePeriod:
     m_OverrideState: 1
     m_Value: 0.033333335
@@ -622,7 +622,7 @@ MonoBehaviour:
     m_Value: 0
   hdriSky:
     m_OverrideState: 1
-    m_Value: {fileID: 0}
+    m_Value: {fileID: 8900000, guid: 1c03f883dd6879442b66f83430ea610b, type: 3}
   distortionMode:
     m_OverrideState: 0
     m_Value: 0
