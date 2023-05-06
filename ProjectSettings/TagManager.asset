@@ -9,6 +9,8 @@ TagManager:
   - HandModels
   - targetBottom
   - shadowBox
+  - BaseLineT1
+  - BaseLineT2
   layers:
   - Default
   - TransparentFX

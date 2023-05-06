@@ -44,6 +44,9 @@ public class Transition : MonoBehaviour
     public List<GameObject> target2List = new List<GameObject>();
     public List<GameObject> target1_Baseline = new List<GameObject>();
 
+    private GameObject[] target1_BaselineList = new GameObject[1];
+    private GameObject[] target2_BaselineList = new GameObject[1];
+
     public List<serializableClass> target_2_List = new List<serializableClass>();
 
     private bool isVC = true;
@@ -223,7 +226,10 @@ public class Transition : MonoBehaviour
         }
         boxObj = GameObject.FindGameObjectWithTag("shadowBox");
         lightComponent = light.GetComponent<HDAdditionalLightData>();
-
+        target1_BaselineList = new GameObject[GameObject.FindGameObjectsWithTag("BaseLineT1").Length];
+        target1_BaselineList = GameObject.FindGameObjectsWithTag("BaseLineT1");
+        target2_BaselineList = new GameObject[GameObject.FindGameObjectsWithTag("BaseLineT2").Length];
+        target2_BaselineList = GameObject.FindGameObjectsWithTag("BaseLineT2");
     }
 
 
@@ -314,10 +320,11 @@ public class Transition : MonoBehaviour
                     break;
             }
         }
-        if (Input.GetKey(KeyCode.F5) && isControllerClickable) // Replica -> Target
+        if (Input.GetKey(KeyCode.F5)) // Replica -> Target
         {
-            if (isControllerClickable)
+            if (isButtonClickable)
             {
+                isButtonClickable = false;
                 //audioSource.PlayOneShot(transitionSound);
 
                 StartCoroutine(StartPeriodicHaptics());
@@ -330,6 +337,8 @@ public class Transition : MonoBehaviour
                 {
                     isRealEnvironment = ChangeToReal();
                 }
+                StartCoroutine(EnableButtonAfterDebounce());
+
             }
         }
         if (Input.GetKey(KeyCode.F6) && isButtonClickable) //  Target -> Replica
@@ -345,14 +354,14 @@ public class Transition : MonoBehaviour
                 lightNoNVC.GetComponent<Light>().enabled = false;
                 light.GetComponent<Light>().enabled = true;
 
-                Debug.Log("VC is on");
+                Debug.LogWarning("VC is on");
             }
             else
             {
                 light.GetComponent<Light>().enabled = false;
                 lightNoNVC.GetComponent<Light>().enabled = true;
 
-                Debug.Log("VC is off");
+                Debug.LogError("VC is off");
             }
             StartCoroutine(EnableButtonAfterDebounce());
         }
@@ -418,6 +427,7 @@ public class Transition : MonoBehaviour
             {
                 obj.SetActive(false);
             }
+            ChangeTransitionTyp(currentTransition);
             StartCoroutine(EnableButtonAfterDebounce());
         }
         if (Input.GetKey(KeyCode.F2) && isButtonClickable) //  Target -> Replica
@@ -432,6 +442,8 @@ public class Transition : MonoBehaviour
             {
                 obj.SetActive(true);
             }
+            ChangeTransitionTyp(currentTransition);
+
             StartCoroutine(EnableButtonAfterDebounce());
         }
     }
@@ -459,7 +471,7 @@ public class Transition : MonoBehaviour
                     StartCoroutine(AddReplicaToReplicaAndTarget2_Combine());
                     break;
                 case TransitionSelector.Baseline:
-                    StartCoroutine(AddReplicaToReplicaAndTarget2_Fade());
+                    AddTarget2_Baseline();
                     break;
                 default:
                     break;
@@ -484,7 +496,7 @@ public class Transition : MonoBehaviour
                     StartCoroutine(AddReplicaToReplicaAndTarget_Combine());
                     break;
                 case TransitionSelector.Baseline:
-                    AddTarget_Combine();
+                    AddTarget_Baseline();
                     break;
                 default:
                     break;
@@ -516,6 +528,9 @@ public class Transition : MonoBehaviour
                 case TransitionSelector.Combine:
                     StartCoroutine(RemoveTarget2ToReplica_Combine());
                     break;
+                case TransitionSelector.Baseline:
+                    RemoveTarget2_Baseline();
+                    break;
                 default:
                     break;
             }
@@ -537,6 +552,9 @@ public class Transition : MonoBehaviour
                     break;
                 case TransitionSelector.Combine:
                     StartCoroutine(RemoveTargetToReplica_Combine());
+                    break;
+                case TransitionSelector.Baseline:
+                    RemoveTarget_Baseline();
                     break;
                 default:
                     break;
@@ -704,6 +722,18 @@ public class Transition : MonoBehaviour
         }
         if (transitionTyp == TransitionSelector.Baseline)
         {
+            Dissolver dissolver = onlyTarget2Objs[0].GetComponent<Dissolver>();
+            dissolver.ReplaceMaterials();
+            Dissolver dissolver2 = onlyTarget2Objs[11].GetComponent<Dissolver>();
+            dissolver2.ReplaceMaterials();
+            Dissolver dissolver3 = onlyTarget2Objs[12].GetComponent<Dissolver>();
+            dissolver3.ReplaceMaterials();
+            Dissolver dissolver4 = onlyTarget2Objs[13].GetComponent<Dissolver>();
+            dissolver4.ReplaceMaterials();
+            Dissolver dissolver5 = onlyTarget2Objs[14].GetComponent<Dissolver>();
+            dissolver5.ReplaceMaterials();
+            Dissolver dissolver6 = onlyTarget2Objs[15].GetComponent<Dissolver>();
+            dissolver6.ReplaceMaterials();
             ResetBaseline();
         }
         if (transitionTyp == TransitionSelector.Translate)
@@ -713,6 +743,7 @@ public class Transition : MonoBehaviour
         if (transitionTyp == TransitionSelector.Combine)
         {
             ResetDissolve();
+            ResetForCombine();
         }
     }
 
@@ -1100,15 +1131,89 @@ public class Transition : MonoBehaviour
             yield return wfs;
         }
 
+
+        //Debug.Log("End");
+        StopCoroutine(AddReplicaToReplicaAndTarget_Dissolve());
+        stopWatchEnd = Time.time - stopWatchStart;
+        //Debug.Log("Fade to Target: " + stopWatchEnd.ToString());
+        stopWatchEnd = 0;
+    }
+    IEnumerator RemoveTargetToTarget_Fade()
+    {
+        WaitForSeconds wfs = new WaitForSeconds(durationNextObj);
+        for (int i = target_1_List.Count - 1; i >= 0; i--)
+        {
+            foreach (GameObject replicaObject in target_1_List[i].replicaObjects)
+            {
+                Dissolver dissolver = replicaObject.GetComponent<Dissolver>();
+                dissolver.Duration = durationPerObject;
+                dissolver.FadeOut(durationPerObject);
+            }
+            yield return wfs;
+        }
+
+        //Debug.Log("End");
+        StopCoroutine(RemoveTargetToTarget_Fade());
+        stopWatchEnd = Time.time - stopWatchStart;
+        //Debug.Log("Fade to Target: " + stopWatchEnd.ToString());
+        stopWatchEnd = 0;
+    }
+    IEnumerator RemoveTargetToTarget_Baseline()
+    {
+        WaitForSeconds wfs = new WaitForSeconds(durationNextObj);
+        for (int i = target_1_List.Count - 1; i >= 0; i--)
+        {
+            foreach (GameObject replicaObject in target_1_List[i].replicaObjects)
+            {
+                Dissolver dissolver = replicaObject.GetComponent<Dissolver>();
+                dissolver.Duration = durationPerObject;
+                dissolver.FadeOut(durationPerObject);
+            }
+            yield return wfs;
+        }
+
         foreach (GameObject replicaObject in target1_Baseline)
         {
-            StartCoroutine(FadeIn_I_nonDissolve(durationPerObject, replicaObject));
+            StartCoroutine(FadeOut_I_nonDissolve(durationPerObject, replicaObject));
+
+        }
+        foreach (GameObject replicaObject in target1_BaselineList)
+        {
+            StartCoroutine(FadeOut_I_nonDissolve(durationPerObject, replicaObject));
 
         }
         yield return wfs;
 
         //Debug.Log("End");
-        StopCoroutine(AddReplicaToReplicaAndTarget_Dissolve());
+        StopCoroutine(RemoveTargetToTarget_Baseline());
+        stopWatchEnd = Time.time - stopWatchStart;
+        //Debug.Log("Fade to Target: " + stopWatchEnd.ToString());
+        stopWatchEnd = 0;
+    }
+    IEnumerator RemoveTargetToTarget2_Baseline()
+    {
+        WaitForSeconds wfs = new WaitForSeconds(durationNextObj);
+        for (int i = target_2_List.Count - 1; i >= 0; i--)
+        {
+            foreach (GameObject replicaObject in target_2_List[i].replicaObjects)
+            {
+                Dissolver dissolver = replicaObject.GetComponent<Dissolver>();
+                dissolver.Duration = durationPerObject;
+                dissolver.FadeOut(durationPerObject);
+            }
+            yield return wfs;
+        }
+        onlyTarget2Objs[9].SetActive(false);
+        onlyTarget2Objs[10].SetActive(false);
+        foreach (GameObject replicaObject in target2_BaselineList)
+        {
+            StartCoroutine(FadeOut_I_nonDissolve(durationPerObject, replicaObject));
+
+        }
+        yield return wfs;
+
+        //Debug.Log("End");
+        StopCoroutine(RemoveTargetToTarget2_Baseline());
         stopWatchEnd = Time.time - stopWatchStart;
         //Debug.Log("Fade to Target: " + stopWatchEnd.ToString());
         stopWatchEnd = 0;
@@ -1126,9 +1231,46 @@ public class Transition : MonoBehaviour
             }
             yield return wfs;
         }
+        foreach (GameObject replicaObject in target1_Baseline)
+        {
+            StartCoroutine(FadeIn_I_nonDissolve(durationPerObject, replicaObject));
 
+        }
+        foreach (GameObject replicaObject in target1_BaselineList)
+        {
+            StartCoroutine(FadeIn_I_nonDissolve(durationPerObject, replicaObject));
+
+        }
         //Debug.Log("End");
         StopCoroutine(AddTargetToTarget_Baseline());
+        stopWatchEnd = Time.time - stopWatchStart;
+        //Debug.Log("Fade to Target: " + stopWatchEnd.ToString());
+        stopWatchEnd = 0;
+    }
+    IEnumerator AddTargetToTarget2_Baseline()
+    {
+        WaitForSeconds wfs = new WaitForSeconds(durationNextObj);
+        for (int i = target_2_List.Count - 1; i >= 0; i--)
+        {
+            foreach (GameObject replicaObject in target_2_List[i].replicaObjects)
+            {
+                Dissolver dissolver = replicaObject.GetComponent<Dissolver>();
+                dissolver.Duration = durationPerObject;
+                dissolver.FadeIn(durationPerObject);
+            }
+            yield return wfs;
+        }
+
+        foreach (GameObject replicaObject in target2_BaselineList)
+        {
+            StartCoroutine(FadeIn_I_nonDissolve(durationPerObject, replicaObject));
+
+        }
+        yield return new WaitForSeconds(2f);
+        onlyTarget2Objs[9].SetActive(true);
+        onlyTarget2Objs[10].SetActive(true);
+        //Debug.Log("End");
+        StopCoroutine(AddTargetToTarget2_Baseline());
         stopWatchEnd = Time.time - stopWatchStart;
         //Debug.Log("Fade to Target: " + stopWatchEnd.ToString());
         stopWatchEnd = 0;
@@ -1732,10 +1874,34 @@ public class Transition : MonoBehaviour
        // Debug.Log("End AddReplicaToReplicaAndTarget2_Combine");
         StopCoroutine(AddReplicaToReplicaAndTarget_Combine());
     }
-    void AddTarget_Combine()
+    void AddTarget_Baseline()
     {
-        StartCoroutine(AddTargetToTarget_Fade());
+        StartCoroutine(AddTargetToTarget_Baseline());
         if (testWithVarjo) { Core.XRSceneManager.Instance.arVRToggle.SetModeToVR(); }
+        boxObj.SetActive(false);
+        LightToTarget1();
+        lightComponent.RequestShadowMapRendering();
+    }
+    void AddTarget2_Baseline()
+    {
+        StartCoroutine(AddTargetToTarget2_Baseline());
+        if (testWithVarjo) { Core.XRSceneManager.Instance.arVRToggle.SetModeToVR(); }
+        boxObj.SetActive(false);
+        LightToTarget2();
+        lightComponent.RequestShadowMapRendering();
+    }
+    void RemoveTarget_Baseline()
+    {
+        if (testWithVarjo) { Core.XRSceneManager.Instance.arVRToggle.SetModeToAR(); }
+        StartCoroutine(RemoveTargetToTarget_Baseline());
+        boxObj.SetActive(false);
+        LightToTarget1();
+        lightComponent.RequestShadowMapRendering();
+    }
+    void RemoveTarget2_Baseline()
+    {
+        if (testWithVarjo) { Core.XRSceneManager.Instance.arVRToggle.SetModeToAR(); }
+        StartCoroutine(RemoveTargetToTarget2_Baseline());
         boxObj.SetActive(false);
         LightToTarget1();
         lightComponent.RequestShadowMapRendering();
@@ -2532,11 +2698,12 @@ public class Transition : MonoBehaviour
                 }
 
             }
-            foreach (GameObject obj in onlyTarget2Objs)
+            foreach (GameObject obj in target2_BaselineList)
             {
-                obj.SetActive(false);
+                StartCoroutine(FadeOut_I_nonDissolve(0.01f, obj));
             }
-
+            onlyTarget2Objs[9].SetActive(false);
+            onlyTarget2Objs[10].SetActive(false);
         }
         else
         {
@@ -2557,6 +2724,11 @@ public class Transition : MonoBehaviour
             {
                 StartCoroutine(FadeOut_I_nonDissolve(0.01f,obj));
             }
+            foreach (GameObject obj in target1_BaselineList)
+            {
+                StartCoroutine(FadeOut_I_nonDissolve(0.01f, obj));
+            }
+            
         }
 
 
@@ -2755,7 +2927,7 @@ public class Transition : MonoBehaviour
                     dissolver.Duration = 0.01f;
                     if (dissolver.name == "rollo1" || dissolver.name == "rollo2" || dissolver.name == "Curtain1" || dissolver.name == "Curtain2" || dissolver.name == "Curtain3")
                     {
-                        dissolver.TranslateOut(0.01f);
+                        dissolver.TranslateOut(0.1f);
                     }
                     else if (dissolver.name == "Roof" || dissolver.name == "Room" || dissolver.name == "Door" || dissolver.name == "Handle" || dissolver.name == "Lock")
                     {
@@ -2789,7 +2961,7 @@ public class Transition : MonoBehaviour
                         }
                         else if (target2TranslateStringList.Contains(dissolver.name))
                         {
-                            dissolver.TranslateOut(0.01f);
+                            dissolver.TranslateOut(0.1f);
                         }
                         else
                         {
