@@ -81,7 +81,7 @@ public class Transition : MonoBehaviour
     public bool testWithVarjo = false;
     private float debounceTime = 0.25f;   // Debounce time in seconds
     private bool isButtonClickable = true;  // Flag to keep track of button clickability
-    private float debounceTimeController = 15.25f;   // Debounce time in seconds
+    private float debounceTimeController = 12.25f;   // Debounce time in seconds
     private bool isControllerClickable = true;  // Flag to keep track of button clickability
     private float stopWatchStart = 0.0f;
     private float stopWatchEnd = 0.0f;
@@ -100,13 +100,16 @@ public class Transition : MonoBehaviour
 
     public static Transition transitionScript;
 
+    public bool Vormittag;
+    public bool Nachmittag;
+    public bool NachmittagWolke;
     private void Awake()
     {
         transitionScript = this;
         startTransitionAction.started += ctx =>
         {
             Debug.Log("Init");
-            if (isButtonClickable)
+            if (isControllerClickable)
             {
                 audioSource.PlayOneShot(transitionSound);
 
@@ -230,6 +233,31 @@ public class Transition : MonoBehaviour
         target1_BaselineList = GameObject.FindGameObjectsWithTag("BaseLineT1");
         target2_BaselineList = new GameObject[GameObject.FindGameObjectsWithTag("BaseLineT2").Length];
         target2_BaselineList = GameObject.FindGameObjectsWithTag("BaseLineT2");
+
+        if (Vormittag)
+        {
+            light.GetComponent<Light>().enabled = true;
+            lightClouds.GetComponent<Light>().enabled = false;
+            lightNoNVC.GetComponent<Light>().enabled = false;
+            AreaLight1.GetComponent<Light>().enabled = true;
+            AreaLight2.GetComponent<Light>().enabled = true;
+        }
+        if (Nachmittag)
+        {
+            light.GetComponent<Light>().enabled = true;
+            lightClouds.GetComponent<Light>().enabled = false;
+            lightNoNVC.GetComponent<Light>().enabled = false;
+            AreaLight1.GetComponent<Light>().enabled = false;
+            AreaLight2.GetComponent<Light>().enabled = false;
+        }
+        if (NachmittagWolke)
+        {
+            light.GetComponent<Light>().enabled = false;
+            lightClouds.GetComponent<Light>().enabled = true;
+            lightNoNVC.GetComponent<Light>().enabled = false;
+            AreaLight1.GetComponent<Light>().enabled = true;
+            AreaLight2.GetComponent<Light>().enabled = true;
+        }
     }
 
 
@@ -351,15 +379,39 @@ public class Transition : MonoBehaviour
             isVC = !isVC;
             if(isVC)
             {
-                lightNoNVC.GetComponent<Light>().enabled = false;
-                light.GetComponent<Light>().enabled = true;
-
-                Debug.LogWarning("VC is on");
+                if (Vormittag)
+                {
+                    light.GetComponent<Light>().enabled = true;
+                    lightClouds.GetComponent<Light>().enabled = false;
+                    lightNoNVC.GetComponent<Light>().enabled = false;
+                    AreaLight1.GetComponent<Light>().enabled = true;
+                    AreaLight2.GetComponent<Light>().enabled = true;
+                }
+                if (Nachmittag)
+                {
+                    light.GetComponent<Light>().enabled = true;
+                    lightClouds.GetComponent<Light>().enabled = false;
+                    lightNoNVC.GetComponent<Light>().enabled = false;
+                    AreaLight1.GetComponent<Light>().enabled = false;
+                    AreaLight2.GetComponent<Light>().enabled = false;
+                }
+                if (NachmittagWolke)
+                {
+                    light.GetComponent<Light>().enabled = false;
+                    lightClouds.GetComponent<Light>().enabled = true;
+                    lightNoNVC.GetComponent<Light>().enabled = false;
+                    AreaLight1.GetComponent<Light>().enabled = true;
+                    AreaLight2.GetComponent<Light>().enabled = true;
+                }
+                Debug.LogError("VC is on");
             }
             else
             {
                 light.GetComponent<Light>().enabled = false;
+                lightClouds.GetComponent<Light>().enabled = false;
                 lightNoNVC.GetComponent<Light>().enabled = true;
+                AreaLight1.GetComponent<Light>().enabled = false;
+                AreaLight2.GetComponent<Light>().enabled = false;
 
                 Debug.LogError("VC is off");
             }
@@ -389,23 +441,28 @@ public class Transition : MonoBehaviour
         }
         if (Input.GetKeyDown("f"))
         {
-            ChangeTransitionTyp(TransitionSelector.Fade);
+            ChangeTransitionTyp(TransitionSelector.Fade,false);
+            Debug.LogError("Fade");
         }
         if (Input.GetKeyDown("d"))
         {
-            ChangeTransitionTyp(TransitionSelector.Dissolve);
+            ChangeTransitionTyp(TransitionSelector.Dissolve, false);
+            Debug.LogError("Dissolve");
         }
         if (Input.GetKeyDown("l"))
         {
-            ChangeTransitionTyp(TransitionSelector.Translate);
+            ChangeTransitionTyp(TransitionSelector.Translate, false);
+            Debug.LogError("Translate");
         }
         if (Input.GetKeyDown("c"))
         {
-            ChangeTransitionTyp(TransitionSelector.Combine);
+            ChangeTransitionTyp(TransitionSelector.Combine, false);
+            Debug.LogError("Combine");
         }
         if (Input.GetKeyDown("b"))
         {
-            ChangeTransitionTyp(TransitionSelector.Baseline);
+            ChangeTransitionTyp(TransitionSelector.Baseline, false);
+            Debug.LogError("Baseline");
         }
         if (Input.GetKeyDown("r"))
         {
@@ -427,7 +484,9 @@ public class Transition : MonoBehaviour
             {
                 obj.SetActive(false);
             }
-            ChangeTransitionTyp(currentTransition);
+            Debug.LogError("Target 1 is active");
+
+            ChangeTransitionTyp(currentTransition, true);
             StartCoroutine(EnableButtonAfterDebounce());
         }
         if (Input.GetKey(KeyCode.F2) && isButtonClickable) //  Target -> Replica
@@ -442,7 +501,10 @@ public class Transition : MonoBehaviour
             {
                 obj.SetActive(true);
             }
-            ChangeTransitionTyp(currentTransition);
+
+            Debug.LogError("Target 2 is active");
+
+            ChangeTransitionTyp(currentTransition,true);
 
             StartCoroutine(EnableButtonAfterDebounce());
         }
@@ -590,7 +652,7 @@ public class Transition : MonoBehaviour
         isControllerClickable = true;
     }
 
-    private void ChangeTransitionTyp(TransitionSelector transitionTyp)
+    private void ChangeTransitionTyp(TransitionSelector transitionTyp, bool TargetChange)
     {
         if( currentTransition == TransitionSelector.Translate)
         {
@@ -738,7 +800,14 @@ public class Transition : MonoBehaviour
         }
         if (transitionTyp == TransitionSelector.Translate)
         {
-            ResetForTranslate();
+            if (TargetChange)
+            {
+                ResetForTranslateAfterTargetChange();
+            }
+            else
+            {
+                ResetForTranslate();
+            }
         }
         if (transitionTyp == TransitionSelector.Combine)
         {
@@ -1166,29 +1235,31 @@ public class Transition : MonoBehaviour
             foreach (GameObject replicaObject in target_1_List[i].replicaObjects)
             {
                 Dissolver dissolver = replicaObject.GetComponent<Dissolver>();
-                dissolver.Duration = durationPerObject;
-                dissolver.FadeOut(durationPerObject);
+                dissolver.Duration = durationPerObject*2f;
+                dissolver.FadeOut(8f);
             }
             yield return wfs;
         }
 
         foreach (GameObject replicaObject in target1_Baseline)
         {
-            StartCoroutine(FadeOut_I_nonDissolve(durationPerObject, replicaObject));
+            StartCoroutine(FadeOut_I_nonDissolve(durationPerObject * 2f, replicaObject));
 
         }
         foreach (GameObject replicaObject in target1_BaselineList)
         {
-            StartCoroutine(FadeOut_I_nonDissolve(durationPerObject, replicaObject));
+            StartCoroutine(FadeOut_I_nonDissolve(durationPerObject * 2f, replicaObject));
 
         }
         yield return wfs;
 
         //Debug.Log("End");
-        StopCoroutine(RemoveTargetToTarget_Baseline());
+        if (testWithVarjo) { Core.XRSceneManager.Instance.arVRToggle.SetModeToAR(); }
         stopWatchEnd = Time.time - stopWatchStart;
         //Debug.Log("Fade to Target: " + stopWatchEnd.ToString());
         stopWatchEnd = 0;
+        //StopCoroutine(RemoveTargetToTarget_Baseline());
+
     }
     IEnumerator RemoveTargetToTarget2_Baseline()
     {
@@ -1199,7 +1270,7 @@ public class Transition : MonoBehaviour
             {
                 Dissolver dissolver = replicaObject.GetComponent<Dissolver>();
                 dissolver.Duration = durationPerObject;
-                dissolver.FadeOut(durationPerObject);
+                dissolver.FadeOut(8f);
             }
             yield return wfs;
         }
@@ -1207,12 +1278,14 @@ public class Transition : MonoBehaviour
         onlyTarget2Objs[10].SetActive(false);
         foreach (GameObject replicaObject in target2_BaselineList)
         {
-            StartCoroutine(FadeOut_I_nonDissolve(durationPerObject, replicaObject));
+            StartCoroutine(FadeOut_I_nonDissolve(durationPerObject*2f, replicaObject));
 
         }
         yield return wfs;
 
         //Debug.Log("End");
+        if (testWithVarjo) { Core.XRSceneManager.Instance.arVRToggle.SetModeToAR(); }
+
         StopCoroutine(RemoveTargetToTarget2_Baseline());
         stopWatchEnd = Time.time - stopWatchStart;
         //Debug.Log("Fade to Target: " + stopWatchEnd.ToString());
@@ -1220,56 +1293,60 @@ public class Transition : MonoBehaviour
     }
     IEnumerator AddTargetToTarget_Baseline()
     {
-        WaitForSeconds wfs = new WaitForSeconds(durationNextObj);
+        WaitForSeconds wfs = new WaitForSeconds(durationNextObj*2);
         for (int i = target_1_List.Count - 1; i >= 0; i--)
         {
             foreach (GameObject replicaObject in target_1_List[i].replicaObjects)
             {
                 Dissolver dissolver = replicaObject.GetComponent<Dissolver>();
-                dissolver.Duration = durationPerObject;
-                dissolver.FadeIn(durationPerObject);
+                dissolver.Duration = durationPerObject*2;
+                dissolver.FadeIn(8f);
             }
             yield return wfs;
         }
         foreach (GameObject replicaObject in target1_Baseline)
         {
-            StartCoroutine(FadeIn_I_nonDissolve(durationPerObject, replicaObject));
+            StartCoroutine(FadeIn_I_nonDissolve(durationPerObject * 2, replicaObject));
 
         }
         foreach (GameObject replicaObject in target1_BaselineList)
         {
-            StartCoroutine(FadeIn_I_nonDissolve(durationPerObject, replicaObject));
+            StartCoroutine(FadeIn_I_nonDissolve(durationPerObject * 2, replicaObject));
 
         }
         //Debug.Log("End");
-        StopCoroutine(AddTargetToTarget_Baseline());
+        if (testWithVarjo) { Core.XRSceneManager.Instance.arVRToggle.SetModeToVR(); }
         stopWatchEnd = Time.time - stopWatchStart;
         //Debug.Log("Fade to Target: " + stopWatchEnd.ToString());
         stopWatchEnd = 0;
+        StopCoroutine(AddTargetToTarget_Baseline());
+
     }
     IEnumerator AddTargetToTarget2_Baseline()
     {
-        WaitForSeconds wfs = new WaitForSeconds(durationNextObj);
+        WaitForSeconds wfs = new WaitForSeconds(durationNextObj*2f);
         for (int i = target_2_List.Count - 1; i >= 0; i--)
         {
             foreach (GameObject replicaObject in target_2_List[i].replicaObjects)
             {
                 Dissolver dissolver = replicaObject.GetComponent<Dissolver>();
                 dissolver.Duration = durationPerObject;
-                dissolver.FadeIn(durationPerObject);
+                dissolver.FadeIn(8f);
             }
             yield return wfs;
         }
 
         foreach (GameObject replicaObject in target2_BaselineList)
         {
-            StartCoroutine(FadeIn_I_nonDissolve(durationPerObject, replicaObject));
+            StartCoroutine(FadeIn_I_nonDissolve(durationPerObject*2f, replicaObject));
 
         }
         yield return new WaitForSeconds(2f);
         onlyTarget2Objs[9].SetActive(true);
         onlyTarget2Objs[10].SetActive(true);
         //Debug.Log("End");
+        if (testWithVarjo) { Core.XRSceneManager.Instance.arVRToggle.SetModeToVR(); }
+
         StopCoroutine(AddTargetToTarget2_Baseline());
         stopWatchEnd = Time.time - stopWatchStart;
         //Debug.Log("Fade to Target: " + stopWatchEnd.ToString());
@@ -1299,25 +1376,25 @@ public class Transition : MonoBehaviour
     }
     private void LightToTarget1()
     {
-        light.GetComponent<Light>().enabled = false;
+        /*light.GetComponent<Light>().enabled = false;
         lightClouds.GetComponent<Light>().enabled = false;
-        lightNoNVC.GetComponent<Light>().enabled = true;
+        lightNoNVC.GetComponent<Light>().enabled = true;*/
         //lightNoNVC.GetComponent<HDAdditionalLightData>().SetIntensity(5000);
-        AreaLight1.GetComponent<Light>().enabled = false;
-        AreaLight2.GetComponent<Light>().enabled = false;
+        //AreaLight1.GetComponent<Light>().enabled = false;
+        //AreaLight2.GetComponent<Light>().enabled = false;
     }
     private void LightToTarget2()
     {
-        light.GetComponent<Light>().enabled = false;
+        /*light.GetComponent<Light>().enabled = false;
         lightClouds.GetComponent<Light>().enabled = false;
-        lightNoNVC.GetComponent<Light>().enabled = true;
+        lightNoNVC.GetComponent<Light>().enabled = true;*/
         //lightNoNVC.GetComponent<HDAdditionalLightData>().SetIntensity(6500);
-        AreaLight1.GetComponent<Light>().enabled = false;
-        AreaLight2.GetComponent<Light>().enabled = false;
+        //AreaLight1.GetComponent<Light>().enabled = false;
+        //AreaLight2.GetComponent<Light>().enabled = false;
     }
     private void LightToReplica()
     {
-        if (isClouds)
+        /*if (isClouds)
         {
             light.GetComponent<Light>().enabled = false;
             lightNoNVC.GetComponent<Light>().enabled = false;
@@ -1343,6 +1420,7 @@ public class Transition : MonoBehaviour
             //lightNoNVC.GetComponent<HDAdditionalLightData>().SetIntensity(13000);
 
         }
+        */
     }
     IEnumerator RemoveReplicaToTarget_Dissolve()
     {
@@ -1877,7 +1955,7 @@ public class Transition : MonoBehaviour
     void AddTarget_Baseline()
     {
         StartCoroutine(AddTargetToTarget_Baseline());
-        if (testWithVarjo) { Core.XRSceneManager.Instance.arVRToggle.SetModeToVR(); }
+       // if (testWithVarjo) { Core.XRSceneManager.Instance.arVRToggle.SetModeToVR(); }
         boxObj.SetActive(false);
         LightToTarget1();
         lightComponent.RequestShadowMapRendering();
@@ -1885,14 +1963,14 @@ public class Transition : MonoBehaviour
     void AddTarget2_Baseline()
     {
         StartCoroutine(AddTargetToTarget2_Baseline());
-        if (testWithVarjo) { Core.XRSceneManager.Instance.arVRToggle.SetModeToVR(); }
+       // if (testWithVarjo) { Core.XRSceneManager.Instance.arVRToggle.SetModeToVR(); }
         boxObj.SetActive(false);
         LightToTarget2();
         lightComponent.RequestShadowMapRendering();
     }
     void RemoveTarget_Baseline()
     {
-        if (testWithVarjo) { Core.XRSceneManager.Instance.arVRToggle.SetModeToAR(); }
+       // if (testWithVarjo) { Core.XRSceneManager.Instance.arVRToggle.SetModeToAR(); }
         StartCoroutine(RemoveTargetToTarget_Baseline());
         boxObj.SetActive(false);
         LightToTarget1();
@@ -1900,7 +1978,7 @@ public class Transition : MonoBehaviour
     }
     void RemoveTarget2_Baseline()
     {
-        if (testWithVarjo) { Core.XRSceneManager.Instance.arVRToggle.SetModeToAR(); }
+        //if (testWithVarjo) { Core.XRSceneManager.Instance.arVRToggle.SetModeToAR(); }
         StartCoroutine(RemoveTargetToTarget2_Baseline());
         boxObj.SetActive(false);
         LightToTarget1();
@@ -2904,7 +2982,78 @@ public class Transition : MonoBehaviour
                 Dissolver dissolver = replicaObject.GetComponent<Dissolver>();
                 if (dissolver != null && (dissolver.transform.parent.name == "RoomOutline" || dissolver.transform.parent.name == "display_1" || dissolver.transform.parent.name == "display_2" || dissolver.transform.parent.name == "NEC"))
                 {
-                    dissolver.TranslateOut(0.1f);
+                    dissolver.TranslateOut(0.3f);
+                }
+                else
+                {
+                    Debug.Log("not active: " + dissolver.name);
+                }
+
+            }
+        }
+
+    }
+    private void ResetForTranslateAfterTargetChange()
+    {
+
+        if (isTarget2)
+        {
+            for (int i = 0; i < target_2_List.Count; i++)
+            {
+                foreach (GameObject targetObject in target_2_List[i].replicaObjects)
+                {
+                    Dissolver dissolver = targetObject.GetComponent<Dissolver>();
+                    if (dissolver != null)// && (dissolver.transform.parent.name == "RoomOutline" || dissolver.transform.parent.name == "display_1" || dissolver.transform.parent.name == "display_2"))
+                    {
+                        dissolver.TranslateOut(0.3f);
+                        dissolver.FadeOut(0.1f);
+                    }
+                    else
+                    {
+                        Debug.Log("not active: " + dissolver.name);
+                    }
+
+                }
+            }
+            foreach (GameObject obj in onlyTarget2Objs)
+            {
+                obj.SetActive(false);
+            }
+        }
+        else
+        {
+            for (int i = 0; i < target_1_List.Count; i++)
+            {
+                foreach (GameObject targetObject in target_1_List[i].replicaObjects)
+                {
+                    Dissolver dissolver = targetObject.GetComponent<Dissolver>();
+                    if (dissolver != null)// && (dissolver.transform.parent.name == "RoomOutline" || dissolver.transform.parent.name == "display_1" || dissolver.transform.parent.name == "display_2"))
+                    {
+                        dissolver.TranslateOut(0.3f);
+
+                        dissolver.FadeOut(0.1f);
+                    }
+                    else
+                    {
+                        Debug.Log("not active: " + dissolver.name);
+                    }
+
+                }
+            }
+            foreach (GameObject obj in onlyTarget1Objs)
+            {
+                obj.SetActive(false);
+            }
+        }
+
+        for (int i = 0; i < replicaList.Count; i++)
+        {
+            foreach (GameObject replicaObject in replicaList[i].replicaObjects)
+            {
+                Dissolver dissolver = replicaObject.GetComponent<Dissolver>();
+                if (dissolver != null )
+                {
+                    dissolver.FadeOut(0.3f);
                 }
                 else
                 {

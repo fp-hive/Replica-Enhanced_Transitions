@@ -350,9 +350,9 @@ Material:
     - _ZWrite: 1
     - _maxDist: 25
     m_Colors:
-    - _BaseColor: {r: 0.8088235, g: 0.8088235, b: 0.8088235, a: 1}
+    - _BaseColor: {r: 0.3584906, g: 0.3584906, b: 0.3584906, a: 1}
     - _BaseColorMap_MipInfo: {r: 0, g: 0, b: 0, a: 0}
-    - _Color: {r: 0.8088235, g: 0.8088235, b: 0.8088235, a: 1}
+    - _Color: {r: 0.35849056, g: 0.35849056, b: 0.35849056, a: 1}
     - _DiffusionProfileAsset: {r: 0, g: 0, b: 0, a: 0}
     - _Displacement_TO: {r: 1, g: 1, b: 0, a: 0}
     - _DissolveColor: {r: 1, g: 0, b: 0, a: 0}

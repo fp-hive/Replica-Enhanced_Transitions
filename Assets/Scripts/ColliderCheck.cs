@@ -34,8 +34,8 @@ public class ColliderCheck : MonoBehaviour
         {
             isButtonClickable = false;
             searchNumber = 0;
-            Debug.Log("Search Number: " + searchNumber + " Search Obj T1: " + searchObjsT1String[searchNumber]);
-            Debug.Log("Search Number: " + searchNumber + " Search Obj T2: " + searchObjsT2String[searchNumber]);
+            Debug.LogError("Search Number: " + searchNumber + " Search Obj T1: " + searchObjsT1String[searchNumber]);
+            Debug.LogError("Search Number: " + searchNumber + " Search Obj T2: " + searchObjsT2String[searchNumber]);
             begin = false;
             StartCoroutine(EnableButtonAfterDebounce());
         }
@@ -43,8 +43,8 @@ public class ColliderCheck : MonoBehaviour
         {
             isButtonClickable = false;
             searchNumber = 1;
-            Debug.Log("Search Number: " + searchNumber + " Search Obj T1: " + searchObjsT1String[searchNumber]);
-            Debug.Log("Search Number: " + searchNumber + " Search Obj T2: " + searchObjsT2String[searchNumber]);
+            Debug.LogError("Search Number: " + searchNumber + " Search Obj T1: " + searchObjsT1String[searchNumber]);
+            Debug.LogError("Search Number: " + searchNumber + " Search Obj T2: " + searchObjsT2String[searchNumber]);
             begin = false;
             StartCoroutine(EnableButtonAfterDebounce());
         }
@@ -52,8 +52,8 @@ public class ColliderCheck : MonoBehaviour
         {
             isButtonClickable = false;
             searchNumber = 2;
-            Debug.Log("Search Number: " + searchNumber + " Search Obj T1: " + searchObjsT1String[searchNumber]);
-            Debug.Log("Search Number: " + searchNumber + " Search Obj T2: " + searchObjsT2String[searchNumber]);
+            Debug.LogError("Search Number: " + searchNumber + " Search Obj T1: " + searchObjsT1String[searchNumber]);
+            Debug.LogError("Search Number: " + searchNumber + " Search Obj T2: " + searchObjsT2String[searchNumber]);
             begin = false;
             StartCoroutine(EnableButtonAfterDebounce());
         }
@@ -61,8 +61,8 @@ public class ColliderCheck : MonoBehaviour
         {
             isButtonClickable = false;
             searchNumber = 3;
-            Debug.Log("Search Number: " + searchNumber + " Search Obj T1: " + searchObjsT1String[searchNumber]);
-            Debug.Log("Search Number: " + searchNumber + " Search Obj T2: " + searchObjsT2String[searchNumber]);
+            Debug.LogError("Search Number: " + searchNumber + " Search Obj T1: " + searchObjsT1String[searchNumber]);
+            Debug.LogError("Search Number: " + searchNumber + " Search Obj T2: " + searchObjsT2String[searchNumber]);
             begin = false;
             StartCoroutine(EnableButtonAfterDebounce());
         }
@@ -70,8 +70,8 @@ public class ColliderCheck : MonoBehaviour
         {
             isButtonClickable = false;
             searchNumber = 4;
-            Debug.Log("Search Number: " + searchNumber + " Search Obj T1: " + searchObjsT1String[searchNumber]);
-            Debug.Log("Search Number: " + searchNumber + " Search Obj T2: " + searchObjsT2String[searchNumber]);
+            Debug.LogError("Search Number: " + searchNumber + " Search Obj T1: " + searchObjsT1String[searchNumber]);
+            Debug.LogError("Search Number: " + searchNumber + " Search Obj T2: " + searchObjsT2String[searchNumber]);
             begin = false;
             StartCoroutine(EnableButtonAfterDebounce());
         }
@@ -79,8 +79,8 @@ public class ColliderCheck : MonoBehaviour
         {
             isButtonClickable = false;
             searchNumber = 5;
-            Debug.Log("Search Number: " + searchNumber + " Search Obj T1: " + searchObjsT1String[searchNumber]);
-            Debug.Log("Search Number: " + searchNumber + " Search Obj T2: " + searchObjsT2String[searchNumber]);
+            Debug.LogError("Search Number: " + searchNumber + " Search Obj T1: " + searchObjsT1String[searchNumber]);
+            Debug.LogError("Search Number: " + searchNumber + " Search Obj T2: " + searchObjsT2String[searchNumber]);
             begin = false;
             StartCoroutine(EnableButtonAfterDebounce());
         }
@@ -88,8 +88,8 @@ public class ColliderCheck : MonoBehaviour
         {
             isButtonClickable = false;
             searchNumber = 6;
-            Debug.Log("Search Number: " + searchNumber + " Search Obj T1: " + searchObjsT1String[searchNumber]);
-            Debug.Log("Search Number: " + searchNumber + " Search Obj T2: " + searchObjsT2String[searchNumber]);
+            Debug.LogError("Search Number: " + searchNumber + " Search Obj T1: " + searchObjsT1String[searchNumber]);
+            Debug.LogError("Search Number: " + searchNumber + " Search Obj T2: " + searchObjsT2String[searchNumber]);
             begin = false;
             StartCoroutine(EnableButtonAfterDebounce());
         }
@@ -97,8 +97,34 @@ public class ColliderCheck : MonoBehaviour
         {
             isButtonClickable = false;
             searchNumber = 7;
-            Debug.Log("Search Number: " + searchNumber + " Search Obj T1: " + searchObjsT1String[searchNumber]);
-            Debug.Log("Search Number: " + searchNumber + " Search Obj T2: " + searchObjsT2String[searchNumber]);
+            Debug.LogError("Search Number: " + searchNumber + " Search Obj T1: " + searchObjsT1String[searchNumber]);
+            Debug.LogError("Search Number: " + searchNumber + " Search Obj T2: " + searchObjsT2String[searchNumber]);
+            begin = false;
+            StartCoroutine(EnableButtonAfterDebounce());
+        }
+        if (Input.GetKey(KeyCode.Keypad8) && isButtonClickable)
+        {
+            isButtonClickable = false;
+            searchNumber = 8;
+            Debug.LogError("Search Number: " + searchNumber + " Search Obj T1: " + searchObjsT1String[searchNumber]);
+            Debug.LogError("Search Number: " + searchNumber + " Search Obj T2: " + searchObjsT2String[searchNumber]);
+            begin = false;
+            StartCoroutine(EnableButtonAfterDebounce());
+        }
+        if (Input.GetKey(KeyCode.Keypad9) && isButtonClickable)
+        {
+            isButtonClickable = false;
+            searchNumber = 9;
+            Debug.LogError("Search Number: " + searchNumber + " Search Obj T1: " + searchObjsT1String[searchNumber]);
+            Debug.LogError("Search Number: " + searchNumber + " Search Obj T2: " + searchObjsT2String[searchNumber]);
+            begin = false;
+            StartCoroutine(EnableButtonAfterDebounce());
+        }
+        if (Input.GetKey(KeyCode.Space) && isButtonClickable)
+        {
+            isButtonClickable = false;
+            audioSource.PlayOneShot(success);
+
             begin = false;
             StartCoroutine(EnableButtonAfterDebounce());
         }
@@ -110,7 +136,7 @@ public class ColliderCheck : MonoBehaviour
         {
             if (!begin && searchObjsT2String[searchNumber] == other.name)
             {
-                Debug.Log(other.name + " found");
+                Debug.LogError(other.name + " found");
                 StartCoroutine(StartPeriodicHaptics());
                 begin = true;
                 audioSource.PlayOneShot(success);
@@ -120,7 +146,7 @@ public class ColliderCheck : MonoBehaviour
         {
             if (!begin && searchObjsT1String[searchNumber] == other.name)
             {
-                Debug.Log(other.name + " found");
+                Debug.LogError(other.name + " found");
                 StartCoroutine(StartPeriodicHaptics());
                 begin = true;
                 audioSource.PlayOneShot(success);

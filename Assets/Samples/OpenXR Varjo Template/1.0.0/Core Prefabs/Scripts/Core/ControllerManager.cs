@@ -29,6 +29,7 @@ namespace Core
         private ActionBasedController _leftControllerScript;
         private ActionBasedController _rightControllerScript;
 
+        public GameObject triggerBox;
         // Start is called before the first frame update
         void Start()
         {
@@ -90,11 +91,14 @@ namespace Core
                 {
                     outpoint.gameObject.GetComponent<MeshRenderer>().shadowCastingMode =
                         UnityEngine.Rendering.ShadowCastingMode.ShadowsOnly;
+                    triggerBox.SetActive(false);
                 }
                 else
                 {
                     outpoint.gameObject.GetComponent<MeshRenderer>().shadowCastingMode =
                         UnityEngine.Rendering.ShadowCastingMode.On;
+                    triggerBox.SetActive(true);
+
                 }
 
             }
