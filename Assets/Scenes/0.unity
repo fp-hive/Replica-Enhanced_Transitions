@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 2.897194, g: 2.1042366, b: 1.9854107, a: 1}
+  m_IndirectSpecularColor: {r: 2.9938087, g: 2.1738167, b: 2.029934, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -17931,6 +17931,21 @@ PrefabInstance:
       propertyPath: m_LODs.Array.data[2].screenRelativeHeight
       value: 0.0023366762
       objectReference: {fileID: 0}
+    - target: {fileID: 7190860244069775697, guid: e69b154d22a1ce14781ab29839fd6a40,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -2.609
+      objectReference: {fileID: 0}
+    - target: {fileID: 7190860244069775697, guid: e69b154d22a1ce14781ab29839fd6a40,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.02
+      objectReference: {fileID: 0}
+    - target: {fileID: 7190860244069775697, guid: e69b154d22a1ce14781ab29839fd6a40,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.273
+      objectReference: {fileID: 0}
     - target: {fileID: 7190860244070065521, guid: e69b154d22a1ce14781ab29839fd6a40,
         type: 3}
       propertyPath: m_IsActive
@@ -34676,6 +34691,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 6615378651714154192, guid: 7f726e21f757ee44097f92cb8a0f3c6f,
         type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6615378651714154192, guid: 7f726e21f757ee44097f92cb8a0f3c6f,
+        type: 3}
       propertyPath: projectileOrigin
       value: 
       objectReference: {fileID: 1260662535}
@@ -34693,6 +34713,11 @@ PrefabInstance:
         type: 3}
       propertyPath: shootingAction.m_SingletonActionBindings.Array.data[2].m_Interactions
       value: SlowTap(duration=0.15)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6615378651714154193, guid: 7f726e21f757ee44097f92cb8a0f3c6f,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6615378651714154193, guid: 7f726e21f757ee44097f92cb8a0f3c6f,
         type: 3}
