@@ -200,12 +200,12 @@ Material:
     - _DisplacementLockTilingScale: 1
     - _DisplacementMode: 0
     - _DissolveAmount: 0
-    - _DissolveEmissionIntesity: 10000
+    - _DissolveEmissionIntesity: 5000
     - _DoubleSidedEnable: 0
     - _DoubleSidedGIMode: 0
     - _DoubleSidedNormalMode: 1
     - _DstBlend: 0
-    - _EdgeWidth: 0.0025
+    - _EdgeWidth: 0.0016
     - _EditorEnd: 0
     - _EditorStart: 0
     - _EmissionIntesity: 1000

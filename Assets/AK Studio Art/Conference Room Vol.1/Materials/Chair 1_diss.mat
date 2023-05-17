@@ -214,7 +214,7 @@ Material:
     - _DisplacementLockTilingScale: 1
     - _DisplacementMode: 0
     - _DissolveAmount: 0
-    - _DissolveEmissionIntesity: 100000
+    - _DissolveEmissionIntesity: 2000
     - _DoubleSidedEnable: 0
     - _DoubleSidedGIMode: 0
     - _DoubleSidedNormalMode: 1

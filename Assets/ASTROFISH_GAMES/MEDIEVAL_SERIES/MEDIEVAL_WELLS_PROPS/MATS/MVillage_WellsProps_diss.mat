@@ -229,7 +229,7 @@ Material:
     - _DoubleSidedGIMode: 0
     - _DoubleSidedNormalMode: 1
     - _DstBlend: 0
-    - _EdgeWidth: 0.0042
+    - _EdgeWidth: 0.0028
     - _EditorEnd: 0
     - _EditorStart: 0
     - _EmissionIntesity: 1000
