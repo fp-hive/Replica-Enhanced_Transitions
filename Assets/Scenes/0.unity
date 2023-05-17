@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 9.054077, g: 4.9683266, b: 2.8891582, a: 1}
+  m_IndirectSpecularColor: {r: 2.9944038, g: 2.1744232, b: 2.0304337, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -4624,7 +4624,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a68c43fe1f2a47cfa234b5eeaa98012, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Intensity: 5000
+  m_Intensity: 14513.49
   m_EnableSpotReflector: 1
   m_LuxAtDistance: 1
   m_InnerSpotPercent: 0
@@ -4746,7 +4746,7 @@ Light:
   m_Type: 2
   m_Shape: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 628.99786
+  m_Intensity: 1825.7908
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -10043,6 +10043,11 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 3d32bbe97515e1a42b6c214d98023b25, type: 2}
+    - target: {fileID: 706256253881316901, guid: 489155ad753598240a94e6b2801fe02f,
+        type: 3}
+      propertyPath: m_TagString
+      value: targetBottom
+      objectReference: {fileID: 0}
     - target: {fileID: 706256254146700972, guid: 489155ad753598240a94e6b2801fe02f,
         type: 3}
       propertyPath: m_TagString
@@ -11392,6 +11397,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_TagString
       value: BaseLineT1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8664717219626982956, guid: 489155ad753598240a94e6b2801fe02f,
+        type: 3}
+      propertyPath: m_TagString
+      value: targetBottom
       objectReference: {fileID: 0}
     - target: {fileID: 8710205591474588844, guid: 489155ad753598240a94e6b2801fe02f,
         type: 3}
@@ -13317,7 +13327,7 @@ GameObject:
   - component: {fileID: 1228093974}
   m_Layer: 0
   m_Name: Stand
-  m_TagString: Untagged
+  m_TagString: targetBottom
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -14876,8 +14886,8 @@ MonoBehaviour:
   rightController: {fileID: 1674591943}
   audioSource: {fileID: 964022076}
   transitionSound: {fileID: 8300000, guid: 90b1b79e5c1ceef46bdbfa9d48e38448, type: 3}
-  Vormittag: 1
-  Nachmittag: 0
+  Vormittag: 0
+  Nachmittag: 1
   NachmittagWolke: 0
 --- !u!4 &1344014593
 Transform:
@@ -15368,7 +15378,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1396349135}
   m_LocalRotation: {x: -0, y: 0.69994336, z: -0, w: 0.71419835}
-  m_LocalPosition: {x: 1.182, y: 0.7163, z: 0.462}
+  m_LocalPosition: {x: 1.257, y: 0.7163, z: 0.462}
   m_LocalScale: {x: 1.82, y: 1.49, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -16723,7 +16733,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a68c43fe1f2a47cfa234b5eeaa98012, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Intensity: 5000
+  m_Intensity: 14513.49
   m_EnableSpotReflector: 1
   m_LuxAtDistance: 1
   m_InnerSpotPercent: 0
@@ -16845,7 +16855,7 @@ Light:
   m_Type: 2
   m_Shape: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 628.99786
+  m_Intensity: 1825.7908
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -17521,6 +17531,11 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 0034a3a85a8f16145878436ba04be9ac, type: 2}
+    - target: {fileID: 4031075453595025420, guid: e69b154d22a1ce14781ab29839fd6a40,
+        type: 3}
+      propertyPath: m_TagString
+      value: targetBottom
+      objectReference: {fileID: 0}
     - target: {fileID: 4031075453597294284, guid: e69b154d22a1ce14781ab29839fd6a40,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -17585,6 +17600,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4272623159047513067, guid: e69b154d22a1ce14781ab29839fd6a40,
+        type: 3}
+      propertyPath: m_TagString
+      value: targetBottom
       objectReference: {fileID: 0}
     - target: {fileID: 4272623159047513071, guid: e69b154d22a1ce14781ab29839fd6a40,
         type: 3}
@@ -20476,7 +20496,7 @@ GameObject:
   - component: {fileID: 1706837312}
   m_Layer: 0
   m_Name: Stand (2)
-  m_TagString: Untagged
+  m_TagString: targetBottom
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -22136,7 +22156,7 @@ PrefabInstance:
     - target: {fileID: -2116425849138410880, guid: f268a579e7728504a81dd945af8fe7b2,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.871
+      value: 0.913
       objectReference: {fileID: 0}
     - target: {fileID: -2116425849138410880, guid: f268a579e7728504a81dd945af8fe7b2,
         type: 3}
@@ -22222,6 +22242,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_StaticEditorFlags
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -1740782519117520072, guid: f268a579e7728504a81dd945af8fe7b2,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 2.252
+      objectReference: {fileID: 0}
+    - target: {fileID: -1740782519117520072, guid: f268a579e7728504a81dd945af8fe7b2,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.716
       objectReference: {fileID: 0}
     - target: {fileID: -1442515744485882094, guid: f268a579e7728504a81dd945af8fe7b2,
         type: 3}
@@ -22531,7 +22561,37 @@ PrefabInstance:
     - target: {fileID: 4625500771143405637, guid: f268a579e7728504a81dd945af8fe7b2,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.575
+      value: 0.595
+      objectReference: {fileID: 0}
+    - target: {fileID: 4625500771143405637, guid: f268a579e7728504a81dd945af8fe7b2,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4625500771143405637, guid: f268a579e7728504a81dd945af8fe7b2,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.99999636
+      objectReference: {fileID: 0}
+    - target: {fileID: 4625500771143405637, guid: f268a579e7728504a81dd945af8fe7b2,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4625500771143405637, guid: f268a579e7728504a81dd945af8fe7b2,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.0026878333
+      objectReference: {fileID: 0}
+    - target: {fileID: 4625500771143405637, guid: f268a579e7728504a81dd945af8fe7b2,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -180
+      objectReference: {fileID: 0}
+    - target: {fileID: 4625500771143405637, guid: f268a579e7728504a81dd945af8fe7b2,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0.3079987
       objectReference: {fileID: 0}
     - target: {fileID: 4738804928519052548, guid: f268a579e7728504a81dd945af8fe7b2,
         type: 3}
@@ -22541,7 +22601,7 @@ PrefabInstance:
     - target: {fileID: 5106538922839782843, guid: f268a579e7728504a81dd945af8fe7b2,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.05492
+      value: 0.101
       objectReference: {fileID: 0}
     - target: {fileID: 5106538922839782843, guid: f268a579e7728504a81dd945af8fe7b2,
         type: 3}
@@ -22879,7 +22939,7 @@ GameObject:
   - component: {fileID: 1877285960}
   m_Layer: 0
   m_Name: Stand (1)
-  m_TagString: Untagged
+  m_TagString: targetBottom
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -23892,7 +23952,7 @@ GameObject:
   - component: {fileID: 1979284346}
   m_Layer: 0
   m_Name: Stand (3)
-  m_TagString: Untagged
+  m_TagString: targetBottom
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -30151,7 +30211,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1486407219007526026}
   m_LocalRotation: {x: -0, y: 0.9998903, z: -0, w: -0.01481556}
-  m_LocalPosition: {x: -0.0839, y: 0.7163, z: -0.3355}
+  m_LocalPosition: {x: -0.085, y: 0.724, z: -0.38}
   m_LocalScale: {x: 1.82, y: 1.49, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:

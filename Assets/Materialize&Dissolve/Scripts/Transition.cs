@@ -1315,6 +1315,7 @@ public class Transition : MonoBehaviour
 
         }
         //Debug.Log("End");
+        yield return new WaitForSeconds(2f);
         if (testWithVarjo) { Core.XRSceneManager.Instance.arVRToggle.SetModeToVR(); }
         stopWatchEnd = Time.time - stopWatchStart;
         //Debug.Log("Fade to Target: " + stopWatchEnd.ToString());
@@ -1635,7 +1636,6 @@ public class Transition : MonoBehaviour
             {
              //   Debug.Log("Call StartCoroutine(Target_1_ToReplica_I());");
                 StartCoroutine(AddTargetToTarget_Fade());
-                if (testWithVarjo) { Core.XRSceneManager.Instance.arVRToggle.SetModeToVR(); }
                 boxObj.SetActive(false);
                 LightToTarget1();
                 lightComponent.RequestShadowMapRendering();
@@ -2001,6 +2001,8 @@ public class Transition : MonoBehaviour
 
         }
         yield return new WaitForSeconds(waitToFinischCoroutine);
+        if (testWithVarjo) { Core.XRSceneManager.Instance.arVRToggle.SetModeToVR(); }
+
         StartCoroutine(RemoveReplicaToTarget_Fade());
       //  Debug.Log("Call RemoveReplicaToTarget_Fade");
 
@@ -2128,7 +2130,7 @@ public class Transition : MonoBehaviour
         {
             obj.SetActive(false);
         }
-     //   Debug.Log("End");
+        //   Debug.Log("End");
         if (testWithVarjo)
         {
             Core.XRSceneManager.Instance.arVRToggle.SetModeToAR();
